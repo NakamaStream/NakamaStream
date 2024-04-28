@@ -18,12 +18,32 @@
         <div class="content">
             <p><strong>Nombre de usuario:</strong> <%= username %></p>
             <p><strong>Correo electrónico:</strong> <%= email %></p>
-            <p><strong>Fecha de registro:</strong> <%= createdAt %></p>
-            <form action="/profile/update" method="POST">
+            <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
+            <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
+            <form action="/profile/update-username" method="POST">
                 <div class="field">
                     <label class="label">Nuevo nombre de usuario</label>
                     <div class="control">
                         <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit">Actualizar</button>
+                    </div>
+                </div>
+            </form>
+            <form action="/profile/update-password" method="POST">
+                <div class="field">
+                    <label class="label">Contraseña actual</label>
+                    <div class="control">
+                        <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Nueva contraseña</label>
+                    <div class="control">
+                        <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
                     </div>
                 </div>
                 <div class="field">
