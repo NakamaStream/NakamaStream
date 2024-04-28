@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const db = require("../services/db");
 const moment = require("moment");
+const path = require('path');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
@@ -31,13 +34,31 @@ router.post("/register", (req, res) => {
 
 // Ruta de inicio de sesión (GET)
 router.get("/login", (req, res) => {
-  res.render("login");
+  try {
+    const captchaPath = path.join(__dirname, '..', 'config', 'captcha.yml');
+    const captchaData = yaml.load(fs.readFileSync(captchaPath, 'utf8'));
+    const words = captchaData.words;
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const captchaPhrase = words[randomIndex];
+
+    req.session.captchaPhrase = captchaPhrase;
+
+    res.render("login", { captchaPhrase: captchaPhrase });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send('Error al cargar el captcha.');
+  }
 });
 
 // Ruta de inicio de sesión (POST)
 router.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, captchaInput } = req.body;
   const sql = `SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created FROM usuarios WHERE username = ? AND password = ?`;
+
+  if (captchaInput !== req.session.captchaPhrase) {
+    return res.redirect("/login");
+  }
+  
   db.query(sql, [username, password], (err, results) => {
     if (err) {
       console.error("Error al iniciar sesión:", err.message);
