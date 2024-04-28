@@ -1,31 +1,32 @@
-body {
-    background-color: #1e1e1e;
-    color: #f1f1f1;
+/* index.css */
+.featured-anime-card {
+    background-color: #ffeded; /* Cambio de color de fondo */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+    padding: 20px;
 }
-.hero {
-    background-image: url('/src/views/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
+.featured-anime-card:hover {
+    transform: translateY(-5px);
 }
-.hero h1 {
-    font-size: 4rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-.hero p {
+
+.featured-anime-title {
+    color: #ff6b6b;
     font-size: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-.btn-primary {
+
+.featured-anime-description {
+    color: #666;
+}
+
+/* Footer */
+.footer {
     background-color: #ff6b6b;
-    border-color: #ff6b6b;
-}
-.btn-primary:hover {
-    background-color: #ff4b4b;
-    border-color: #ff4b4b;
+    color: white;
+    padding: 3rem 1.5rem;
+    text-align: center;
 }
