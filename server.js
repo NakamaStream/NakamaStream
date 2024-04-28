@@ -6,6 +6,7 @@ const path = require('path');
 const indexRouter = require('./src/routes/indexRouter');
 const authRouter = require('./src/routes/authRouter');
 const dashboardRouter = require('./src/routes/dashboardRouter');
+const adminRouter = require('./src/routes/adminRouter');
 
 const db = require('./src/services/db');
 
@@ -29,6 +30,7 @@ app.use('/src/public/js', express.static('src/public/js', { 'Content-Type': 'tex
 app.use('/', indexRouter);
 app.use('/', authRouter);
 app.use('/', dashboardRouter);
+app.use('/', adminRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
