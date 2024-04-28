@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Platform</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+        }
+        .hero {
+            background-image: url('/src/views/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero p {
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .btn-primary {
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+        .btn-primary:hover {
+            background-color: #ff4b4b;
+            border-color: #ff4b4b;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Welcome to Anime Platform</h1>
+        <p>Discover the best anime series and movies.</p>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="/login" class="btn btn-primary btn-lg">Sign In</a>
+            <a href="/register" class="btn btn-outline-light btn-lg">Register</a>
+        </div>
+    </div>
+</body>
+</html>

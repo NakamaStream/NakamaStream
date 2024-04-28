@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anime Platform - Register</title>
+  <title>Anime Platform - Login</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <style>
     body {
       background-color: #f5f5f5;
       font-family: 'Roboto', sans-serif;
     }
-    .register-container {
+    .login-container {
       max-width: 400px;
       margin: 0 auto;
       padding: 2rem;
@@ -18,41 +18,40 @@
       border-radius: 0.5rem;
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     }
-    .register-container h1 {
+    .login-container h1 {
       text-align: center;
       margin-bottom: 1.5rem;
     }
-    .register-container .form-control {
+    .login-container .form-control {
       border-radius: 0.25rem;
     }
-    .register-container .btn-primary {
+    .login-container .btn-primary {
       background-color: #ff6b6b;
       border-color: #ff6b6b;
     }
-    .register-container .btn-primary:hover {
+    .login-container .btn-primary:hover {
       background-color: #ff4b4b;
       border-color: #ff4b4b;
     }
   </style>
 </head>
 <body>
-  <div class="register-container">
-    <h1>Registro</h1>
-    <form action="/register" method="post">
+  <div class="login-container">
+    <h1>Iniciar Sesión</h1>
+    <form action="/login" method="post">
       <div class="mb-3">
         <label for="username" class="form-label">Nombre de usuario:</label>
         <input type="text" class="form-control" id="username" name="username" required>
       </div>
       <div class="mb-3">
-        <label for="email" class="form-label">Correo electrónico:</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-      </div>
-      <div class="mb-3">
         <label for="password" class="form-label">Contraseña:</label>
         <input type="password" class="form-control" id="password" name="password" required>
       </div>
+      <% if (locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+      <% } %>
       <div class="d-grid">
-        <button type="submit" class="btn btn-primary">Registrarse</button>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
       </div>
     </form>
   </div>
