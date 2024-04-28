@@ -66,4 +66,28 @@ router.get("/profile", (req, res) => {
   res.render("profiles", { username, email, createdAt });
 });
 
+
+// Ruta para actualizar el nombre de usuario
+router.post('/profile/update', (req, res) => {
+  if (!req.session.loggedin) {
+    return res.redirect('/login');
+  }
+
+  const { newUsername } = req.body;
+  const userId = req.session.userId;
+
+  db.query(
+    'UPDATE usuarios SET username = ? WHERE id = ?',
+    [newUsername, userId],
+    (err, results) => {
+      if (err) {
+        console.error('Error al actualizar el nombre de usuario:', err);
+        return res.redirect('/profile');
+      }
+
+      req.session.username = newUsername;
+      res.redirect('/profile');
+    }
+  );
+});
 module.exports = router;

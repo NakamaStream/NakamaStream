@@ -19,6 +19,19 @@
             <p><strong>Nombre de usuario:</strong> <%= username %></p>
             <p><strong>Correo electrónico:</strong> <%= email %></p>
             <p><strong>Fecha de registro:</strong> <%= createdAt %></p>
+            <form action="/profile/update" method="POST">
+                <div class="field">
+                    <label class="label">Nuevo nombre de usuario</label>
+                    <div class="control">
+                        <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit">Actualizar</button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="buttons">
             <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
