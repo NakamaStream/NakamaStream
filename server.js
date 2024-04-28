@@ -23,6 +23,8 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use('/src/public/js', express.static('src/public/js', { 'Content-Type': 'text/javascript' }));
+
 app.use('/', indexRouter);
 app.use('/', authRouter);
 app.use('/', dashboardRouter);
