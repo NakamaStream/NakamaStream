@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Platform - Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --text-color: #f1f1f1;
+            --box-bg-color: #2d2d2d;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+            --primary-color: #ff6b6b;
+        }
+
+        .dark-mode {
+            --bg-color: #1c1c1c;
+            --text-color: #f5f5f5;
+            --box-bg-color: #2b2b2b;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .box {
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: var(--box-bg-color);
+            box-shadow: var(--box-shadow);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .toggle-mode {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-mode i {
+            margin-right: 0.5rem;
+        }
+
+        .button.is-primary {
+            background-color: var(--primary-color);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .button.is-primary:hover {
+            background-color: #ff4b4b;
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-mode">
+        <i class="fas fa-moon"></i>
+        <span>Modo oscuro</span>
+    </div>
+    <div class="box">
+        <h1 class="title">Perfil de <%= username %></h1>
+        <div class="content">
+            <p><strong>Nombre de usuario:</strong> <%= username %></p>
+            <p><strong>Correo electrónico:</strong> <%= email %></p>
+            <p><strong>Fecha de registro:</strong> <%= createdAt %></p>
+        </div>
+        <div class="buttons">
+            <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
+            <a href="/logout" class="button is-danger">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <script>
+        const toggleModeBtn = document.querySelector('.toggle-mode');
+        const body = document.body;
+        const box = document.querySelector('.box');
+
+        toggleModeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            box.classList.toggle('dark-mode');
+            toggleModeBtn.querySelector('i').classList.toggle('fa-sun');
+        });
+    </script>
+</body>
+</html>
