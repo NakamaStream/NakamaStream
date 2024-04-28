@@ -1,65 +1,69 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../services/db');
+const db = require("../services/db");
 
 // Ruta de registro (GET)
-router.get('/register', (req, res) => {
-  res.render('register');
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
 // Ruta de registro (POST)
-router.post('/register', (req, res) => {
+router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   const sql = `INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)`;
   db.query(sql, [username, email, password], (err, result) => {
     if (err) {
-      console.error('Error al registrar el usuario:', err.message);
-      res.redirect('/register');
+      console.error("Error al registrar el usuario:", err.message);
+      res.redirect("/register");
       return;
     }
-    console.log('Usuario registrado correctamente');
-    res.redirect('/login');
+    console.log("Usuario registrado correctamente");
+    res.redirect("/login");
   });
 });
 
 // Ruta de inicio de sesión (GET)
-router.get('/login', (req, res) => {
-  res.render('login');
+router.get("/login", (req, res) => {
+  res.render("login");
 });
 
 // Ruta de inicio de sesión (POST)
-router.post('/login', (req, res) => {
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
   const sql = `SELECT * FROM usuarios WHERE username = ? AND password = ?`;
   db.query(sql, [username, password], (err, results) => {
     if (err) {
-      console.error('Error al iniciar sesión:', err.message);
-      res.redirect('/login');
+      console.error("Error al iniciar sesión:", err.message);
+      res.redirect("/login");
       return;
     }
     if (results.length > 0) {
       req.session.loggedin = true;
       req.session.username = username;
-      res.redirect('/dashboard');
+      req.session.email = results[0].email; // Guarda el correo electrónico en la sesión
+      res.redirect("/dashboard");
     } else {
-      res.send('Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>');
+      res.send(
+        'Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>'
+      );
     }
   });
 });
 
 // Ruta de cierre de sesión
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
   req.session.destroy();
-  res.redirect('/');
+  res.redirect("/");
 });
 
 // Ruta del perfil de usuario
-router.get('/profile', (req, res) => {
+router.get("/profile", (req, res) => {
   if (!req.session.loggedin) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
 
   const { username, email, createdAt } = req.session;
-  res.render('profiles', { username, email, createdAt });
+  res.render("profiles", { username, email, createdAt });
 });
+
 module.exports = router;
