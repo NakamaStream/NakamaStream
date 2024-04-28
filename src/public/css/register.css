@@ -1,0 +1,27 @@
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+  }
+  .register-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  .register-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .register-container .form-control {
+    border-radius: 0.25rem;
+  }
+  .register-container .btn-primary {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+  }
+  .register-container .btn-primary:hover {
+    background-color: #ff4b4b;
+    border-color: #ff4b4b;
+  }
