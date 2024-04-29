@@ -13,51 +13,64 @@
         <i class="fas fa-moon"></i>
         <span>Modo oscuro</span>
     </div>
-    <div class="box">
-        <h1 class="title">Perfil de <%= username %></h1>
-        <div class="content">
-            <p><strong>Nombre de usuario:</strong> <%= username %></p>
-            <p><strong>Correo electrónico:</strong> <%= email %></p>
-            <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
-            <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
-            <form action="/profile/update-username" method="POST">
-                <div class="field">
-                    <label class="label">Nuevo nombre de usuario</label>
-                    <div class="control">
-                        <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+    <% if (banned) { %>
+        <script>
+            window.location.href = "/check-ban";
+        </script>
+    <% } else { %>
+        <div class="box">
+            <h1 class="title">Perfil de <%= username %></h1>
+            <div class="content">
+                <p><strong>Nombre de usuario:</strong> <%= username %></p>
+                <p><strong>Correo electrónico:</strong> <%= email %></p>
+                <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
+                <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
+                <% if (isAdmin) { %>
+                    <p><strong>Eres administrador</strong></p>
+                    <div class="buttons">
+                        <a href="/admin" class="button is-primary">Ir al Panel de Administrador</a>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Actualizar</button>
+                <% } else { %>
+                    <p>No eres administrador</p>
+                <% } %>
+                <form action="/profile/update-info" method="POST">
+                    <div class="field">
+                        <label class="label">Nuevo nombre de usuario</label>
+                        <div class="control">
+                            <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <form action="/profile/update-password" method="POST">
-                <div class="field">
-                    <label class="label">Contraseña actual</label>
-                    <div class="control">
-                        <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+                    <div class="field">
+                        <label class="label">Correo electrónico</label>
+                        <div class="control">
+                            <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Nueva contraseña</label>
-                    <div class="control">
-                        <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+                    <div class="field">
+                        <label class="label">Contraseña actual</label>
+                        <div class="control">
+                            <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Actualizar</button>
+                    <div class="field">
+                        <label class="label">Nueva contraseña</label>
+                        <div class="control">
+                            <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+                        </div>
                     </div>
-                </div>
-            </form>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Actualizar información</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="buttons">
+                <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
+                <a href="/logout" class="button is-danger">Cerrar Sesión</a>
+            </div>
         </div>
-        <div class="buttons">
-            <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
-            <a href="/logout" class="button is-danger">Cerrar Sesión</a>
-        </div>
-    </div>
+    <% } %>
 
     <script src="/src/public/js/DarkMode.js"></script>
 </body>
