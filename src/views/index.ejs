@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anime Platform - Login</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="/src/public/css/login.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Platform</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/src/public/css/index.css">
 </head>
 <body>
-  <div class="login-form">
-    <h1 class="login-form-title">Inicio de sesión</h1>
-    <form action="/login" method="post">
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="text" class="input" placeholder="Nombre de usuario" id="username" name="username" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
+    <section class="hero is-fullheight" style="background-image: url('/path/to/your/background/image.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-head">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="#">
+                            <img src="/src/others/NakamStream-logo.png" alt="NakamaStream">
+                        </a>
+                    </div>
+                </div>
+            </nav>
         </div>
-      </div>
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="password" class="input" placeholder="Contraseña" id="password" name="password" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Welcome to NakamaStream</h1>
+                <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #ff6b6b;">Descripcion breve xD.</p>
+                <p class="control">
+                    <a href="/login" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                        Sign In
+                    </a>
+                </p>
+                <p class="mt-5">
+                    <a href="/register" class="button is-light">¿No estás registrado?</a>
+                </p>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-fullwidth">Iniciar sesión</button>
+    </section>
+
+    <section class="section has-background-light">
+        <div class="container">
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Featured Anime</h2>
+            <div class="columns is-multiline">
+                <div class="column is-4">
+                    <div class="featured-anime-card">
+                        <h3 class="featured-anime-title">Wide Selection</h3>
+                        <p class="featured-anime-description">Explore a vast library of anime series and movies across different genres.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="featured-anime-card">
+                        <h3 class="featured-anime-title">High Quality</h3>
+                        <p class="featured-anime-description">Enjoy high-definition streaming with premium audio quality.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="featured-anime-card">
+                        <h3 class="featured-anime-title">Personalized Experience</h3>
+                        <p class="featured-anime-description">Get personalized recommendations based on your watch history.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="has-text-centered">
-        <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
-      </div>
-    </form>
-  </div>
+    </section>
+
+    <footer class="footer">
+        <div class="content">
+            <p>NakamaStream by The Nakama Team.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
