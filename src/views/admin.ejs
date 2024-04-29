@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -23,32 +24,52 @@
             font-weight: 700;
             margin-bottom: 2rem;
         }
-        .table {
+        .panel {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
-        .table th, .table td {
-            border-color: #dbdbdb;
+        .panel-heading {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         .button {
-            border-radius: 4px;
             font-weight: 700;
+            transition: background-color 0.3s ease;
         }
         .button.is-danger {
             background-color: #ff3860;
             border-color: transparent;
             color: #fff;
         }
+        .button.is-danger:hover {
+            background-color: #ff1f4b;
+        }
         .button.is-warning {
             background-color: #ffdd57;
             border-color: transparent;
             color: rgba(0,0,0,.7);
         }
+        .button.is-warning:hover {
+            background-color: #ffd000;
+        }
         .button.is-primary {
             background-color: #00d1b2;
             border-color: transparent;
             color: #fff;
+        }
+        .button.is-primary:hover {
+            background-color: #00bea4;
+        }
+        .field:not(:last-child) {
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
@@ -56,142 +77,84 @@
     <div class="container">
         <% if (req.session.isAdmin) { %>
             <h1 class="title">Panel de Administrador</h1>
-            <% if (users) { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre de usuario</th>
-                            <th>Correo electrónico</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach(user => { %>
-                            <tr>
-                                <td><%= user.id %></td>
-                                <td><%= user.username %></td>
-                                <td><%= user.email %></td>
-                                <td>
-                                    <form action="/admin/delete-user" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.id %>">
-                                        <button class="button is-danger">Eliminar</button>
-                                    </form>
-                                    <form action="/admin/ban-user" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.id %>">
-                                        <div class="field">
-                                            <label class="label">Tipo de ban</label>
-                                            <div class="control">
-                                                <div class="select">
-                                                    <select name="banType">
-                                                        <option value="temporary">Temporal</option>
-                                                        <option value="permanent">Permanente</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label">Días de ban</label>
-                                            <div class="control">
-                                                <input type="number" name="banDuration" placeholder="Días de ban" required>
-                                            </div>
-                                        </div>
-                                        <button class="button is-warning">Banear</button>
-                                    </form>
-                                    <form action="/admin/promote-user" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.id %>">
-                                        <button class="button is-primary">Promover a administrador</button>
-                                    </form>
-                                    <form action="/admin/update-user" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.id %>">
-                                        <input type="text" name="username" placeholder="Nombre de usuario" required>
-                                        <input type="email" name="email" placeholder="Correo electrónico" required>
-                                        <input type="password" name="password" placeholder="Contraseña" required>
-                                        <button class="button is-primary">Actualizar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
-            <% } else { %>
-                <p>No se encontraron usuarios.</p>
-            <% } %>
-
-            <h2 class="title">Agregar usuario administrador</h2>
-            <form action="/admin/add-admin" method="POST">
-                <div class="field">
-                    <label class="label">Nombre de usuario</label>
-                    <div class="control">
-                        <input class="input" type="text" name="username" placeholder="Nombre de usuario" required>
+            <div class="panel">
+                <h2 class="panel-heading">Acciones de Ban</h2>
+                <form action="/admin/ban-user" method="POST">
+                    <div class="field">
+                        <label class="label">ID de usuario</label>
+                        <div class="control">
+                            <input class="input" type="number" name="userId" placeholder="ID de usuario" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Correo electrónico</label>
-                    <div class="control">
-                        <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select name="banType">
+                                    <option value="temporary">Temporal</option>
+                                    <option value="permanent">Permanente</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Contraseña</label>
-                    <div class="control">
-                        <input class="input" type="password" name="password" placeholder="Contraseña" required>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="number" name="banDuration" placeholder="Duración del ban en días" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Agregar administrador</button>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-warning" type="submit">Banear Usuario</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-
-            <h2 class="title">Promover usuario a administrador</h2>
-            <form action="/admin/promote-user" method="POST">
-                <div class="field">
-                    <label class="label">ID de usuario</label>
-                    <div class="control">
-                        <input class="input" type="number" name="userId" placeholder="ID de usuario" required>
+                </form>
+            </div>
+            <div class="panel">
+                <h2 class="panel-heading">Cambiar Datos de Usuario</h2>
+                <form action="/admin/update-user" method="POST">
+                    <div class="field">
+                        <label class="label">ID de usuario</label>
+                        <div class="control">
+                            <input class="input" type="number" name="userId" placeholder="ID de usuario" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Promover a administrador</button>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" name="username" placeholder="Nuevo nombre de usuario" required>
+                        </div>
                     </div>
-                </div>
-            </form>
-
-            <h2 class="title">Actualizar información de usuario</h2>
-            <form action="/admin/update-user" method="POST">
-                <div class="field">
-                    <label class="label">ID de usuario</label>
-                    <div class="control">
-                        <input class="input" type="number" name="userId" placeholder="ID de usuario" required>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="email" name="email" placeholder="Nuevo correo electrónico" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Nombre de usuario</label>
-                    <div class="control">
-                        <input class="input" type="text" name="username" placeholder="Nombre de usuario" required>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="password" name="password" placeholder="Nueva contraseña" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Correo electrónico</label>
-                    <div class="control">
-                        <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Actualizar Datos de Usuario</button>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Contraseña</label>
-                    <div class="control">
-                        <input class="input" type="password" name="password" placeholder="Contraseña" required>
+                </form>
+            </div>
+            <div class="panel">
+                <h2 class="panel-heading">Promover Usuario a Administrador</h2>
+                <form action="/admin/promote-admin" method="POST">
+                    <div class="field">
+                        <label class="label">ID de usuario</label>
+                        <div class="control">
+                            <input class="input" type="number" name="userId" placeholder="ID de usuario" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Actualizar usuario</button>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Promover a Administrador</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         <% } else { %>
             <p>No tienes permisos de administrador.</p>
         <% } %>
