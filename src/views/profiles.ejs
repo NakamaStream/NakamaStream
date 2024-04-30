@@ -1,77 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/src/public/css/profile.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NakamaStream - Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/src/public/css/profile.css">
 </head>
 <body>
-    <div class="toggle-mode">
-        <i class="fas fa-moon"></i>
-        <span>Modo oscuro</span>
-    </div>
-    <% if (banned) { %>
-        <script>
-            window.location.href = "/check-ban";
-        </script>
-    <% } else { %>
-        <div class="box">
-            <h1 class="title">Perfil de <%= username %></h1>
-            <div class="content">
-                <p><strong>Nombre de usuario:</strong> <%= username %></p>
-                <p><strong>Correo electrónico:</strong> <%= email %></p>
-                <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
-                <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
-                <% if (isAdmin) { %>
-                    <p><strong>Eres administrador</strong></p>
-                    <div class="buttons">
-                        <a href="/admin" class="button is-primary">Ir al Panel de Administrador</a>
-                    </div>
-                <% } else { %>
-                    <p>No eres administrador</p>
-                <% } %>
-                <form action="/profile/update-info" method="POST">
-                    <div class="field">
-                        <label class="label">Nuevo nombre de usuario</label>
-                        <div class="control">
-                            <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Correo electrónico</label>
-                        <div class="control">
-                            <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Contraseña actual</label>
-                        <div class="control">
-                            <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Nueva contraseña</label>
-                        <div class="control">
-                            <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-primary" type="submit">Actualizar información</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="buttons">
-                <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
-                <a href="/logout" class="button is-danger">Cerrar Sesión</a>
-            </div>
-        </div>
-    <% } %>
+  <div class="toggle-mode">
+    <i class="fas fa-moon"></i>
+    <span>Modo oscuro</span>
+  </div>
 
-    <script src="/src/public/js/DarkMode.js"></script>
+  <% if (banned) { %>
+    <script>
+      window.location.href = "/check-ban";
+    </script>
+  <% } else { %>
+    <div class="box">
+      <h1 class="title">Perfil de <%= username %></h1>
+      <div class="content">
+        <p><strong>Nombre de usuario:</strong> <%= username %></p>
+        <p><strong>Correo electrónico:</strong> <%= email %></p>
+        <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
+        <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
+        <% if (isAdmin) { %>
+          <p><strong>Eres administrador</strong></p>
+          <div class="buttons">
+            <a href="/admin" class="button is-primary">Ir al Panel de Administrador</a>
+          </div>
+        <% } else { %>
+          <p><strong>Eres usuario novato</strong></p>
+        <% } %>
+
+        <form action="/profile/update-info" method="POST">
+          <div class="field">
+            <label class="label">Nuevo nombre de usuario</label>
+            <div class="control">
+              <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Correo electrónico</label>
+            <div class="control">
+              <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Contraseña actual</label>
+            <div class="control">
+              <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nueva contraseña</label>
+            <div class="control">
+              <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary" type="submit">Actualizar información</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="buttons">
+        <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
+        <a href="/logout" class="button is-danger">Cerrar Sesión</a>
+      </div>
+    </div>
+  <% } %>
+
+  <script src="/src/public/js/DarkModeProfile.js"></script>
 </body>
 </html>

@@ -325,5 +325,54 @@ router.post("/admin/add-admin", (req, res) => {
     res.redirect("/dashboard");
   }
 });
+// Ruta para desbanear a un usuario
+router.post("/admin/unban-user", (req, res) => {
+  // Verificar si el usuario es administrador
+  if (req.session.isAdmin) {
+    const userId = req.body.userId;
+
+    // Actualizar el estado del usuario para desbanearlo
+    db.query(
+      "UPDATE usuarios SET banned = ?, ban_expiration = NULL WHERE id = ?",
+      [false, userId],
+      (err, result) => {
+        if (err) {
+          console.error("Error al desbanear al usuario:", err);
+          return res.redirect("/admin");
+        }
+
+        res.redirect("/admin");
+      }
+    );
+  } else {
+    // Si el usuario no es administrador, redirigir al dashboard
+    res.redirect("/dashboard");
+  }
+});
+
+// Ruta para quitar el rol de administrador a un usuario
+router.post("/admin/demote-user", (req, res) => {
+  // Verificar si el usuario actual es administrador
+  if (req.session.isAdmin) {
+    const userId = req.body.userId;
+
+    // Actualizar el usuario para quitarle el rol de administrador
+    db.query(
+      "UPDATE usuarios SET is_admin = ? WHERE id = ?",
+      [false, userId],
+      (err, result) => {
+        if (err) {
+          console.error("Error al quitar el rol de administrador al usuario:", err);
+          return res.redirect("/admin");
+        }
+
+        res.redirect("/admin");
+      }
+    );
+  } else {
+    // Si el usuario no es administrador, redirigir al dashboard
+    res.redirect("/dashboard");
+  }
+});
 
 module.exports = router;

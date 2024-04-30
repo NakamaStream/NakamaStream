@@ -1,0 +1,162 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.admin-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.table {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #e5e5e5;
+}
+
+.table th,
+.table td {
+    border-color: #e5e5e5;
+    padding: 1rem;
+}
+
+.button {
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.button.is-danger {
+    background-color: #ff3860;
+    border-color: transparent;
+    color: #fff;
+}
+
+.button.is-danger:hover {
+    background-color: #e53752;
+}
+
+.button.is-warning {
+    background-color: #ffdd57;
+    border-color: transparent;
+    color: rgba(0, 0, 0, .7);
+}
+
+.button.is-warning:hover {
+    background-color: #ffd324;
+}
+
+.button.is-primary {
+    background-color: #00d1b2;
+    border-color: transparent;
+    color: #fff;
+}
+
+.button.is-primary:hover {
+    background-color: #00b8a3;
+}
+
+.button.is-success {
+    background-color: #48c774;
+    border-color: transparent;
+    color: #fff;
+}
+
+.button.is-success:hover {
+    background-color: #3ec46d;
+}
+
+.input,
+.select select {
+    border-radius: 4px;
+    border-color: #e5e5e5;
+    font-size: 0.9rem;
+}
+
+.field {
+    margin-bottom: 1.5rem;
+}
+
+.field.is-grouped {
+    justify-content: flex-end;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+}
+
+.tag {
+    border-radius: 4px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+}
+
+.tag.is-admin {
+    background-color: #00d1b2;
+    color: #fff;
+}
+
+.tag.is-novice {
+    background-color: #ffdd57;
+    color: rgba(0, 0, 0, .7);
+}
+
+.tag.is-banned {
+    background-color: #ff3860;
+    color: #fff;
+}
+
+.ban-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ban-form .select {
+    width: 100px;
+}
+
+.ban-form input[type="number"] {
+    width: 80px;
+    margin-right: 0.5rem;
+}

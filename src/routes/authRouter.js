@@ -3,9 +3,9 @@ const router = express.Router();
 const db = require("../services/db");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
-const path = require('path');
-const yaml = require('js-yaml');
-const fs = require('fs');
+const path = require("path");
+const yaml = require("js-yaml");
+const fs = require("fs");
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
@@ -50,35 +50,37 @@ router.post("/register", (req, res) => {
 // Ruta de inicio de sesión (GET)
 router.get("/login", (req, res) => {
   try {
-    const captchaPath = path.join(__dirname, '..', 'config', 'captcha.yml');
-    const captchaData = yaml.load(fs.readFileSync(captchaPath, 'utf8'));
+    const captchaPath = path.join(__dirname, "..", "config", "captcha.yml");
+    const captchaData = yaml.load(fs.readFileSync(captchaPath, "utf8"));
     const words = captchaData.words;
     const randomIndex = Math.floor(Math.random() * words.length);
     const captchaPhrase = words[randomIndex];
-
     req.session.captchaPhrase = captchaPhrase;
 
     res.render("login", { captchaPhrase: captchaPhrase });
   } catch (e) {
     console.log(e);
-    res.status(500).send('Error al cargar el captcha.');
+    res.status(500).send("Error al cargar el captcha.");
   }
 });
 
 // Ruta de inicio de sesión (POST)
 router.post("/login", (req, res) => {
   const { username, password, captchaInput } = req.body;
-  const sql = `SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?`;
+  const sql =
+    "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
+
   if (captchaInput !== req.session.captchaPhrase) {
     return res.redirect("/login");
   }
-  
+
   db.query(sql, [username], (err, results) => {
     if (err) {
       console.error("Error al iniciar sesión:", err.message);
       res.redirect("/login");
       return;
     }
+
     if (results.length > 0) {
       const { password: hashedPassword, banned, ban_expiration } = results[0];
 
@@ -248,6 +250,33 @@ router.post("/profile/update-info", (req, res) => {
       });
     }
   );
+});
+
+// Ruta para quitar el rol de administrador a un usuario
+router.post("/admin/demote-user", (req, res) => {
+  // Verificar si el usuario actual es administrador
+  if (req.session.isAdmin) {
+    const userId = req.body.userId;
+    // Actualizar el usuario para quitarle el rol de administrador
+    db.query(
+      "UPDATE usuarios SET is_admin = ? WHERE id = ?",
+      [false, userId],
+      (err, result) => {
+        if (err) {
+          console.error(
+            "Error al quitar el rol de administrador al usuario:",
+            err
+          );
+          return res.redirect("/admin");
+        }
+
+        res.redirect("/admin");
+      }
+    );
+  } else {
+    // Si el usuario no es administrador, redirigir al dashboard
+    res.redirect("/dashboard");
+  }
 });
 
 module.exports = router;
