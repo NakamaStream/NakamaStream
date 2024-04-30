@@ -1,6 +1,71 @@
+.waifu {
+    mask-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 70%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+/* Estilos para las pestañas */
+.tabs ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tabs ul li {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #ff6b6b;
+    font-weight: bold;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.tabs ul li.is-active {
+    border-bottom-color: #ff6b6b;
+}
+
+.tab-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-panel.is-active {
+    display: block;
+    opacity: 1;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #ff6b6b, #E38181);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #ff6b6b, #E38181);
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
 /* index.css */
 .featured-anime-card {
-    background-color: #ffeded; /* Cambio de color de fondo */
+    background-color: #ffeded;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
