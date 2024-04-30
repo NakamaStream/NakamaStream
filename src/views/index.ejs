@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Platform</title>
+    <title>NakamaStream - Welcome</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/src/public/css/index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>|
 </head>
+
 <body>
-    <section class="hero is-fullheight" style="background-image: url('/path/to/your/background/image.jpg'); background-size: cover; background-position: center;">
-        <div class="hero-head">
-            <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <a class="navbar-item" href="#">
-                            <img src="/src/others/NakamStream-logo.png" alt="NakamaStream">
-                        </a>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream">
+            </a>
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="#">Home</a>
+                <a class="navbar-item" href="#">About</a>
+                <a class="navbar-item" href="#">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-vcentered">
+                    <div class="column is-one-third">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="waifu">
+                    </div>
+                    <div class="column">
+                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Welcome to NakamaStream</h1>
+                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #ff6b6b;">Descripcion breve xD.</p>
+                        <p class="control" style="display: flex; align-items: center;">
+                            <a href="/login" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                                Iniciar Sesión
+                            </a>
+                            <a href="/register" class="button is-light ml-3">¿No estás registrado?</a>
+                        </p>
                     </div>
                 </div>
-            </nav>
-        </div>
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Welcome to NakamaStream</h1>
-                <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #ff6b6b;">Descripcion breve xD.</p>
-                <p class="control">
-                    <a href="/login" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                        Iniciar Sesíon
-                    </a>
-                </p>
-                <p class="mt-5">
-                    <a href="/register" class="button is-light">¿No estás registrado?</a>
-                </p>
             </div>
         </div>
     </section>
@@ -62,11 +79,37 @@
         </div>
     </section>
 
+    <section class="section has-background-white-ter">
+        <div class="container">
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Frequently Asked Questions</h2>
+            <div class="tabs">
+                <ul>
+                    <li class="tab-item is-active" data-tab="tab1">What is NakamaStream?</li>
+                    <li class="tab-item" data-tab="tab2">How much does it cost?</li>
+                    <li class="tab-item" data-tab="tab3">Can I watch on my TV?</li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="tab1" class="tab-panel is-active">
+                    <p>NakamaStream is an online platform that provides a wide selection of anime series and movies for streaming.</p>
+                </div>
+                <div id="tab2" class="tab-panel">
+                    <p>NakamaStream offers a free basic plan with limited features, as well as a premium subscription plan with additional benefits.</p>
+                </div>
+                <div id="tab3" class="tab-panel">
+                    <p>Yes, NakamaStream is compatible with a variety of streaming devices, including smart TVs, gaming consoles, and mobile devices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="content">
             <p>NakamaStream by The Nakama Team.</p>
         </div>
     </footer>
 
+    <script src="/src/public/js/tabs.js"></script>
 </body>
+
 </html>
