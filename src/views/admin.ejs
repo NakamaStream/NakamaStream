@@ -15,10 +15,10 @@
         <% if (req.session.isAdmin) { %>
             <div class="admin-header">
                 <div class="admin-name">
-                    Welcome, <%= req.session.username %>
+                    Bienvenido, <%= req.session.username %> ❤️
                 </div>
                 <div class="admin-actions">
-                    <a href="/dashboard" class="button is-primary">Go to Dashboard</a>
+                    <a href="/dashboard" class="button is-primary">Ir a Dashboard</a>
                 </div>
             </div>
             <h1 class="title">Admin Panel</h1>
@@ -28,10 +28,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Username</th>
+                                <th>Usuario</th>
                                 <th>Email</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,18 +44,18 @@
                                         <% if (user.isAdmin) { %>
                                             <span class="tag is-admin">Admin</span>
                                         <% } else { %>
-                                            <span class="tag is-novice">Novice</span>
+                                            <span class="tag is-novice">Novato</span>
                                         <% } %>
                                         <% if (user.isBanned) { %>
-                                            <span class="tag is-banned">Banned</span>
+                                            <span class="tag is-banned">Baneado</span>
                                         <% } %>
                                     </td>
                                     <td>
                                         <div class="field is-grouped">
                                             <div class="control">
-                                                <form action="/admin/delete-user" method="POST">
+                                                <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')">
                                                     <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-danger is-small">Delete</button>
+                                                    <button class="button is-danger is-small">Eliminar</button>
                                                 </form>
                                             </div>
                                             <div class="control">
@@ -63,8 +63,8 @@
                                                     <input type="hidden" name="userId" value="<%= user.id %>">
                                                     <div class="select is-small">
                                                         <select name="banType">
-                                                            <option value="temporary">Temporary</option>
-                                                            <option value="permanent">Permanent</option>
+                                                            <option value="temporary">Temporal</option>
+                                                            <option value="permanent">Permanente</option>
                                                         </select>
                                                     </div>
                                                     <input type="number" name="banDuration" placeholder="Days" required>
@@ -80,17 +80,17 @@
                                             <div class="control">
                                                 <form action="/admin/promote-user" method="POST">
                                                     <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-primary is-small">Promote</button>
+                                                    <button class="button is-primary is-small">Promover</button>
                                                 </form>
                                             </div>
                                             <div class="control">
                                                 <form action="/admin/demote-user" method="POST">
                                                     <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-warning is-small">Demote</button>
+                                                    <button class="button is-warning is-small">Degradar</button>
                                                 </form>
                                             </div>
                                             <div class="control">
-                                                <button class="button is-primary is-small" onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')">Update</button>
+                                                <button class="button is-primary is-small" onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')">Actualizar</button>
                                             </div>
                                         </div>
                                     </td>
@@ -100,17 +100,17 @@
                     </table>
                 </div>
             <% } else { %>
-                <p>No users found.</p>
+                <p>No se han encontrado usuarios.</p>
             <% } %>
 
-            <h2 class="title">Add Admin User</h2>
-            <button class="button is-primary" onclick="showAddAdminModal()">Add Admin</button>
+            <h2 class="title">Añadir usuario administrador</h2>
+            <button class="button is-primary" onclick="showAddAdminModal()">Añadir Admin</button>
 
             <div id="addAdminModal" class="modal">
                 <div class="modal-content">
                     <form action="/admin/add-admin" method="POST">
                         <div class="field">
-                            <label class="label">Username</label>
+                            <label class="label">Usuario</label>
                             <div class="control">
                                 <input class="input" type="text" name="username" placeholder="Username" required>
                             </div>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label">Password</label>
+                            <label class="label">Contraseña</label>
                             <div class="control">
                                 <input class="input" type="password" name="password" placeholder="Password" required>
                             </div>
@@ -142,7 +142,7 @@
                     <form action="/admin/update-user" method="POST">
                         <input type="hidden" id="updateUserId" name="userId">
                         <div class="field">
-                            <label class="label">Username</label>
+                            <label class="label">Usuario</label>
                             <div class="control">
                                 <input class="input" id="updateUsername" type="text" name="username" placeholder="Username" required>
                             </div>
@@ -154,7 +154,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label">Password</label>
+                            <label class="label">Contraseña</label>
                             <div class="control">
                                 <input class="input" type="password" name="password" placeholder="Password" required>
                             </div>
@@ -169,10 +169,15 @@
                 </div>
             </div>
         <% } else { %>
-            <p>You don't have admin permissions.</p>
+            <p>No tienes permisos de administrador.</p>
         <% } %>
     </div>
 
+    <script>
+        function confirmDelete(username) {
+            return confirm("¿Estás seguro que quieres banear a '" + username + "'? Esto no se puede revertir.");
+        }
+    </script>
     <script src="/src/public/js/addAdminModal.js"></script>
 </body>
 </html>
