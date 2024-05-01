@@ -14,22 +14,25 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="#">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream">
+                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
             </a>
-            <div class="navbar-burger burger" data-target="navMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
         <div id="navMenu" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="#">Home</a>
-                <a class="navbar-item" href="#">About</a>
-                <a class="navbar-item" href="#">Contact</a>
+                <a class="navbar-item" href="#">Discord</a>
+                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
+                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
+            </div>
+            <div class="navbar-end" style="margin-right: 2rem;">
+                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
             </div>
         </div>
-    </nav>
+    </nav>      
 
     <section class="hero is-fullheight">
         <div class="hero-body">
@@ -39,8 +42,11 @@
                         <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="waifu">
                     </div>
                     <div class="column">
-                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Welcome to NakamaStream</h1>
-                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #ff6b6b;">Descripcion breve xD.</p>
+                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Bienvenido a NakamaStream</h1>
+                        <br>
+                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">¡Bienvenido a nuestra plataforma de anime, donde disfrutarás de contenido 100% gratuito y sin anuncios! Queremos brindarte la mejor experiencia,
+                             por eso también estamos disponibles en dispositivos móviles. ¡Explora y disfruta de tus animes favoritas!</p>
+                             <br>
                         <p class="control" style="display: flex; align-items: center;">
                             <a href="/login" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
                                 Iniciar Sesión
@@ -55,61 +61,62 @@
 
     <section class="section has-background-light">
         <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Featured Anime</h2>
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Características</h2>
             <div class="columns is-multiline">
                 <div class="column is-4">
                     <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">Wide Selection</h3>
-                        <p class="featured-anime-description">Explore a vast library of anime series and movies across different genres.</p>
+                        <h3 class="featured-anime-title">Amplia Selección</h3>
+                        <p class="featured-anime-description">Explora una vasta biblioteca de series y películas de anime en diferentes géneros.</p>
                     </div>
                 </div>
                 <div class="column is-4">
                     <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">High Quality</h3>
-                        <p class="featured-anime-description">Enjoy high-definition streaming with premium audio quality.</p>
+                        <h3 class="featured-anime-title">Alta Calidad</h3>
+                        <p class="featured-anime-description">Disfruta de streaming en alta definición con calidad de audio premium.</p>
                     </div>
                 </div>
                 <div class="column is-4">
                     <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">Personalized Experience</h3>
-                        <p class="featured-anime-description">Get personalized recommendations based on your watch history.</p>
+                        <h3 class="featured-anime-title">Experiencia Personalizada</h3>
+                        <p class="featured-anime-description">Recibe recomendaciones personalizadas basadas en tu historial de visualización.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section>    
 
     <section class="section has-background-white-ter">
         <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Frequently Asked Questions</h2>
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Preguntas Frecuentes</h2>
             <div class="tabs">
                 <ul>
-                    <li class="tab-item is-active" data-tab="tab1">What is NakamaStream?</li>
-                    <li class="tab-item" data-tab="tab2">How much does it cost?</li>
-                    <li class="tab-item" data-tab="tab3">Can I watch on my TV?</li>
+                    <li class="tab-item is-active" data-tab="tab1">¿Qué es NakamaStream?</li>
+                    <li class="tab-item" data-tab="tab2">¿Cuánto cuesta?</li>
+                    <li class="tab-item" data-tab="tab3">¿Puedo verlo en mi televisor?</li>
                 </ul>
             </div>
             <div class="tab-content">
                 <div id="tab1" class="tab-panel is-active">
-                    <p>NakamaStream is an online platform that provides a wide selection of anime series and movies for streaming.</p>
+                    <p>NakamaStream es una plataforma en línea que ofrece una amplia selección de series y películas de anime para disfrutar en línea.</p>
                 </div>
                 <div id="tab2" class="tab-panel">
-                    <p>NakamaStream offers a free basic plan with limited features, as well as a premium subscription plan with additional benefits.</p>
+                    <p>NakamaStream es completamente gratuito, por lo que no necesitas realizar ningún pago. Únicamente es necesario que crees una cuenta, y eso es todo.</p>
                 </div>
                 <div id="tab3" class="tab-panel">
-                    <p>Yes, NakamaStream is compatible with a variety of streaming devices, including smart TVs, gaming consoles, and mobile devices.</p>
+                    <p>Sí, NakamaStream ofrece una aplicación para dispositivos Android. Si tu televisión cuenta con Android 8 o superior, puedes disfrutar de nuestra experiencia de forma gratuita.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </section>    
 
     <footer class="footer">
         <div class="content">
-            <p>NakamaStream by The Nakama Team.</p>
+            <p id="nakamaFooter">NakamaStream by The Nakama Team. © Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script src="/src/public/js/tabs.js"></script>
+    <script src="/src/public/js/navMobile.js"></script>
 </body>
 
 </html>
