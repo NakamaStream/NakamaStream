@@ -23,80 +23,82 @@
             </div>
             <h1 class="title">Admin Panel</h1>
             <% if (users) { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach(user => { %>
-                        <tr>
-                            <td><%= user.id %></td>
-                            <td><%= user.username %></td>
-                            <td><%= user.email %></td>
-                            <td>
-                                <% if (user.isAdmin) { %>
-                                    <span class="tag is-admin">Admin</span>
-                                <% } else { %>
-                                    <span class="tag is-novice">Novice</span>
-                                <% } %>
-                                <% if (user.isBanned) { %>
-                                    <span class="tag is-banned">Banned</span>
-                                <% } %>
-                            </td>
-                            <td>
-                                <div class="field is-grouped">
-                                    <div class="control">
-                                        <form action="/admin/delete-user" method="POST">
-                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                            <button class="button is-danger is-small">Delete</button>
-                                        </form>
-                                    </div>
-                                    <div class="control">
-                                        <form action="/admin/ban-user" method="POST" class="ban-form">
-                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                            <div class="select is-small">
-                                                <select name="banType">
-                                                    <option value="temporary">Temporary</option>
-                                                    <option value="permanent">Permanent</option>
-                                                </select>
+                <div class="table-container">
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user => { %>
+                                <tr>
+                                    <td><%= user.id %></td>
+                                    <td><%= user.username %></td>
+                                    <td><%= user.email %></td>
+                                    <td>
+                                        <% if (user.isAdmin) { %>
+                                            <span class="tag is-admin">Admin</span>
+                                        <% } else { %>
+                                            <span class="tag is-novice">Novice</span>
+                                        <% } %>
+                                        <% if (user.isBanned) { %>
+                                            <span class="tag is-banned">Banned</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <div class="field is-grouped">
+                                            <div class="control">
+                                                <form action="/admin/delete-user" method="POST">
+                                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                                    <button class="button is-danger is-small">Delete</button>
+                                                </form>
                                             </div>
-                                            <input type="number" name="banDuration" placeholder="Days" required>
-                                            <button class="button is-warning is-small">Ban</button>
-                                        </form>
-                                    </div>
-                                    <div class="control">
-                                        <form action="/admin/unban-user" method="POST">
-                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                            <button class="button is-success is-small">Unban</button>
-                                        </form>
-                                    </div>
-                                    <div class="control">
-                                        <form action="/admin/promote-user" method="POST">
-                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                            <button class="button is-primary is-small">Promote</button>
-                                        </form>
-                                    </div>
-                                    <div class="control">
-                                        <form action="/admin/demote-user" method="POST">
-                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                            <button class="button is-warning is-small">Demote</button>
-                                        </form>
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-primary is-small" onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')">Update</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
+                                            <div class="control">
+                                                <form action="/admin/ban-user" method="POST" class="ban-form">
+                                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                                    <div class="select is-small">
+                                                        <select name="banType">
+                                                            <option value="temporary">Temporary</option>
+                                                            <option value="permanent">Permanent</option>
+                                                        </select>
+                                                    </div>
+                                                    <input type="number" name="banDuration" placeholder="Days" required>
+                                                    <button class="button is-warning is-small">Ban</button>
+                                                </form>
+                                            </div>
+                                            <div class="control">
+                                                <form action="/admin/unban-user" method="POST">
+                                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                                    <button class="button is-success is-small">Unban</button>
+                                                </form>
+                                            </div>
+                                            <div class="control">
+                                                <form action="/admin/promote-user" method="POST">
+                                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                                    <button class="button is-primary is-small">Promote</button>
+                                                </form>
+                                            </div>
+                                            <div class="control">
+                                                <form action="/admin/demote-user" method="POST">
+                                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                                    <button class="button is-warning is-small">Demote</button>
+                                                </form>
+                                            </div>
+                                            <div class="control">
+                                                <button class="button is-primary is-small" onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')">Update</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
             <% } else { %>
                 <p>No users found.</p>
             <% } %>
