@@ -10,7 +10,7 @@ Please stay tuned for future updates and announcements regarding the progress of
 
 Sincerely,
 
-# preview
+# Preview
 ![image](https://github.com/NakamaStream/NakamaStream/assets/149289426/01bf7275-2950-4745-92e4-a39f1b3390fb)
 
 
