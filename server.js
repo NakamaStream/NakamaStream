@@ -2,13 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
-const moment = require("moment");
 
 const indexRouter = require('./src/routes/indexRouter');
 const authRouter = require('./src/routes/authRouter');
 const dashboardRouter = require('./src/routes/dashboardRouter');
 const adminRouter = require('./src/routes/adminRouter');
-const banRouter = require('./src/routes/banRauter');
+const banRouter = require('./src/routes/banRouter');
 
 const db = require('./src/services/db');
 
