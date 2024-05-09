@@ -123,11 +123,54 @@
 /* Footer */
 .footer {
     background-color: #ff6b6b;
-    color: white;
-    padding: 3rem 1.5rem;
-    text-align: center;
+    color: #fff;
+    padding: 20px 0;
 }
 
+.container__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer__logo img {
+    width: 60px;
+    margin-left: 20px;
+}
+
+.footer__links ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer__links ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer__links ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer__legal {
+    text-align: left;
+    margin-top: 0;
+}
+
+.footer__legal p {
+    font-size: 13px;
+}
+
+.footer__version {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer__version p {
+    font-size: 12px;
+}
 
 .navbar {
     animation: slideDown 0.5s ease;
