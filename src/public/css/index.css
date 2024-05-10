@@ -131,22 +131,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .footer__logo img {
     width: 60px;
-    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .footer__links ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    text-align: center; /* Centrar los enlaces */
 }
 
 .footer__links ul li {
     display: inline-block;
     margin-right: 20px;
+}
+
+.footer__links ul li:last-child {
+    margin-right: 0;
 }
 
 .footer__links ul li a {
@@ -155,21 +164,19 @@
 }
 
 .footer__legal {
-    text-align: left;
-    margin-top: 0;
-}
-
-.footer__legal p {
-    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
 }
 
 .footer__version {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
+    font-size: 12px;
 }
 
 .footer__version p {
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .navbar {
