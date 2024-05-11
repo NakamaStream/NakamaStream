@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <link rel="stylesheet" href="/src/public/css/register.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="/src/public/js/SecurePassword.js"></script>
 </head>
 <body>
   <div class="login-form">
     <h1 class="login-form-title">Registrarse</h1>
-    <form action="/register" method="post">
+    <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()">
       <div class="field">
         <div class="control has-icons-left">
           <input type="text" class="input" placeholder="Nombre de usuario" id="username" name="username" required>
@@ -30,11 +31,13 @@
       </div>
       <div class="field">
         <div class="control has-icons-left">
-          <input type="password" class="input" placeholder="Contraseña" id="password" name="password" required>
+          <input type="password" class="input" placeholder="Contraseña" id="password" name="password" required oninput="updateProgressBar()">
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
         </div>
+        <progress id="strengthBar" class="progress is-small" max="100" value="0"></progress>
+        <p id="passwordStrength" class="help"></p>
       </div>
       <div class="field">
         <div class="control">
@@ -42,7 +45,7 @@
         </div>
       </div>
       <div class="has-text-centered">
-        <a href="/login" class="forgot-password-link">¿ya tienes una cuenta? Logeate aqui</a>
+        <a href="/login" class="forgot-password-link">¿Ya tienes una cuenta? Logeate aquí</a>
         <br>
         <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
       </div>
