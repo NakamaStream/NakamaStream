@@ -70,16 +70,21 @@ router.post("/login", (req, res) => {
   const sql =
     "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
 
-  if (captchaInput !== req.session.captchaPhrase) {
-    return res.redirect("/login");
-  }
-
-  db.query(sql, [username], (err, results) => {
-    if (err) {
-      console.error("Error al iniciar sesión:", err.message);
-      res.redirect("/login");
-      return;
+    if (captchaInput !== req.session.captchaPhrase) {
+      return res.render("login", {
+        errorMessage: "Captcha incorrecto.",
+        captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+      });
     }
+
+    db.query(sql, [username], (err, results) => {
+      if (err) {
+        console.error("Error al iniciar sesión:", err.message);
+        return res.render("login", {
+          errorMessage: "Error al iniciar sesión. Inténtalo de nuevo.",
+          captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+        });
+      }
 
     if (results.length > 0) {
       const { password: hashedPassword, banned, ban_expiration } = results[0];
@@ -88,7 +93,10 @@ router.post("/login", (req, res) => {
       bcrypt.compare(password, hashedPassword, (err, match) => {
         if (err) {
           console.error("Error al verificar la contraseña:", err);
-          return res.redirect("/login");
+          return res.render("login", {
+            errorMessage: "Error al verificar la contraseña. Inténtalo de nuevo.",
+            captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+          });
         }
 
         if (match) {
@@ -122,15 +130,17 @@ router.post("/login", (req, res) => {
           req.session.isAdmin = results[0].is_admin;
           res.redirect("/dashboard");
         } else {
-          res.send(
-            'Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>'
-          );
+          res.render("login", {
+            errorMessage: "Credenciales incorrectas.",
+            captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+          });
         }
       });
     } else {
-      res.send(
-        'Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>'
-      );
+      res.render("login", {
+        errorMessage: "Credenciales incorrectas.",
+        captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+      });
     }
   });
 });
