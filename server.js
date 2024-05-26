@@ -9,6 +9,7 @@ const authRouter = require('./src/routes/authRouter');
 const dashboardRouter = require('./src/routes/dashboardRouter');
 const adminRouter = require('./src/routes/adminRouter');
 const animeRouter = require('./src/routes/animeRouter');
+const healthCheckRouter = require('./src/routes/healthCheckRouter');
 
 const db = require('./src/services/db');
 
@@ -73,6 +74,7 @@ app.use('/', animeRouter);
 app.use('/', authRouter);
 app.use('/', dashboardRouter);
 app.use('/', adminRouter);
+app.use('/', healthCheckRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
