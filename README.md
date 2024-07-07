@@ -1,20 +1,20 @@
-# NakamaStream Project - In Development
+# Proyecto NakamaStream - En Desarrollo
 
-Dear Users,
+Queridos Usuarios,
 
-We would like to inform you that the NakamaStream project is currently in development. Our team is working diligently to complete the project and bring it to you as soon as possible.
+Nos gustaría informarles que el proyecto NakamaStream está actualmente en desarrollo. Nuestro equipo está trabajando diligentemente para completar el proyecto y llevarlo a ustedes lo antes posible.
 
-We are excited about the features we are developing and are confident that NakamaStream will be an exceptional platform for enjoying quality content.
+Estamos entusiasmados con las características que estamos desarrollando y confiamos en que NakamaStream será una plataforma excepcional para disfrutar de contenido de calidad.
 
-Please stay tuned for future updates and announcements regarding the progress of the project. We appreciate your interest in NakamaStream and your patience as we work on its development.
+Por favor, manténganse atentos a futuras actualizaciones y anuncios sobre el progreso del proyecto. Apreciamos su interés en NakamaStream y su paciencia mientras trabajamos en su desarrollo.
 
-Sincerely,
+Atentamente,
 
-# Preview
+# Vista Previa
 ![image](https://github.com/NakamaStream/NakamaStream/assets/149289426/01bf7275-2950-4745-92e4-a39f1b3390fb)
 
-# Sponsor
+# Patrocinador
 
 ![image](https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true)
 
-### The NakamaStream Team
+### El Equipo de NakamaStream
