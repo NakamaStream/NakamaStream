@@ -5,16 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Baneado</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/src/public/css/banned.css">
 </head>
 <body>
     <div class="container">
         <div class="box">
-            <h1 class="title">¡Has sido baneado!</h1>
+            <h1 class="title"><i class="fas fa-ban"></i> ¡Has sido baneado!</h1>
+            <p>Actualmente no puedes iniciar sesión ni ver animes en nuestra plataforma.</p>
             <p><%= message %></p>
             <% if (banExpirationFormatted) { %>
                 <p>Tu ban expira el: <%= banExpirationFormatted %></p>
             <% } %>
+            <h2 class="subtitle">Razones más comunes de baneo:</h2>
+            <ul class="reasons">
+                <li>Uso de lenguaje inapropiado o abusivo</li>
+                <li>Compartir contenido ilegal o inapropiado</li>
+                <li>Intentos de hackeo o uso indebido de la plataforma</li>
+                <li>Incumplimiento de los términos y condiciones</li>
+            </ul>
+            <div class="button-container">
+                <a href="/" class="button is-danger is-medium">Regresar al inicio</a>
+            </div>
         </div>
     </div>
 </body>
