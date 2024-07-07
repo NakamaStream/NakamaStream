@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= anime.name %></title>
+</head>
+<body>
+  <h1><%= anime.name %></h1>
+  <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>">
+  <p><%= anime.description %></p>
+  <h2>Episodes</h2>
+  <ul>
+    <% episodes.forEach(episode => { %>
+      <li><%= episode %></li>
+    <% }); %>
+  </ul>
+  <a href="/anime">Back to Anime List</a>
+</body>
+</html>
