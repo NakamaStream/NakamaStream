@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Anime</title>
+</head>
+<body>
+  <h1>Upload a new Anime</h1>
+  <form action="/anime/upload" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="imageUrl">Image URL:</label>
+    <input type="text" id="imageUrl" name="imageUrl" required>
+    <br>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+    <br>
+    <label for="episodes">Episodes (comma-separated):</label>
+    <input type="text" id="episodes" name="episodes" required>
+    <br>
+    <button type="submit">Upload</button>
+  </form>
+  <a href="/anime">Back to Anime List</a>
+</body>
+</html>
