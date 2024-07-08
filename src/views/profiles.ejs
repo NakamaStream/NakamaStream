@@ -22,6 +22,11 @@
     <div class="box">
       <h1 class="title">Perfil de <%= username %></h1>
       <div class="content">
+        <!-- Mostrar imagen de Gravatar -->
+        <figure class="image is-128x128">
+          <img class="is-rounded" src="<%= gravatarUrl %>" alt="User's Gravatar">
+        </figure>
+
         <p><strong>Nombre de usuario:</strong> <%= username %></p>
         <p><strong>Correo electrónico:</strong> <%= email %></p>
         <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
