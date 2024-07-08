@@ -6,6 +6,7 @@ const moment = require("moment");
 const path = require("path");
 const yaml = require("js-yaml");
 const fs = require("fs");
+const crypto = require('crypto');
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
@@ -151,6 +152,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+
 // Ruta del perfil de usuario
 router.get("/profile", (req, res) => {
   if (!req.session.loggedin) {
@@ -159,9 +161,11 @@ router.get("/profile", (req, res) => {
 
   const { username, email, createdAt, timeCreated, isAdmin } = req.session;
   const createdAtFormatted = moment(createdAt).format("DD/MM/YYYY HH:mm:ss");
-  const timeCreatedFormatted = moment
-    .utc(timeCreated * 1000)
-    .format("HH:mm:ss");
+  const timeCreatedFormatted = moment.utc(timeCreated * 1000).format("HH:mm:ss");
+
+  // Obtener el hash MD5 del correo electrónico para Gravatar
+  const emailHash = crypto.createHash('md5').update(email.trim().toLowerCase()).digest('hex');
+  const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}`;
 
   // Verificar el estado de baneado del usuario
   db.query(
@@ -179,9 +183,7 @@ router.get("/profile", (req, res) => {
         const { banned: isBanned, ban_expiration } = results[0];
         banned = isBanned;
         if (isBanned && ban_expiration > new Date()) {
-          banExpirationFormatted = moment(ban_expiration).format(
-            "DD/MM/YYYY HH:mm:ss"
-          );
+          banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
         }
       }
 
@@ -193,6 +195,7 @@ router.get("/profile", (req, res) => {
         isAdmin,
         banned,
         banExpirationFormatted,
+        gravatarUrl
       });
     }
   );
@@ -228,9 +231,7 @@ router.post("/profile/update-info", (req, res) => {
         }
 
         if (!match) {
-          return res.render("profiles", {
-            error: "La contraseña actual es incorrecta.",
-          });
+          return res.render("profiles", { error: "La contraseña actual es incorrecta." });
         }
 
         // Encriptar la nueva contraseña
@@ -245,14 +246,12 @@ router.post("/profile/update-info", (req, res) => {
             [newUsername, email, hashedPassword, userId],
             (err, results) => {
               if (err) {
-                console.error(
-                  "Error al actualizar la información del usuario:",
-                  err
-                );
+                console.error("Error al actualizar la información del usuario:", err);
                 return res.redirect("/profile");
               }
 
               req.session.username = newUsername;
+              req.session.email = email; // Actualiza el email en la sesión también
               res.redirect("/profile");
             }
           );
