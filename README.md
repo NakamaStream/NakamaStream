@@ -8,13 +8,9 @@ Estamos entusiasmados con las características que estamos desarrollando y confi
 
 Por favor, manténganse atentos a futuras actualizaciones y anuncios sobre el progreso del proyecto. Apreciamos su interés en NakamaStream y su paciencia mientras trabajamos en su desarrollo.
 
-Atentamente,
-
 # Vista Previa
 ![image](https://github.com/NakamaStream/NakamaStream/assets/149289426/01bf7275-2950-4745-92e4-a39f1b3390fb)
 
 # Patrocinador
 
 ![image](https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true)
-
-### El Equipo de NakamaStream
