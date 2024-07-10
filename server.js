@@ -6,7 +6,6 @@ const moment = require("moment");
 
 const indexRouter = require("./src/routes/indexRouter");
 const authRouter = require("./src/routes/authRouter");
-const dashboardRouter = require("./src/routes/dashboardRouter");
 const adminRouter = require("./src/routes/adminRouter");
 const animeRouter = require("./src/routes/animeRouter");
 const healthCheckRouter = require("./src/routes/healthCheckRouter");
@@ -80,7 +79,6 @@ app.use((req, res, next) => {
 app.use("/", indexRouter);
 app.use("/", animeRouter);
 app.use("/", authRouter);
-app.use("/", dashboardRouter);
 app.use("/", adminRouter);
 app.use("/", healthCheckRouter);
 
