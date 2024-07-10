@@ -17,25 +17,33 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   const createdAt = new Date();
+  const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-  // Encriptar la contraseña
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
+  // Verificar si ya existen 3 o más cuentas desde la misma IP
+  const checkIpSql = "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
+  db.query(checkIpSql, [ipAddress], (err, results) => {
     if (err) {
-      console.error("Error al encriptar la contraseña:", err);
+      console.error("Error al verificar la IP:", err);
       return res.redirect("/register");
     }
 
-    const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin) VALUES (?, ?, ?, ?, ?)`;
-    db.query(
-      sql,
-      [username, email, hashedPassword, createdAt, false],
-      (err, result) => {
+    if (results[0].count >= 3) {
+      return res.render("register", { error: "Se ha excedido el límite de cuentas permitidas desde esta IP." });
+    }
+
+    // Encriptar la contraseña
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error("Error al encriptar la contraseña:", err);
+        return res.redirect("/register");
+      }
+
+      const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
+      db.query(sql, [username, email, hashedPassword, createdAt, false, ipAddress], (err, result) => {
         if (err) {
           console.error("Error al registrar el usuario:", err.message);
           if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
-            res.render("register", {
-              error: "Por favor, proporciona una contraseña.",
-            });
+            res.render("register", { error: "Por favor, proporciona una contraseña." });
           } else {
             res.redirect("/register");
           }
@@ -43,8 +51,8 @@ router.post("/register", (req, res) => {
         }
         console.log("Usuario registrado correctamente");
         res.redirect("/login");
-      }
-    );
+      });
+    });
   });
 });
 
@@ -68,24 +76,23 @@ router.get("/login", (req, res) => {
 // Ruta de inicio de sesión (POST)
 router.post("/login", (req, res) => {
   const { username, password, captchaInput } = req.body;
-  const sql =
-    "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
+  const sql = "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
 
-    if (captchaInput !== req.session.captchaPhrase) {
+  if (captchaInput !== req.session.captchaPhrase) {
+    return res.render("login", {
+      errorMessage: "Captcha incorrecto.",
+      captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+    });
+  }
+
+  db.query(sql, [username], (err, results) => {
+    if (err) {
+      console.error("Error al iniciar sesión:", err.message);
       return res.render("login", {
-        errorMessage: "Captcha incorrecto.",
+        errorMessage: "Error al iniciar sesión. Inténtalo de nuevo.",
         captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
       });
     }
-
-    db.query(sql, [username], (err, results) => {
-      if (err) {
-        console.error("Error al iniciar sesión:", err.message);
-        return res.render("login", {
-          errorMessage: "Error al iniciar sesión. Inténtalo de nuevo.",
-          captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
-        });
-      }
 
     if (results.length > 0) {
       const { password: hashedPassword, banned, ban_expiration } = results[0];
@@ -105,9 +112,7 @@ router.post("/login", (req, res) => {
           if (banned) {
             if (ban_expiration > new Date()) {
               // Usuario baneado temporalmente
-              const banExpirationFormatted = moment(ban_expiration).format(
-                "DD/MM/YYYY HH:mm:ss"
-              );
+              const banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
               return res.render("banned", {
                 message: "Has sido baneado temporalmente.",
                 banExpirationFormatted,
@@ -151,7 +156,6 @@ router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
-
 
 // Ruta del perfil de usuario
 router.get("/profile", (req, res) => {
@@ -272,10 +276,7 @@ router.post("/admin/demote-user", (req, res) => {
       [false, userId],
       (err, result) => {
         if (err) {
-          console.error(
-            "Error al quitar el rol de administrador al usuario:",
-            err
-          );
+          console.error("Error al quitar el rol de administrador al usuario:", err);
           return res.redirect("/admin");
         }
 
