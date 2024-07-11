@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream - Empleos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/src/public/css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">Inicio</a>
+                <a class="navbar-item" href="/discord">Discord</a>
+                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
+                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
+            </div>
+            <div class="navbar-end" style="margin-right: 2rem; margin-top: 1rem;">
+                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-vcentered">
+                    <div class="column is-two-thirds">
+                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Únete a NakamaStream</h1>
+                        <br>
+                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">
+                            En NakamaStream, estamos buscando personas apasionadas y talentosas para que se unan a nuestro equipo. Si amas el anime y quieres ser parte de una plataforma en crecimiento, ¡nos encantaría conocerte!
+                        </p>
+                        <br>
+                        <a href="#positions" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                            Ver Posiciones Abiertas
+                        </a>
+                    </div>
+                    <div class="column">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="waifu">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section has-background-light">
+        <div class="container">
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Nuestro Equipo Global</h2>
+            <div id="map" style="height: 500px;"></div>
+            
+            <div class="box">
+                <h3 class="subtitle is-size-4">Países y trabajadores</h3>
+                <ol id="country-list" class="is-size-5"></ol>
+            </div>
+        </div>
+    </section>         
+    
+    <section class="section has-background-light" id="positions">
+        <div class="container">
+            <h2 class="title is-size-2" style="color: #ff6b6b;">Posiciones Abiertas</h2>
+            <div class="columns is-multiline">
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="title is-size-4">Desarrollador Front-End</h3>
+                            <p class="subtitle is-size-5">Remoto</p>
+                            <p>Buscamos un desarrollador front-end con experiencia en ejs y Bulma para ayudar a mejorar nuestra plataforma.</p> <br>
+                            <a href="/jobs/frontend" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                                Más Información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="title is-size-4">Desarrollador Back-End</h3>
+                            <p class="subtitle is-size-5">Remoto</p>
+                            <p>Buscamos un desarrollador back-end con experiencia en Node express y mysql para construir y mantener nuestros servicios backend.</p> <br>
+                            <a href="/jobs/backend" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                                Más Información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="title is-size-4">Moderadores</h3>
+                            <p class="subtitle is-size-5">Remoto</p>
+                            <p>Estamos en la búsqueda de moderadores comprometidos para garantizar la seguridad de nuestra plataforma y mejorar la experiencia del usuario.</p> <br>
+                            <a href="/jobs/uxui" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                                Más Información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="title is-size-4">Administradores</h3>
+                            <p class="subtitle is-size-5">Remoto</p>
+                            <p>Estamos en búsqueda de individuos confiables y dinámicos para desempeñarse como administradores de la plataforma. Tu rol incluirá la publicación de nuevos animes y la moderación de contenidos.</p> <br>
+                            <a href="/jobs/marketing" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
+                                Más Información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notification is-warning" style="margin-top: 2em;">
+                <p><strong>Aviso:</strong> Queremos destacar que estos puestos son de carácter voluntario y no implican compensación económica. En el caso de recibir donaciones, estas serán distribuidas entre el equipo de manera equitativa.</p>
+            </div>
+        </div>
+    </section>
+    
+
+    <footer class="footer">
+        <div class="container__footer">
+            <div class="footer__logo">
+                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo">
+                <div class="footer__version">
+                    <p>NakamaStream version: 1.0</p>
+                </div>
+            </div>
+            <div class="footer__links">
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/tos">Términos de Uso</a></li>
+                    <li><a href="/privacy">Política de Privacidad</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__sponsor">
+            <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador">
+        </div>
+        <div class="footer__legal">
+            <p>© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
+        </div>
+    </footer>
+    <script src="/src/public/js/map-jobs.js"></script>
+    <script src="/src/public/js/navMobile.js"></script>
+</body>
+
+</html>
