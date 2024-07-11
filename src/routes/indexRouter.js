@@ -17,4 +17,8 @@ router.get('/privacy', (req, res) => {
   res.render('privacy');
 })
 
+router.get('/about/jobs', (req, res) => {
+  res.render('jobs');
+})
+
 module.exports = router;
