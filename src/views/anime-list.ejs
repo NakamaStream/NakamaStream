@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime List</title>
+    <title>Anime List - NakamaStream</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-md">
+    <nav class="bg-indigo-600 text-white shadow-md">
         <div class="container mx-auto px-6 py-3">
             <div class="flex justify-between items-center">
-                <a href="/anime" class="text-xl font-bold text-gray-800">Anime List</a>
+                <div class="flex items-center">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-8 w-8 mr-2">
+                    <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
+                </div>
                 <div>
-                    <% if (isAdmin) { %>
-                        <a href="/anime/upload" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                            Upload New Anime
-                        </a>
-                    <% } %>
-                    <a href="/logout" class="ml-4 text-gray-600 hover:text-gray-800">Logout</a>
+                    <a href="/anime/search" class="mr-4 hover:text-indigo-200">
+                        <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </a>
+                    <a href="/profile" class="mr-4 hover:text-indigo-200">Profile</a>
+                    <a href="/logout" class="hover:text-indigo-200">Logout</a>
                 </div>
             </div>
         </div>
@@ -26,11 +34,11 @@
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <% animes.forEach(anime => { %>
-                <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-48 object-cover">
+                <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-auto">
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2"><%= anime.name %></h2>
-                        <p class="text-gray-600 text-sm"><%= anime.episodeCount %> episode<%= anime.episodeCount !== 1 ? 's' : '' %></p>
+                        <h2 class="text-xl font-semibold mb-2 text-indigo-900"><%= anime.name %></h2>
+                        <p class="text-indigo-600 text-sm"><%= anime.episodeCount %> episodio<%= anime.episodeCount !== 1 ? 's' : '' %></p>
                     </div>
                 </a>
             <% }); %>
