@@ -6,33 +6,75 @@
     <title>Anime List - NakamaStream</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/public/css/anime-list.css">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-indigo-600 text-white shadow-md">
-        <div class="container mx-auto px-6 py-3">
+    <nav class="bg-gray-900 text-white shadow-md">
+        <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-8 w-8 mr-2">
-                    <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
+                    <a href="/anime" class="text-2xl font-bold text-orange-500">NakamaStream</a>
+                    <div class="relative group">
+                        <a href="#" class="nav-link ml-8 flex items-center" id="explore-menu-button">
+                            Explorar
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                        <div id="explore-menu" class="hidden absolute left-0 bg-gray-800 text-white rounded-md shadow-lg mt-2 py-2 w-96 z-20 grid grid-cols-3 gap-4">
+                            <div>
+                                <h3 class="px-4 py-2 font-bold">Destacados</h3>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Popular</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Novedades</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Alfabético</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Temporada de Simulcasts</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Calendario de lanzamientos</a>
+                            </div>
+                            <div>
+                                <h3 class="px-4 py-2 font-bold">Géneros</h3>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Acción</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Aventura</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Comedia</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Drama</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Fantasía</a>
+                            </div>
+                            <div>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Musical</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Romance</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Ciencia Ficción</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Shounen</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-700">Thriller</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="nav-link ml-8">Noticias</a>
                 </div>
-                <div>
-                    <a href="/anime/search" class="mr-4 hover:text-indigo-200">
-                        <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <div class="flex items-center">
+                    <a href="#" class="mr-4 nav-link search-icon">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
                     </a>
-                    <a href="/profile" class="mr-4 hover:text-indigo-200">Profile</a>
-                    <a href="/logout" class="hover:text-indigo-200">Logout</a>
+                    <a href="#" class="mr-4 nav-link">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v16l7-7 7 7V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"></path>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <img src="https://www.gravatar.com/avatar/placeholder?d=mp&s=40" alt="Profile Picture" class="h-8 w-8 rounded-full cursor-pointer" id="profile-menu-button">
+                        <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 anime-list">
             <% animes.forEach(anime => { %>
                 <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
                     <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-auto">
@@ -44,5 +86,6 @@
             <% }); %>
         </div>
     </div>
+    <script src="/src/public/js/anime-list.js"></script>
 </body>
 </html>

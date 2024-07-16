@@ -1,0 +1,71 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.nav-link {
+    @apply text-white hover:text-gray-400;
+}
+.relative.group:hover #explore-menu {
+    display: grid;
+}
+@keyframes search-animation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+.search-icon svg {
+    transition: transform 0.3s ease;
+}
+.search-icon.active svg {
+    animation: search-animation 0.5s ease;
+}
+.search-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.search-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+.search-container form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+}
+.search-container input {
+    padding-left: 2.5rem;
+}
+.search-container button {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+}
+#explore-menu {
+  display: grid;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#explore-menu.active {
+  opacity: 1;
+  transform: translateY(0);
+}
