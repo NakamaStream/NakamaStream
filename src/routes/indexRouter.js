@@ -21,4 +21,20 @@ router.get('/about/jobs', (req, res) => {
   res.render('jobs');
 })
 
+router.get('/jobs/frontend', (req, res) => {
+  res.redirect('https://github.com/orgs/NakamaStream/discussions/10');
+});
+
+router.get('/jobs/backend', (req, res) => {
+  res.redirect('https://github.com/orgs/NakamaStream/discussions/11');
+});
+
+router.get('/jobs/moderador', (req, res) => {
+  res.redirect('https://github.com/orgs/NakamaStream/discussions/12');
+});
+
+router.get('/jobs/administrador', (req, res) => {
+  res.redirect('https://github.com/orgs/NakamaStream/discussions/13');
+});
+
 module.exports = router;
