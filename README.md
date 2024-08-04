@@ -173,3 +173,36 @@ Este proyecto, denominado **NakamaStream**, ha sido desarrollado por un equipo p
 ### Responsabilidad
 
 El uso que se le dé a nuestro código es bajo tu propia responsabilidad. El equipo de NakamaStream no se hace responsable de cualquier uso indebido o ilegal del código fuente proporcionado. Cualquier consecuencia derivada del uso de este software es exclusiva responsabilidad del usuario.
+
+## Reporte de Bugs 🐞
+
+Si encuentras un bug o problema en el software, por favor, ábrelo como un issue en el repositorio de GitHub. Puedes hacerlo siguiendo estos pasos:
+
+1. Ve al repositorio de NakamaStream en GitHub.
+2. Haz clic en la pestaña "Issues".
+3. Haz clic en el botón "New issue".
+4. Proporciona un título claro y una descripción detallada del bug.
+5. Incluye pasos para reproducir el bug, si es posible.
+6. Adjunta cualquier captura de pantalla o archivos relevantes que puedan ayudar a entender el problema.
+
+Apreciamos tu colaboración para mejorar NakamaStream.
+
+## Contactos
+
+¿Tienes preguntas, sugerencias o simplemente quieres saludar? Escríbanos a <nakamastreamhelp@gmail.com>. También puedes pasar el rato con nosotros en Discord.
+
+- Visita nuestra comunidad de discord: [Link](https://discord.gg/Rdz4yQneMK)
+
+- Visita nuestro canal oficial de youtube: [Canal](https://www.youtube.com/channel/UCO6bVuBAwur3V13v1D2Uj6A)
+
+## contributors
+
+<img src="https://contrib.rocks/image?repo=NakamaStream/NakamaStream">
+
+## Star History 📈
+
+[![Stargazers over time](https://starchart.cc/NakamaStream/NakamaStream.svg?variant=adaptive)](https://starchart.cc/NakamaStream/NakamaStream)
+
+## sponsor
+
+![image](https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true)
