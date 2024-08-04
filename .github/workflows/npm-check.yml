@@ -25,6 +25,3 @@ jobs:
 
       - name: Install npm-check-updates
         run: npm install -g npm-check-updates
-
-      - name: Check for updates
-        run: ncu
