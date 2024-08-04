@@ -1,84 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NakamaStream - Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/src/public/css/profile.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - NakamaStream</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .dark-mode {
+            background-color: #1a202c;
+            color: #fff;
+        }
+        .dark-mode .box {
+            background-color: #2d3748;
+        }
+    </style>
 </head>
-<body>
-  <div class="toggle-mode">
-    <i class="fas fa-moon"></i>
-    <span>Modo oscuro</span>
-  </div>
+<body class="bg-gray-100">
+    <nav class="bg-indigo-600 text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-8 w-8 mr-2">
+                    <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
+                </div>
+                <div class="flex items-center">
+                    <img src="<%= profileImageUrl %>" alt="Profile" class="h-8 w-8 rounded-full mr-2">
+                    <a href="/search" class="mr-4 hover:text-indigo-200">
+                        <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </a>
+                    <button id="darkModeToggle" class="mr-4 hover:text-indigo-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <a href="/logout" class="hover:text-indigo-200">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-  <% if (banned) { %>
-    <script>
-      window.location.href = "/check-ban";
-    </script>
-  <% } else { %>
-    <div class="box">
-      <h1 class="title">Perfil de <%= username %></h1>
-      <div class="content">
-        <!-- Mostrar imagen de Gravatar -->
-        <figure class="image is-128x128">
-          <img class="is-rounded" src="<%= gravatarUrl %>" alt="User's Gravatar">
-        </figure>
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="bg-cover bg-center h-64" style="background-image: url('<%= bannerImageUrl %>');">
+            </div>
+            <div class="px-4 py-4">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 mr-4">
+                        <img class="rounded-full border-2 border-white" src="<%= profileImageUrl %>" alt="Profile picture">
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800"><%= username %></h1>
+                        <p class="text-gray-600"><%= email %></p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Miembro desde: <%= createdAtFormatted %></p>
+                <p class="text-sm text-gray-600">Tiempo en la comunidad: <%= timeCreatedFormatted %></p>
+                <% if (isAdmin) { %>
+                    <p class="mt-2 inline-block bg-red-500 text-white px-2 py-1 rounded text-xs">Admin</p>
+                <% } else { %>
+                    <p class="mt-2 inline-block bg-blue-500 text-white px-2 py-1 rounded text-xs">Usuario</p>
+                <% } %>
+            </div>
+        </div>        
 
-        <p><strong>Nombre de usuario:</strong> <%= username %></p>
-        <p><strong>Correo electrónico:</strong> <%= email %></p>
-        <p><strong>Fecha de registro:</strong> <%= createdAtFormatted %></p>
-        <p><strong>Tiempo Creada:</strong> <%= timeCreatedFormatted %></p>
-        <% if (isAdmin) { %>
-          <p><strong>Eres administrador</strong></p>
-          <div class="buttons">
-            <a href="/admin" class="button is-primary">Ir al Panel de Administrador</a>
-          </div>
-        <% } else { %>
-          <p><strong>Eres usuario novato</strong></p>
-        <% } %>
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white shadow-xl rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Estadísticas de Anime</h2>
+                <canvas id="animeStatsChart"></canvas>
+            </div>
 
-        <form action="/profile/update-info" method="POST">
-          <div class="field">
-            <label class="label">Nuevo nombre de usuario</label>
-            <div class="control">
-              <input class="input" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+            <div class="bg-white shadow-xl rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Animes Favoritos</h2>
+                <ul id="favoriteAnimeList" class="space-y-2">
+                    <!-- Se llenará dinámicamente con JavaScript -->
+                </ul>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Correo electrónico</label>
-            <div class="control">
-              <input class="input" type="email" name="email" placeholder="Correo electrónico" required>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Contraseña actual</label>
-            <div class="control">
-              <input class="input" type="password" name="currentPassword" placeholder="Contraseña actual" required>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Nueva contraseña</label>
-            <div class="control">
-              <input class="input" type="password" name="newPassword" placeholder="Nueva contraseña" required>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <button class="button is-primary" type="submit">Actualizar información</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="buttons">
-        <a href="/dashboard" class="button is-primary">Volver al Dashboard</a>
-        <a href="/logout" class="button is-danger">Cerrar Sesión</a>
-      </div>
+        </div>
+
+        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Actualizar Información Personal</h2>
+            <form action="/profile/update-info" method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">
+                        Nuevo nombre de usuario
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                        Correo electrónico
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Correo electrónico" value="<%= email %>" required>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Actualizar información
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Cambiar Contraseña</h2>
+            <form action="/profile/update-password" method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">
+                        Contraseña actual
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currentPassword" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">
+                        Nueva contraseña
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newPassword" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmNewPassword">
+                        Confirmar nueva contraseña
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Confirmar nueva contraseña" required>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Cambiar contraseña
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Editar Imágenes</h2>
+            
+            <!-- Formulario para cambiar la imagen de perfil -->
+            <form action="/profile/update-profile-image" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImage">
+                        Imagen de perfil
+                    </label>
+                    <input type="file" id="profileImage" name="profileImage" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Cambiar Imagen de Perfil
+                    </button>
+                </div>
+            </form>
+
+            <!-- Formulario para cambiar la imagen de banner -->
+            <form action="/profile/update-banner-image" method="POST" enctype="multipart/form-data" class="mt-6">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImage">
+                        Imagen de banner
+                    </label>
+                    <input type="file" id="bannerImage" name="bannerImage" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Cambiar Imagen de Banner
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-  <% } %>
 
-  <script src="/src/public/js/DarkModeProfile.js"></script>
+    <script>
+        // Toggle dark mode
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Anime stats chart
+        const ctx = document.getElementById('animeStatsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vistos', 'En progreso', 'Pendientes'],
+                datasets: [{
+                    data: [12, 19, 3],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Estado de los Animes'
+                    }
+                }
+            }
+        });
+
+        // Fetch and display favorite animes
+        fetch('/api/favorite-animes')
+            .then(response => response.json())
+            .then(animes => {
+                const favoriteAnimeList = document.getElementById('favoriteAnimeList');
+                favoriteAnimeList.innerHTML = ''; // Clear existing content
+                if (animes.length === 0) {
+                    favoriteAnimeList.innerHTML = '<li>No tienes animes favoritos aún.</li>';
+                } else {
+                    animes.forEach(anime => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center space-x-2';
+                        li.innerHTML = `
+                            <img src="${anime.imageUrl}" alt="${anime.name}" class="w-8 h-8 rounded-full">
+                            <a href="/anime/${anime.slug}" class="hover:underline">${anime.name}</a>
+                        `;
+                        favoriteAnimeList.appendChild(li);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching favorite animes:', error);
+                document.getElementById('favoriteAnimeList').innerHTML = '<li>Error al cargar los animes favoritos.</li>';
+            });
+    </script>
 </body>
 </html>

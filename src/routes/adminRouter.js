@@ -58,7 +58,7 @@ router.post("/login", (req, res) => {
       req.session.createdAt = results[0].created_at;
       req.session.timeCreated = results[0].time_created;
       req.session.isAdmin = results[0].is_admin; // Guardar el valor de is_admin en la sesión
-      res.redirect("/dashboard");
+      res.redirect("/anime");
     } else {
       res.send(
         'Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>'
@@ -181,7 +181,7 @@ router.get("/admin", (req, res) => {
     });
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -200,7 +200,7 @@ router.post("/admin/delete-user", (req, res) => {
     });
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -243,7 +243,7 @@ router.post("/admin/ban-user", (req, res) => {
     }
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -271,7 +271,7 @@ router.post("/admin/promote-user", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -296,7 +296,7 @@ router.post("/admin/update-user", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -322,7 +322,7 @@ router.post("/admin/add-admin", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 // Ruta para desbanear a un usuario
@@ -346,7 +346,7 @@ router.post("/admin/unban-user", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 
@@ -371,7 +371,7 @@ router.post("/admin/demote-user", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 

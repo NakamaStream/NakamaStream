@@ -6,7 +6,24 @@ const moment = require("moment");
 const path = require("path");
 const yaml = require("js-yaml");
 const fs = require("fs");
-const crypto = require('crypto');
+const crypto = require("crypto");
+const multer = require("multer");
+
+// Configuración de multer para almacenar archivos
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = "./src/public/uploads/";
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
@@ -17,10 +34,12 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   const createdAt = new Date();
-  const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ipAddress =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
   // Verificar si ya existen 3 o más cuentas desde la misma IP
-  const checkIpSql = "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
+  const checkIpSql =
+    "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
   db.query(checkIpSql, [ipAddress], (err, results) => {
     if (err) {
       console.error("Error al verificar la IP:", err);
@@ -28,7 +47,9 @@ router.post("/register", (req, res) => {
     }
 
     if (results[0].count >= 3) {
-      return res.render("register", { error: "Se ha excedido el límite de cuentas permitidas desde esta IP." });
+      return res.render("register", {
+        error: "Se ha excedido el límite de cuentas permitidas desde esta IP.",
+      });
     }
 
     // Encriptar la contraseña
@@ -39,19 +60,25 @@ router.post("/register", (req, res) => {
       }
 
       const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
-      db.query(sql, [username, email, hashedPassword, createdAt, false, ipAddress], (err, result) => {
-        if (err) {
-          console.error("Error al registrar el usuario:", err.message);
-          if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
-            res.render("register", { error: "Por favor, proporciona una contraseña." });
-          } else {
-            res.redirect("/register");
+      db.query(
+        sql,
+        [username, email, hashedPassword, createdAt, false, ipAddress],
+        (err, result) => {
+          if (err) {
+            console.error("Error al registrar el usuario:", err.message);
+            if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
+              res.render("register", {
+                error: "Por favor, proporciona una contraseña.",
+              });
+            } else {
+              res.redirect("/register");
+            }
+            return;
           }
-          return;
+          console.log("Usuario registrado correctamente");
+          res.redirect("/login");
         }
-        console.log("Usuario registrado correctamente");
-        res.redirect("/login");
-      });
+      );
     });
   });
 });
@@ -76,12 +103,13 @@ router.get("/login", (req, res) => {
 // Ruta de inicio de sesión (POST)
 router.post("/login", (req, res) => {
   const { username, password, captchaInput } = req.body;
-  const sql = "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
+  const sql =
+    "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
 
   if (captchaInput !== req.session.captchaPhrase) {
     return res.render("login", {
       errorMessage: "Captcha incorrecto.",
-      captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+      captchaPhrase: req.session.captchaPhrase,
     });
   }
 
@@ -90,7 +118,7 @@ router.post("/login", (req, res) => {
       console.error("Error al iniciar sesión:", err.message);
       return res.render("login", {
         errorMessage: "Error al iniciar sesión. Inténtalo de nuevo.",
-        captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+        captchaPhrase: req.session.captchaPhrase,
       });
     }
 
@@ -102,8 +130,9 @@ router.post("/login", (req, res) => {
         if (err) {
           console.error("Error al verificar la contraseña:", err);
           return res.render("login", {
-            errorMessage: "Error al verificar la contraseña. Inténtalo de nuevo.",
-            captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+            errorMessage:
+              "Error al verificar la contraseña. Inténtalo de nuevo.",
+            captchaPhrase: req.session.captchaPhrase,
           });
         }
 
@@ -112,7 +141,9 @@ router.post("/login", (req, res) => {
           if (banned) {
             if (ban_expiration > new Date()) {
               // Usuario baneado temporalmente
-              const banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
+              const banExpirationFormatted = moment(ban_expiration).format(
+                "DD/MM/YYYY HH:mm:ss"
+              );
               return res.render("banned", {
                 message: "Has sido baneado temporalmente.",
                 banExpirationFormatted,
@@ -134,18 +165,18 @@ router.post("/login", (req, res) => {
           req.session.createdAt = results[0].created_at;
           req.session.timeCreated = results[0].time_created;
           req.session.isAdmin = results[0].is_admin;
-          res.redirect("/dashboard");
+          res.redirect("/anime");
         } else {
           res.render("login", {
             errorMessage: "Credenciales incorrectas.",
-            captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+            captchaPhrase: req.session.captchaPhrase,
           });
         }
       });
     } else {
       res.render("login", {
         errorMessage: "Credenciales incorrectas.",
-        captchaPhrase: req.session.captchaPhrase, // Asegurarse de pasar captchaPhrase
+        captchaPhrase: req.session.captchaPhrase,
       });
     }
   });
@@ -165,29 +196,50 @@ router.get("/profile", (req, res) => {
 
   const { username, email, createdAt, timeCreated, isAdmin } = req.session;
   const createdAtFormatted = moment(createdAt).format("DD/MM/YYYY HH:mm:ss");
-  const timeCreatedFormatted = moment.utc(timeCreated * 1000).format("HH:mm:ss");
+  const timeCreatedFormatted = moment
+    .utc(timeCreated * 1000)
+    .format("HH:mm:ss");
 
   // Obtener el hash MD5 del correo electrónico para Gravatar
-  const emailHash = crypto.createHash('md5').update(email.trim().toLowerCase()).digest('hex');
+  const emailHash = crypto
+    .createHash("md5")
+    .update(email.trim().toLowerCase())
+    .digest("hex");
   const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}`;
 
   // Verificar el estado de baneado del usuario
   db.query(
-    "SELECT banned, ban_expiration FROM usuarios WHERE id = ?",
+    "SELECT banned, ban_expiration, profile_image, banner_image FROM usuarios WHERE id = ?",
     [req.session.userId],
     (err, results) => {
       if (err) {
         console.error("Error al obtener el estado de baneado:", err);
-        return res.redirect("/dashboard");
+        return res.redirect("/anime");
       }
 
       let banned = false;
       let banExpirationFormatted = null;
+      let profileImageUrl = "https://avatars.githubusercontent.com/u/168317328?s=200&v=4";
+      let bannerImageUrl = "https://github.com/NakamaStream/Resources/blob/main/NakamaStream.png?raw=true";
+
       if (results.length > 0) {
-        const { banned: isBanned, ban_expiration } = results[0];
+        const {
+          banned: isBanned,
+          ban_expiration,
+          profile_image,
+          banner_image,
+        } = results[0];
         banned = isBanned;
         if (isBanned && ban_expiration > new Date()) {
-          banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
+          banExpirationFormatted = moment(ban_expiration).format(
+            "DD/MM/YYYY HH:mm:ss"
+          );
+        }
+        if (profile_image) {
+          profileImageUrl = profile_image;
+        }
+        if (banner_image) {
+          bannerImageUrl = banner_image;
         }
       }
 
@@ -199,71 +251,104 @@ router.get("/profile", (req, res) => {
         isAdmin,
         banned,
         banExpirationFormatted,
-        gravatarUrl
+        gravatarUrl,
+        profileImageUrl,
+        bannerImageUrl,
       });
     }
   );
 });
 
 // Ruta para actualizar la información del usuario
-router.post("/profile/update-info", (req, res) => {
-  if (!req.session.loggedin) {
-    return res.redirect("/login");
-  }
+router.post(
+  "/profile/update-info",
+  upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "bannerImage", maxCount: 1 },
+  ]),
+  (req, res) => {
+    if (!req.session.loggedin) {
+      return res.redirect("/login");
+    }
 
-  const { newUsername, email, currentPassword, newPassword } = req.body;
-  const userId = req.session.userId;
+    const { newUsername, email, currentPassword, newPassword } = req.body;
+    const userId = req.session.userId;
 
-  db.query(
-    "SELECT password FROM usuarios WHERE id = ?",
-    [userId],
-    (err, results) => {
-      if (err) {
-        console.error("Error al obtener la contraseña actual:", err);
-        return res.redirect("/profile");
-      }
+    let profileImageUrl = null;
+    let bannerImageUrl = null;
 
-      if (results.length === 0) {
-        return res.render("profiles", { error: "No se encontró el usuario." });
-      }
+    if (req.files["profileImage"]) {
+      profileImageUrl = "/uploads/" + req.files["profileImage"][0].filename;
+    }
+    if (req.files["bannerImage"]) {
+      bannerImageUrl = "/uploads/" + req.files["bannerImage"][0].filename;
+    }
 
-      const currentPasswordHash = results[0].password;
-      bcrypt.compare(currentPassword, currentPasswordHash, (err, match) => {
+    db.query(
+      "SELECT password FROM usuarios WHERE id = ?",
+      [userId],
+      (err, results) => {
         if (err) {
-          console.error("Error al verificar la contraseña actual:", err);
+          console.error("Error al obtener la contraseña actual:", err);
           return res.redirect("/profile");
         }
 
-        if (!match) {
-          return res.render("profiles", { error: "La contraseña actual es incorrecta." });
+        if (results.length === 0) {
+          return res.render("profiles", {
+            error: "No se encontró el usuario.",
+          });
         }
 
-        // Encriptar la nueva contraseña
-        bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        const currentPasswordHash = results[0].password;
+        bcrypt.compare(currentPassword, currentPasswordHash, (err, match) => {
           if (err) {
-            console.error("Error al encriptar la nueva contraseña:", err);
+            console.error("Error al verificar la contraseña actual:", err);
             return res.redirect("/profile");
           }
 
-          db.query(
-            "UPDATE usuarios SET username = ?, email = ?, password = ? WHERE id = ?",
-            [newUsername, email, hashedPassword, userId],
-            (err, results) => {
-              if (err) {
-                console.error("Error al actualizar la información del usuario:", err);
-                return res.redirect("/profile");
-              }
+          if (!match) {
+            return res.render("profiles", {
+              error: "La contraseña actual es incorrecta.",
+            });
+          }
 
-              req.session.username = newUsername;
-              req.session.email = email; // Actualiza el email en la sesión también
-              res.redirect("/profile");
+          // Encriptar la nueva contraseña
+          bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+            if (err) {
+              console.error("Error al encriptar la nueva contraseña:", err);
+              return res.redirect("/profile");
             }
-          );
+
+            db.query(
+              "UPDATE usuarios SET username = ?, email = ?, password = ?, profile_image = ?, banner_image = ? WHERE id = ?",
+              [
+                newUsername,
+                email,
+                hashedPassword,
+                profileImageUrl,
+                bannerImageUrl,
+                userId,
+              ],
+              (err, results) => {
+                if (err) {
+                  console.error(
+                    "Error al actualizar la información del usuario:",
+                    err
+                  );
+                  return res.redirect("/profile");
+                }
+
+                req.session.username = newUsername;
+                req.session.email = email;
+                res.redirect("/profile");
+              }
+            );
+          });
         });
-      });
-    }
-  );
-});
+      }
+    );
+  }
+);
 
 // Ruta para quitar el rol de administrador a un usuario
 router.post("/admin/demote-user", (req, res) => {
@@ -276,7 +361,10 @@ router.post("/admin/demote-user", (req, res) => {
       [false, userId],
       (err, result) => {
         if (err) {
-          console.error("Error al quitar el rol de administrador al usuario:", err);
+          console.error(
+            "Error al quitar el rol de administrador al usuario:",
+            err
+          );
           return res.redirect("/admin");
         }
 
@@ -285,7 +373,7 @@ router.post("/admin/demote-user", (req, res) => {
     );
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/dashboard");
+    res.redirect("/anime");
   }
 });
 

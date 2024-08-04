@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= anime.name %> - Episode <%= episode.title %></title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
         .video-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
         }
         .video-container iframe {
             position: absolute;
@@ -21,40 +25,119 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-md sticky top-0 z-10">
+    <nav class="bg-indigo-600 text-white shadow-md sticky top-0 z-10">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="/anime" class="text-2xl font-bold text-gray-800">Anime List</a>
-            <a href="/logout" class="text-gray-600 hover:text-gray-800">Logout</a>
+            <a href="/anime" class="text-2xl font-bold">Anime List</a>
+            <div>
+                <a href="/search" class="mr-4 hover:text-indigo-200">
+                    <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </a>
+                <a href="/logout" class="hover:text-indigo-200">Logout</a>
+            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-8">
-        <header class="mb-8">
-            <h1 class="text-4xl font-extrabold text-gray-900 mb-2"><%= anime.name %></h1>
-            <h2 class="text-2xl font-semibold text-gray-700">Episode <%= episode.title %></h2>
-        </header>
+    <main class="container mx-auto px-4 py-8 flex">
+        <aside class="w-1/4 pr-4">
+            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Next Episodes</h3>
+            <ul class="space-y-2">
+                <% nextEpisodes.forEach(nextEpisode => { %>
+                    <li>
+                        <a href="/anime/<%= anime.slug %>/episode/<%= nextEpisode.id %>" class="block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                            Episode <%= nextEpisode.title %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </aside>
 
-        <section class="w-full max-w-4xl mx-auto mb-8">
-            <div class="video-container rounded-lg shadow-lg overflow-hidden">
-                <iframe src="<%= episode.video_url %>" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </section>
+        <div class="w-3/4">
+            <header class="mb-8 text-center">
+                <h1 class="text-4xl font-extrabold text-indigo-900 mb-2"><%= anime.name %></h1>
+                <h2 class="text-2xl font-semibold text-indigo-700">Episode <%= episode.title %></h2>
+            </header>
 
-        <section class="max-w-4xl mx-auto mb-8">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Episode Description</h3>
-            <p class="text-gray-700"><%= episode.description || 'No description available.' %></p>
-        </section>
+            <section class="w-full max-w-4xl mx-auto mb-8">
+                <div class="video-container rounded-lg shadow-lg overflow-hidden">
+                    <iframe src="<%= episode.video_url %>" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </section>
 
-        <footer class="flex justify-between max-w-4xl mx-auto">
-            <a href="/anime/<%= anime.slug %>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                Back to Anime Details
-            </a>
-            <% if (isAdmin) { %>
-                <a href="/anime/<%= anime.slug %>/upload-episode" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                    Upload New Episode
+            <section class="max-w-4xl mx-auto mb-8 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-indigo-800 mb-4">Episode Description</h3>
+                <p class="text-gray-700"><%= episode.description || 'No description available.' %></p>
+            </section>
+
+            <section class="max-w-4xl mx-auto mb-8 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-indigo-800 mb-4">Comentarios</h3>
+                <form id="comment-form" class="mb-4">
+                    <textarea id="comment-content" class="w-full p-2 border rounded" rows="4" placeholder="Escribe tu comentario..."></textarea>
+                    <button type="submit" class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded">Enviar</button>
+                </form>
+                <div id="comments-list">
+                    <!-- Aquí se cargarán los comentarios -->
+                </div>
+            </section>
+
+            <footer class="flex justify-between max-w-4xl mx-auto">
+                <a href="/anime/<%= anime.slug %>" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Back to Anime Details
                 </a>
-            <% } %>
-        </footer>
+                <% if (isAdmin) { %>
+                    <a href="/anime/<%= anime.slug %>/upload-episode" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Upload New Episode
+                    </a>
+                <% } %>
+            </footer>
+        </div>
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const commentForm = document.getElementById("comment-form");
+            const commentContent = document.getElementById("comment-content");
+            const commentsList = document.getElementById("comments-list");
+
+            // Cargar comentarios
+            function loadComments() {
+                fetch(`/anime/<%= anime.slug %>/episode/<%= episode.id %>/comments`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        commentsList.innerHTML = comments.map(comment => `
+                            <div class="mb-4">
+                                <p class="font-bold">${comment.username} (${comment.user_rank})</p>
+                                <p>${comment.content}</p>
+                                <p class="text-sm text-gray-500">${new Date(comment.created_at).toLocaleString()}</p>
+                            </div>
+                        `).join('');
+                    });
+            }
+
+            // Enviar comentario
+            commentForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                fetch(`/anime/<%= anime.slug %>/episode/<%= episode.id %>/comment`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ content: commentContent.value })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        commentContent.value = "";
+                        loadComments();
+                    } else {
+                        alert("Error al enviar comentario");
+                    }
+                });
+            });
+
+            loadComments();
+        });
+    </script>
 </body>
 </html>

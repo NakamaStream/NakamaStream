@@ -11,7 +11,7 @@ router.get("/settings", (req, res) => {
   db.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
     if (err) {
       console.error("Error al obtener los datos del usuario:", err);
-      return res.redirect("/dashboard");
+      return res.redirect("/anime");
     }
 
     const user = results[0];

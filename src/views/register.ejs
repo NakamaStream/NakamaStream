@@ -12,13 +12,6 @@
 <body>
   <div class="login-form">
     <h1 class="login-form-title">Registrarse</h1>
-    
-    <% if (typeof error !== 'undefined') { %>
-      <div class="error-message">
-        <%= error %>
-      </div>
-    <% } %>
-
     <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()">
       <div class="field">
         <div class="control has-icons-left">

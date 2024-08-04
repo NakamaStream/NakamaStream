@@ -56,7 +56,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </a>
-                    <a href="#" class="mr-4 nav-link">
+                    <a href="/animes/api/saved-animes" class="mr-4 nav-link">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v16l7-7 7 7V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"></path>
                         </svg>
@@ -76,7 +76,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 anime-list">
             <% animes.forEach(anime => { %>
-                <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden anime-card hover:shadow-lg">
                     <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-auto">
                     <div class="p-4">
                         <h2 class="text-xl font-semibold mb-2 text-indigo-900"><%= anime.name %></h2>
