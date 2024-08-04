@@ -130,3 +130,46 @@ $ npx express --version
 ```bash
 $ npm install
 ```
+
+### 3. Iniciar proyecto en local host
+
+- Ejecutar en modo de desarrollo
+
+```bash
+npm run dev
+```
+
+## Avertencia
+
+> [!CAUTION]
+> **Advertencia sobre el Uso de Contenido de Anime**
+> 
+> Este proyecto puede involucrar el uso de contenido de anime que podría estar protegido por derechos de autor. Toma en cuenta lo siguiente:
+> 
+> - **Riesgos Legales**: Las distribuidoras y propietarios de derechos de autor pueden tomar acciones legales contra el uso no autorizado de su contenido. Esto puede incluir demandas por infracción de copyright o la eliminación de tu sitio web o servicio.
+> - **Alojamiento de Archivos Externos**: Si tu plataforma utiliza servicios de alojamiento de archivos externos para los animes, asegúrate de que el contenido que estás compartiendo cumpla con las leyes de derechos de autor y las políticas del servicio de alojamiento.
+> 
+> Es tu responsabilidad asegurarte de que el contenido que utilizas no infrinja los derechos de los creadores y distribuidores. El incumplimiento puede resultar en consecuencias legales y la eliminación de tu plataforma.
+
+## Licencia 📝
+
+Este proyecto, denominado **NakamaStream**, ha sido desarrollado por un equipo pequeño y está bajo la licencia MIT. NakamaStream es un proyecto de código abierto, lo que significa que puedes utilizar, modificar y distribuir el código fuente de acuerdo con los términos de la licencia MIT.
+
+### Condiciones de Uso
+
+1. **Permisos**:
+   - Uso personal y comercial
+   - Modificación
+   - Distribución
+   - Sublicencia
+   - Uso privado
+
+2. **Condiciones**:
+   - Incluir una copia de esta licencia y el aviso de copyright en todas las copias o partes sustanciales del software.
+
+3. **Limitaciones**:
+   - El software se proporciona "tal cual", sin garantía de ningún tipo, expresa o implícita, incluyendo pero no limitándose a las garantías de comerciabilidad, idoneidad para un propósito particular y no infracción. En ningún caso los autores o titulares de derechos de autor serán responsables de cualquier reclamo, daño o responsabilidad, ya sea en una acción de contrato, agravio o de otro tipo, que surja de, o en conexión con el software o el uso u otros tratos en el software.
+
+### Responsabilidad
+
+El uso que se le dé a nuestro código es bajo tu propia responsabilidad. El equipo de NakamaStream no se hace responsable de cualquier uso indebido o ilegal del código fuente proporcionado. Cualquier consecuencia derivada del uso de este software es exclusiva responsabilidad del usuario.
