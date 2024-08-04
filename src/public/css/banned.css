@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f5f5f5;
@@ -8,7 +6,6 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    animation: fadeIn 1s ease-in-out;
 }
 
 .container {
@@ -19,87 +16,20 @@ body {
 
 .box {
     background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
     padding: 2rem;
     text-align: center;
-    animation: dropIn 0.5s ease-out;
 }
 
 .title {
-    color: #ff3860;
+    color: #4a4a4a;
     font-weight: 700;
     margin-bottom: 1rem;
-    font-size: 1.8rem;
-}
-
-.subtitle {
-    color: #4a4a4a;
-    font-weight: 600;
-    margin-top: 1rem;
-    font-size: 1.4rem;
 }
 
 p {
     color: #7a7a7a;
     font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-}
-
-.reasons {
-    list-style: none;
-    padding: 0;
-    color: #7a7a7a;
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    text-align: left;
-}
-
-.reasons li {
-    margin-bottom: 0.75rem;
-    padding-left: 1.5rem;
-    position: relative;
-}
-
-.reasons li::before {
-    content: "•";
-    color: #ff3860;
-    font-size: 1.5rem;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-.button-container {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.button {
-    font-family: 'Montserrat', sans-serif;
-    transition: transform 0.3s ease;
-}
-
-.button:hover {
-    transform: scale(1.1);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes dropIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    margin-bottom: 1rem;
 }
