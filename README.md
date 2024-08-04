@@ -79,3 +79,54 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 
 </details>
 
+## Imagenes
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/6985effb-fc83-496e-b009-188693f5e0be" alt="Inicio" style="max-width: 70%;" >
+</div>
+
+## Instalación y Desarrollo Local
+
+### 1. Clona este repositorio usando
+
+```bash
+$ git clone https://github.com/NakamaStream/NakamaStream.git
+```
+
+```bash
+$ cd NakamaStream
+```
+
+### 2. Installation
+
+### Requisitos básicos
+
+> [!TIP]
+> Esta plataforma está construida sobre [Node.js](https://nodejs.org/) y utiliza [Express](https://expressjs.com/) para asegurar los tiempos de respuesta más rápidos posibles.
+
+### Instalar Express
+
+```bash
+$ npm list -g express
+```
+
+```bash
+$ npm list express
+```
+
+### Verificar instalaciones
+
+- Verifique que tanto Node.js como Express estén instalados correctamente ejecutando.
+
+```bash
+$ node -v
+$ npx express --version
+```
+
+### Install Dependencies
+
+-  Puedes usar `npm` para instalar dependencias rápidamente para instalar todas las dependencias del proyecto.
+
+```bash
+$ npm install
+```
