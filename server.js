@@ -136,7 +136,7 @@ app.get("/profile", (req, res) => {
   });
 });
 
-// Ruta para actualizar el perfil
+// Ruta para actualizar el perfil del usuario
 app.post(
   "/profile/update-info",
   upload.fields([
