@@ -11,6 +11,7 @@ const authRouter = require("./src/routes/authRouter");
 const adminRouter = require("./src/routes/adminRouter");
 const animeRouter = require("./src/routes/animeRouter");
 const healthCheckRouter = require("./src/routes/healthCheckRouter");
+const botapiRouter = require("./src/routes/botapiRouter");
 
 const db = require("./src/services/db");
 
@@ -107,6 +108,7 @@ app.use("/", animeRouter);
 app.use("/", authRouter);
 app.use("/", adminRouter);
 app.use("/", healthCheckRouter);
+app.use("/", botapiRouter);
 
 // Ruta de perfil
 app.get("/profile", (req, res) => {
@@ -136,7 +138,7 @@ app.get("/profile", (req, res) => {
   });
 });
 
-// Ruta para actualizar el perfil del usuario
+// Ruta para actualizar el perfil
 app.post(
   "/profile/update-info",
   upload.fields([
