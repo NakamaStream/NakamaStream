@@ -165,7 +165,7 @@ router.post("/profile/update-password", (req, res) => {
 });
 
 // Ruta para el panel de administrador
-router.get("/admin", (req, res) => {
+router.get("/admin/panel", (req, res) => {
   // Verificar si el usuario es administrador
   if (req.session.isAdmin) {
     // Obtener la lista de usuarios
@@ -196,7 +196,7 @@ router.post("/admin/delete-user", (req, res) => {
         return res.redirect("/admin");
       }
 
-      res.redirect("/admin");
+      res.redirect("/admin/panel");
     });
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
@@ -221,10 +221,10 @@ router.post("/admin/ban-user", (req, res) => {
         (err, result) => {
           if (err) {
             console.error("Error al banear al usuario:", err);
-            return res.redirect("/admin");
+            return res.redirect("/admin/panel");
           }
 
-          res.redirect("/admin");
+          res.redirect("/admin/panel");
         }
       );
     } else {
@@ -235,15 +235,15 @@ router.post("/admin/ban-user", (req, res) => {
         (err, result) => {
           if (err) {
             console.error("Error al banear al usuario:", err);
-            return res.redirect("/admin");
+            return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       });
     }
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
-    res.redirect("/anime");
+    res.redirect("/admin/panel");
   }
 });
 
@@ -263,10 +263,10 @@ router.post("/admin/promote-user", (req, res) => {
             "Error al promover al usuario como administrador:",
             err
           );
-          return res.redirect("/admin");
+          return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       }
     );
   } else {
@@ -288,10 +288,10 @@ router.post("/admin/update-user", (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error al actualizar la información del usuario:", err);
-          return res.redirect("/admin");
+          return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       }
     );
   } else {
@@ -314,10 +314,10 @@ router.post("/admin/add-admin", (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error al agregar el usuario administrador:", err);
-          return res.redirect("/admin");
+          return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       }
     );
   } else {
@@ -338,10 +338,10 @@ router.post("/admin/unban-user", (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error al desbanear al usuario:", err);
-          return res.redirect("/admin");
+          return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       }
     );
   } else {
@@ -363,10 +363,10 @@ router.post("/admin/demote-user", (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error al quitar el rol de administrador al usuario:", err);
-          return res.redirect("/admin");
+          return res.redirect("/admin/panel");
         }
 
-        res.redirect("/admin");
+        res.redirect("/admin/panel");
       }
     );
   } else {
