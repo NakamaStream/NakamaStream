@@ -61,13 +61,61 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v16l7-7 7 7V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"></path>
                         </svg>
                     </a>
-                    <div class="relative">
-                        <img src="https://www.gravatar.com/avatar/placeholder?d=mp&s=40" alt="Profile Picture" class="h-8 w-8 rounded-full cursor-pointer" id="profile-menu-button">
-                        <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-                            <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
-                        </div>
-                    </div>
+                        <div class="relative">
+                            <img src="https://www.gravatar.com/avatar/placeholder?d=mp&s=40" alt="Profile Picture" class="h-8 w-8 rounded-full cursor-pointer" id="profile-menu-button">
+                            <div id="profile-menu" class="hidden absolute right-0 mt-2 w-64 bg-gray-800 rounded-md shadow-lg py-3 z-20 text-white">
+                                <div class="flex items-center px-4 pb-2 border-b border-gray-700">
+                                    <img src="https://www.gravatar.com/avatar/placeholder?d=mp&s=40" alt="Profile Picture" class="h-10 w-10 rounded-full">
+                                    <div class="ml-3">
+                                        <span class="block text-sm font-bold">Nombre de Usuario</span>
+                                        <span class="text-xs text-yellow-400">Miembro Premium</span>
+                                    </div>
+                                </div>
+                                <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill mr-2" viewBox="0 0 16 16">
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                    </svg>
+                                    Perfil
+                                </a>
+                                <a href="/animes/api/saved-animes" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill mr-2" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+                                    </svg>
+                                    Guardados
+                                </a>
+                                <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927a1 1 0 011.902 0l.917 4.585h4.85a1 1 0 01.608 1.786l-3.9 3.012 1.493 4.657a1 1 0 01-1.537 1.144L10 15.347l-4.383 2.764a1 1 0 01-1.537-1.144l1.493-4.657-3.9-3.012a1 1 0 01.608-1.786h4.85l.917-4.585z" />
+                                    </svg>
+                                    Favoritos
+                                </a>
+                        
+                                <% if (isAdmin) { %>
+                                <!-- Opciones exclusivas para administradores -->
+                                <div class="border-t border-gray-700 mt-2"></div>
+                                <a href="/admin/panel" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2-5a2 2 0 114 0h-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    Panel de Admin
+                                </a>
+                                <a href="/anime/upload" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-up-fill mr-2" viewBox="0 0 16 16">
+                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    Subir Anime
+                                </a>
+                                <% } %>
+                        
+                                <a href="/logout" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-red-400 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill mr-2" viewBox="0 0 16 16">
+                                        <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                    </svg>
+                                    Desconectar
+                                </a>
+                            </div>
+                        </div>               
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -77,7 +125,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 anime-list">
             <% animes.forEach(anime => { %>
                 <a href="/anime/<%= anime.slug %>" class="block bg-white rounded-lg shadow-md overflow-hidden anime-card hover:shadow-lg">
-                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-auto">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" 
+                         class="w-full h-auto"
+                         style="user-select: none; pointer-events: none; touch-action: none;">
                     <div class="p-4">
                         <h2 class="text-xl font-semibold mb-2 text-indigo-900"><%= anime.name %></h2>
                         <p class="text-indigo-600 text-sm"><%= anime.episodeCount %> episodio<%= anime.episodeCount !== 1 ? 's' : '' %></p>
@@ -85,7 +135,7 @@
                 </a>
             <% }); %>
         </div>
-    </div>
+    </div>    
     <script src="/src/public/js/anime-list.js"></script>
 </body>
 </html>
