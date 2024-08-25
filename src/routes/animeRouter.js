@@ -65,7 +65,12 @@ router.get("/anime", isLoggedIn, (req, res) => {
       console.error(err);
       res.status(500).send("Error al recuperar animes");
     } else {
-      res.render("anime-list", { animes: rows, isAdmin: req.session.isAdmin });
+      res.render("anime-list", {
+        animes: rows,
+        isAdmin: req.session.isAdmin,
+        user: req.session.user,
+        username: req.session.username, // Añade esta línea
+      });
     }
   });
 });

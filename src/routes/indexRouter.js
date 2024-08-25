@@ -37,8 +37,4 @@ router.get('/jobs/administrador', (req, res) => {
   res.redirect('https://github.com/orgs/NakamaStream/discussions/13');
 });
 
-router.get('/redirect/community/discord', (req, res) => {
-  res.redirect('https://discord.gg/Rdz4yQneMK');
-});
-
 module.exports = router;

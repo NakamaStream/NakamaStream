@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - NakamaStream</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0f2f5;
+            transition: background-color 0.3s ease;
         }
         .dark-mode {
             background-color: #1a202c;
@@ -18,10 +21,44 @@
         .dark-mode .box {
             background-color: #2d3748;
         }
+        .anime-card {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-anime {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-anime:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        .profile-image {
+            border: 4px solid #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-indigo-600 text-white shadow-md">
+    <nav class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md">
         <div class="container mx-auto px-6 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
@@ -43,126 +80,96 @@
     </nav>
 
     <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
-            <div class="bg-cover bg-center h-64" style="background-image: url('<%= bannerImageUrl %>');">
-            </div>
-            <div class="px-4 py-4">
-                <div class="flex items-center">
-                    <div class="w-16 h-16 mr-4">
-                        <img class="rounded-full border-2 border-white" src="<%= profileImageUrl %>" alt="Profile picture">
-                    </div>
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800"><%= username %></h1>
-                        <p class="text-gray-600"><%= email %></p>
-                    </div>
+        <div class="bg-white shadow-xl rounded-3xl overflow-hidden anime-card">
+            <div class="bg-cover bg-center h-64 relative" style="background-image: url('<%= bannerImageUrl %>');">
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                    <img class="rounded-full border-4 border-white w-32 h-32 profile-image float-animation" src="<%= profileImageUrl %>" alt="Profile picture">
                 </div>
+            </div>
+            <div class="px-4 py-16 text-center">
+                <h1 class="text-4xl font-bold text-gray-800"><%= username %></h1>
+                <p class="text-gray-600"><%= email %></p>
                 <p class="text-sm text-gray-600 mt-2">Miembro desde: <%= createdAtFormatted %></p>
                 <p class="text-sm text-gray-600">Tiempo en la comunidad: <%= timeCreatedFormatted %></p>
                 <% if (isAdmin) { %>
-                    <p class="mt-2 inline-block bg-red-500 text-white px-2 py-1 rounded text-xs">Admin</p>
+                    <p class="mt-4 inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs">Admin</p>
                 <% } else { %>
-                    <p class="mt-2 inline-block bg-blue-500 text-white px-2 py-1 rounded text-xs">Usuario</p>
+                    <p class="mt-4 inline-block bg-gradient-to-r from-blue-500 to-teal-500 text-white px-4 py-2 rounded-full text-xs">Usuario</p>
                 <% } %>
             </div>
         </div>        
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white shadow-xl rounded-lg p-6">
-                <h2 class="text-2xl font-bold mb-4">Estadísticas de Anime</h2>
+            <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
+                <h2 class="text-2xl font-bold mb-4 text-center">Estadísticas de Anime</h2>
                 <canvas id="animeStatsChart"></canvas>
             </div>
 
-            <div class="bg-white shadow-xl rounded-lg p-6">
-                <h2 class="text-2xl font-bold mb-4">Animes Favoritos</h2>
-                <ul id="favoriteAnimeList" class="space-y-2">
+            <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
+                <h2 class="text-2xl font-bold mb-4 text-center">Animes Favoritos</h2>
+                <ul id="favoriteAnimeList" class="space-y-4">
                     <!-- Se llenará dinámicamente con JavaScript -->
                 </ul>
             </div>
         </div>
 
-        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">Actualizar Información Personal</h2>
+        <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
+            <h2 class="text-2xl font-bold mb-4 text-center">Actualizar Información Personal</h2>
             <form action="/profile/update-info" method="POST">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">
-                        Nuevo nombre de usuario
-                    </label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">Nuevo nombre de usuario</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                        Correo electrónico
-                    </label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Correo electrónico</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Correo electrónico" value="<%= email %>" required>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Actualizar información
-                    </button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Actualizar información</button>
                 </div>
             </form>
         </div>
-        
-        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">Cambiar Contraseña</h2>
+
+        <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
+            <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Contraseña</h2>
             <form action="/profile/update-password" method="POST">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">
-                        Contraseña actual
-                    </label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">Contraseña actual</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currentPassword" type="password" name="currentPassword" placeholder="Contraseña actual" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">
-                        Nueva contraseña
-                    </label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">Nueva contraseña</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newPassword" type="password" name="newPassword" placeholder="Nueva contraseña" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmNewPassword">
-                        Confirmar nueva contraseña
-                    </label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmNewPassword">Confirmar nueva contraseña</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Confirmar nueva contraseña" required>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Cambiar contraseña
-                    </button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Cambiar contraseña</button>
                 </div>
             </form>
         </div>
 
-        <div class="mt-8 bg-white shadow-xl rounded-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">Editar Imágenes</h2>
+        <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
+            <h2 class="text-2xl font-bold mb-4 text-center">Editar Imágenes</h2>
             
-            <!-- Formulario para cambiar la imagen de perfil -->
-            <form action="/profile/update-profile-image" method="POST" enctype="multipart/form-data">
+            <form action="/profile/update-profile-image" method="POST" enctype="multipart/form-data" class="mb-6">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImage">
-                        Imagen de perfil
-                    </label>
-                    <input type="file" id="profileImage" name="profileImage" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImage">Imagen de perfil</label>
+                    <input type="file" id="profileImage" name="profileImage" accept="image/*" class="hidden">
+                    <label for="profileImage" class="cursor-pointer bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-purple-500 hover:to-pink-600 transition duration-300">Seleccionar imagen de perfil</label>
                 </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Cambiar Imagen de Perfil
-                    </button>
-                </div>
+                <button class="btn-anime py-2 px-6" type="submit">Cambiar Imagen de Perfil</button>
             </form>
 
-            <!-- Formulario para cambiar la imagen de banner -->
-            <form action="/profile/update-banner-image" method="POST" enctype="multipart/form-data" class="mt-6">
+            <form action="/profile/update-banner-image" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImage">
-                        Imagen de banner
-                    </label>
-                    <input type="file" id="bannerImage" name="bannerImage" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImage">Imagen de banner</label>
+                    <input type="file" id="bannerImage" name="bannerImage" accept="image/*" class="hidden">
+                    <label for="bannerImage" class="cursor-pointer bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-blue-500 hover:to-indigo-600 transition duration-300">Seleccionar imagen de banner</label>
                 </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Cambiar Imagen de Banner
-                    </button>
-                </div>
+                <button class="btn-anime py-2 px-6" type="submit">Cambiar Imagen de Banner</button>
             </form>
         </div>
     </div>
@@ -177,13 +184,13 @@
         // Anime stats chart
         const ctx = document.getElementById('animeStatsChart').getContext('2d');
         new Chart(ctx, {
-            type: 'doughnut',
+            type: 'polarArea',
             data: {
                 labels: ['Vistos', 'En progreso', 'Pendientes'],
                 datasets: [{
                     data: [12, 19, 3],
                     backgroundColor: [
-                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(255, 99, 132, 0.8)',
                         'rgba(54, 162, 235, 0.8)',
                         'rgba(255, 206, 86, 0.8)'
                     ]
@@ -210,23 +217,42 @@
                 const favoriteAnimeList = document.getElementById('favoriteAnimeList');
                 favoriteAnimeList.innerHTML = ''; // Clear existing content
                 if (animes.length === 0) {
-                    favoriteAnimeList.innerHTML = '<li>No tienes animes favoritos aún.</li>';
+                    favoriteAnimeList.innerHTML = '<li class="text-center">No tienes animes favoritos aún.</li>';
                 } else {
-                    animes.forEach(anime => {
+                    animes.forEach((favoriteAnime, index) => { // Cambiar 'anime' a 'favoriteAnime'
                         const li = document.createElement('li');
-                        li.className = 'flex items-center space-x-2';
+                        li.className = 'flex items-center space-x-4 bg-gray-100 p-3 rounded-lg transition-all duration-300 hover:bg-gray-200';
                         li.innerHTML = `
-                            <img src="${anime.imageUrl}" alt="${anime.name}" class="w-8 h-8 rounded-full">
-                            <a href="/anime/${anime.slug}" class="hover:underline">${anime.name}</a>
+                            <img src="${favoriteAnime.imageUrl}" alt="${favoriteAnime.name}" class="w-12 h-12 rounded-full object-cover">
+                            <a href="/anime/${favoriteAnime.slug}" class="hover:text-purple-600 transition-colors duration-300">${favoriteAnime.name}</a>
                         `;
                         favoriteAnimeList.appendChild(li);
+                        
+                        // Animate list items
+                        anime({ // Aquí 'anime' se refiere a la función de Anime.js
+                            targets: li,
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            delay: index * 100,
+                            easing: 'easeOutExpo'
+                        });
                     });
                 }
             })
             .catch(error => {
                 console.error('Error fetching favorite animes:', error);
-                document.getElementById('favoriteAnimeList').innerHTML = '<li>Error al cargar los animes favoritos.</li>';
+                document.getElementById('favoriteAnimeList').innerHTML = '<li class="text-center text-red-500">Error al cargar los animes favoritos.</li>';
             });
+
+        // Add some animations to the anime cards
+        anime({
+            targets: '.anime-card',
+            scale: [0.9, 1],
+            opacity: [0, 1],
+            delay: anime.stagger(200),
+            duration: 1000,
+            easing: 'easeOutElastic(1, .5)'
+        });
     </script>
 </body>
 </html>

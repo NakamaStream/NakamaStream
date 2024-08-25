@@ -137,6 +137,36 @@
                 </div>
             </div>
 
+            <section class="section">
+                <h2 class="title">Enviar Anuncio a Todos los Usuarios</h2>
+                <div class="box">
+                    <form id="announcement-form">
+                        <div class="field">
+                            <label class="label" for="message">Mensaje de anuncio:</label>
+                            <div class="control">
+                                <textarea id="message" name="message" class="textarea" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                            </div>
+                        </div>
+            
+                        <div class="field">
+                            <label class="label" for="duration">Duración (minutos):</label>
+                            <div class="control">
+                                <input type="number" id="duration" name="duration" class="input" placeholder="Ingrese la duración en minutos" min="1" required>
+                            </div>
+                        </div>
+            
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">Enviar</button>
+                            </div>
+                            <div class="control">
+                                <button type="button" class="button is-light" onclick="resetForm()">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
             <div id="updateModal" class="modal">
                 <div class="modal-content">
                     <form action="/admin/update-user" method="POST">
@@ -177,6 +207,38 @@
         function confirmDelete(username) {
             return confirm("¿Estás seguro que quieres banear a '" + username + "'? Esto no se puede revertir.");
         }
+
+        document.getElementById('announcement-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const message = document.getElementById('message').value;
+        const duration = parseInt(document.getElementById('duration').value, 10);
+
+        if (duration <= 0) {
+            alert('La duración debe ser un número positivo.');
+            return;
+        }
+
+        fetch('/set-announcement', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message, duration }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Anuncio enviado correctamente.');
+                resetForm();
+            }
+        })
+        .catch(error => console.error('Error enviando anuncio:', error));
+
+        function resetForm() {
+            document.getElementById('announcement-form').reset();
+        }
+    });
     </script>
     <script src="/src/public/js/addAdminModal.js"></script>
 </body>

@@ -1,6 +1,38 @@
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #f7fafc; /* Light gray background */
+    color: #333;
 }
+.hidden {
+    display: none;
+}
+
+.waifu-noresul {
+    animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    mask-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 90%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.carousel-items {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+
 .nav-link {
     @apply text-white hover:text-gray-400;
 }
@@ -113,4 +145,63 @@ body {
 
 .anime-card:hover::before {
     transform: scaleY(1);
+}
+
+.anime-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 20px; /* Increased border radius */
+    overflow: hidden;
+    border: 2px solid transparent; /* Transparent border for hover effect */
+}
+.anime-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border-color: #ffcc00; /* Gold border on hover */
+}
+.anime-card img {
+    transition: transform 0.3s;
+    border-radius: 20px 20px 0 0; /* Rounded top corners for the image */
+}
+.anime-card:hover img {
+    transform: scale(1.1);
+}
+.nav-link:hover {
+    text-decoration: underline;
+    color: #ffcc00; /* Gold text on hover */
+}
+.dropdown:hover #explore-menu,
+.dropdown:focus-within #explore-menu {
+    display: grid;
+}
+#explore-menu {
+    display: none;
+}
+.profile-menu:hover #profile-menu,
+.profile-menu:focus-within #profile-menu {
+    display: block;
+}
+#profile-menu {
+    display: none;
+}
+/* Ensure dropdown stays visible when hovering over it */
+.dropdown {
+    position: relative;
+}
+/* Add animations to the dropdown menu */
+#explore-menu {
+    animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Allow pointer events on the explore and profile menus */
+#explore-menu, #profile-menu {
+    pointer-events: auto; /* Allow pointer events */
 }

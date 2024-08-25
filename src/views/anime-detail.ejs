@@ -5,38 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= anime.name %> - NakamaStream</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Meta etiquetas para compartir en redes sociales -->
+    <meta property="og:title" content="<%= anime.name %> - NakamaStream">
+    <meta property="og:description" content="<%= anime.description %>">
+    <meta property="og:image" content="<%= anime.imageUrl %>">
+    <meta property="og:type" content="website">
+    
+    <!-- Meta etiquetas para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= anime.name %> - NakamaStream">
+    <meta name="twitter:description" content="<%= anime.description %>">
+    <meta name="twitter:image" content="<%= anime.imageUrl %>">
+
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0f4f8;
+            background-image: url('https://example.com/anime-pattern.png');
+            background-repeat: repeat;
+        }
+        .anime-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         .star {
-            font-size: 24px;
-            color: #ccc;
+            font-size: 28px;
+            color: #ffd700;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .star:hover {
+            transform: scale(1.2);
         }
         .star.active {
-            color: #ffd700;
+            color: #ffaa00;
         }
-        .admin {
-            display: inline-block;
-            color: red;
-            margin-bottom: 1rem;
-            padding: 0.25rem 0.5rem;
-            border: 1px solid red;
-            border-radius: 3px;
-            background-color: #ffe6e6;
-            font-size: 0.75rem;
+        .admin-badge {
+            background-color: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
         }
-        .username {
-            display: inline-block;
-            color: #155724;
-            margin-bottom: 1rem;
-            padding: 0.25rem 0.5rem;
-            border: 1px solid #155724;
-            border-radius: 3px;
-            background-color: #d4edda;
-            font-size: 0.75rem;
+        .username-badge {
+            background-color: #2ed573;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .button-anime {
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .button-anime:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .episode-button {
+            background-color: #6c5ce7;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .episode-button:hover {
+            background-color: #5641e5;
+            transform: scale(1.05);
+        }
+        .comment-box {
+            background-color: #f1f2f6;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .comment-box:hover {
+            background-color: #e2e5e9;
         }
     </style>
 </head>
@@ -46,25 +104,25 @@
     </nav>
 
     <div class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 animate__animated animate__fadeIn">
             <h1 class="text-4xl font-bold text-indigo-900"><%= anime.name %></h1>
-            <a href="/anime" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+            <a href="/anime" class="button-anime bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full transition duration-300">
                 Volver a Inicio
             </a>
         </div>
-        <div class="flex flex-col md:flex-row gap-8 bg-white rounded-lg shadow-lg p-6">
+        <div class="flex flex-col md:flex-row gap-8 anime-card p-6 animate__animated animate__fadeInUp">
             <div class="md:w-1/3">
-                <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full rounded-lg shadow-md">
+                <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                 
                 <div class="mt-4">
-                    <button id="favoriteBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+                    <button id="favoriteBtn" class="button-anime bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full">
                         <span id="favoriteText">Agregar a favoritos</span>
                     </button>
-                    <span class="block mt-2 text-center">Favoritos: <span id="favoriteCount">0</span></span>
+                    <span class="block mt-2 text-center font-semibold">Favoritos: <span id="favoriteCount" class="text-indigo-600">0</span></span>
                 </div>
 
                 <div class="mt-4">
-                    <button id="saveAnimeBtn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">
+                    <button id="saveAnimeBtn" class="button-anime bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full w-full">
                         Guardar para más tarde
                     </button>
                 </div>
@@ -75,29 +133,29 @@
                             <span class="star cursor-pointer text-3xl transition-all duration-300 hover:scale-125" data-rating="<%= i %>">☆</span>
                         <% } %>
                     </div>
-                    <span class="block mt-2 text-center">
-                        Calificación promedio: <span id="averageRating">0.0</span> 
-                        (<span id="ratingCount">0</span> votos)
+                    <span class="block mt-2 text-center font-semibold">
+                        Calificación promedio: <span id="averageRating" class="text-indigo-600">0.0</span> 
+                        (<span id="ratingCount" class="text-indigo-600">0</span> votos)
                     </span>
                 </div>
             </div>
             <div class="md:w-2/3">
-                <p class="text-lg mb-6 text-gray-700"><%= anime.description %></p>
+                <p class="text-lg mb-6 text-gray-700 leading-relaxed"><%= anime.description %></p>
 
-                <h2 class="text-2xl font-semibold mb-4 text-indigo-800">Episodes</h2>
+                <h2 class="text-2xl font-semibold mb-4 text-indigo-800">Episodios</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
                     <% episodes.forEach((episode, index) => { %>
                         <a href="/anime/<%= anime.slug %>/episode/<%= episode.id %>" 
-                           class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 text-center">
-                            Episode <%= index + 1 %>
+                           class="episode-button text-center font-bold">
+                            Episodio <%= index + 1 %>
                         </a>
                     <% }) %>
                 </div>
 
                 <% if (isAdmin) { %>
                     <div class="mt-8">
-                        <a href="/anime/<%= anime.slug %>/upload-episode" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                            Upload New Episode
+                        <a href="/anime/<%= anime.slug %>/upload-episode" class="button-anime bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300">
+                            Subir Nuevo Episodio
                         </a>
                     </div>
                 <% } %>
@@ -105,11 +163,11 @@
         </div>
 
         <!-- Sección de comentarios -->
-        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <div class="mt-8 anime-card p-6 animate__animated animate__fadeInUp">
             <h3 class="text-2xl font-semibold mb-4 text-indigo-800">Comentarios</h3>
             <form id="commentForm" class="mb-6">
-                <textarea id="commentContent" class="w-full p-2 border rounded" rows="3" placeholder="Escribe tu comentario"></textarea>
-                <button type="submit" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <textarea id="commentContent" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Escribe tu comentario"></textarea>
+                <button type="submit" class="button-anime mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full">
                     Enviar comentario
                 </button>
             </form>
@@ -119,181 +177,199 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const favoriteBtn = document.getElementById('favoriteBtn');
-        const favoriteText = document.getElementById('favoriteText');
-        const favoriteCount = document.getElementById('favoriteCount');
-        const averageRating = document.getElementById('averageRating');
-        const ratingCount = document.getElementById('ratingCount');
-        const stars = document.querySelectorAll('.star');
-        const saveAnimeBtn = document.getElementById('saveAnimeBtn');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteBtn = document.getElementById('favoriteBtn');
+    const favoriteText = document.getElementById('favoriteText');
+    const favoriteCount = document.getElementById('favoriteCount');
+    const averageRating = document.getElementById('averageRating');
+    const ratingCount = document.getElementById('ratingCount');
+    const stars = document.querySelectorAll('.star');
+    const saveAnimeBtn = document.getElementById('saveAnimeBtn');
 
-        function updateFavoriteButton(isFavorite) {
-            if (isFavorite) {
-                favoriteText.textContent = 'Quitar de favoritos';
-                favoriteBtn.classList.remove('bg-blue-500', 'hover:bg-blue-700');
-                favoriteBtn.classList.add('bg-red-500', 'hover:bg-red-700');
-            } else {
-                favoriteText.textContent = 'Agregar a favoritos';
-                favoriteBtn.classList.remove('bg-red-500', 'hover:bg-red-700');
-                favoriteBtn.classList.add('bg-blue-500', 'hover:bg-blue-700');
-            }
-        }
-
-        function updateSaveButton(isSaved) {
-            if (isSaved) {
-                saveAnimeBtn.textContent = 'Quitar de guardados';
-                saveAnimeBtn.classList.remove('bg-green-500', 'hover:bg-green-700');
-                saveAnimeBtn.classList.add('bg-red-500', 'hover:bg-red-700');
-            } else {
-                saveAnimeBtn.textContent = 'Guardar para más tarde';
-                saveAnimeBtn.classList.remove('bg-red-500', 'hover:bg-red-700');
-                saveAnimeBtn.classList.add('bg-green-500', 'hover:bg-green-700');
-            }
-        }
-
-        function updateStars(rating) {
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.textContent = '⭐';
-                    star.classList.add('text-yellow-400');
-                } else {
-                    star.textContent = '☆';
-                    star.classList.remove('text-yellow-400');
-                }
+    function updateFavoriteButton(isFavorite) {
+        if (isFavorite) {
+            favoriteText.textContent = 'Quitar de favoritos';
+            gsap.to(favoriteBtn, {
+                backgroundColor: '#f56565',
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        } else {
+            favoriteText.textContent = 'Agregar a favoritos';
+            gsap.to(favoriteBtn, {
+                backgroundColor: '#4299e1',
+                duration: 0.3,
+                ease: 'power2.out'
             });
         }
+    }
 
-        function loadAnimeData() {
-            fetch(`/anime/<%= anime.slug %>/data`)
-                .then(response => response.json())
-                .then(data => {
-                    favoriteCount.textContent = data.favoriteCount;
-                    averageRating.textContent = data.averageRating ? data.averageRating.toFixed(1) : '0.0';
-                    ratingCount.textContent = data.ratingCount;
-                    updateFavoriteButton(data.isFavorite);
-                    updateSaveButton(data.isSaved); // Update save button state
-                    if (data.userRating) {
-                        updateStars(data.userRating);
-                    }
-                })
-                .catch(error => console.error('Error loading data:', error));
+    function updateSaveButton(isSaved) {
+        if (isSaved) {
+            saveAnimeBtn.textContent = 'Quitar de guardados';
+            gsap.to(saveAnimeBtn, {
+                backgroundColor: '#f56565',
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        } else {
+            saveAnimeBtn.textContent = 'Guardar para más tarde';
+            gsap.to(saveAnimeBtn, {
+                backgroundColor: '#48bb78',
+                duration: 0.3,
+                ease: 'power2.out'
+            });
         }
+    }
 
-        favoriteBtn.addEventListener('click', () => {
-            const action = favoriteText.textContent === 'Agregar a favoritos' ? 'add' : 'remove';
-            fetch(`/anime/<%= anime.slug %>/favorite`, { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ animeId: <%= anime.id %>, action: action })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadAnimeData();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: data.message
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.message
-                    });
-                }
-            });
-        });
-
-        saveAnimeBtn.addEventListener('click', () => {
-            const isSaved = saveAnimeBtn.textContent === 'Guardar para más tarde';
-            fetch(`/anime/<%= anime.slug %>/toggle-save`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ animeId: <%= anime.id %> })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateSaveButton(isSaved);
-                    Swal.fire({
-                        icon: 'success',
-                        title: isSaved ? 'Guardado' : 'Eliminado',
-                        text: isSaved ? 'Anime guardado para ver más tarde' : 'Anime eliminado de guardados'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.message
-                    });
-                }
-            });
-        });
-
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                const rating = star.dataset.rating;
-                fetch(`/anime/<%= anime.slug %>/rate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ animeId: <%= anime.id %>, rating })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updateStars(rating);
-                        loadAnimeData();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: data.message
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: data.message
-                        });
-                    }
+    function updateStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                gsap.to(star, {
+                    color: '#ffd700',
+                    scale: 1.2,
+                    duration: 0.3,
+                    ease: 'back.out(1.7)'
                 });
-            });
+                star.textContent = '⭐';
+            } else {
+                gsap.to(star, {
+                    color: '#ccc',
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                star.textContent = '☆';
+            }
         });
+    }
 
-        document.getElementById('commentForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const content = document.getElementById('commentContent').value.trim();
-            if (content === '') {
+    function animateCountChange(element, newValue) {
+        gsap.to(element, {
+            innerHTML: newValue,
+            duration: 1,
+            ease: 'power2.out',
+            snap: { innerHTML: 1 }
+        });
+    }
+
+    function loadAnimeData() {
+        fetch(`/anime/<%= anime.slug %>/data`)
+            .then(response => response.json())
+            .then(data => {
+                animateCountChange(favoriteCount, data.favoriteCount);
+                animateCountChange(averageRating, data.averageRating ? data.averageRating.toFixed(1) : '0.0');
+                animateCountChange(ratingCount, data.ratingCount);
+                updateFavoriteButton(data.isFavorite);
+                updateSaveButton(data.isSaved);
+                if (data.userRating) {
+                    updateStars(data.userRating);
+                }
+            })
+            .catch(error => console.error('Error loading data:', error));
+    }
+
+    favoriteBtn.addEventListener('click', () => {
+        const action = favoriteText.textContent === 'Agregar a favoritos' ? 'add' : 'remove';
+        fetch(`/anime/<%= anime.slug %>/favorite`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ animeId: <%= anime.id %>, action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadAnimeData();
+                gsap.from(favoriteBtn, {
+                    scale: 0.5,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'back.out(1.7)'
+                });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Por favor, introduce un comentario válido.'
+                    text: data.message
                 });
-                return;
             }
-            fetch(`/anime/<%= anime.slug %>/comment`, {
+        });
+    });
+
+    saveAnimeBtn.addEventListener('click', () => {
+        const isSaved = saveAnimeBtn.textContent === 'Guardar para más tarde';
+        fetch(`/anime/<%= anime.slug %>/toggle-save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ animeId: <%= anime.id %> })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateSaveButton(isSaved);
+                gsap.from(saveAnimeBtn, {
+                    y: -20,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'back.out(1.7)'
+                });
+                Swal.fire({
+                    icon: 'success',
+                    title: isSaved ? 'Guardado' : 'Eliminado',
+                    text: isSaved ? 'Anime guardado para ver más tarde' : 'Anime eliminado de guardados',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message
+                });
+            }
+        });
+    });
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.dataset.rating;
+            fetch(`/anime/<%= anime.slug %>/rate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ animeId: <%= anime.id %>, content })
+                body: JSON.stringify({ animeId: <%= anime.id %>, rating })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    updateStars(rating);
+                    loadAnimeData();
+                    gsap.from(star, {
+                        rotate: 360,
+                        scale: 1.5,
+                        duration: 0.5,
+                        ease: 'back.out(1.7)'
+                    });
                     Swal.fire({
                         icon: 'success',
-                        title: 'Comentario agregado',
+                        title: 'Éxito',
+                        text: data.message,
                         showConfirmButton: false,
-                        timer: 1400
+                        timer: 1500
                     });
-                    document.getElementById('commentContent').value = '';
-                    loadComments();
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -303,30 +379,78 @@
                 }
             });
         });
-
-        function loadComments() {
-            fetch(`/anime/<%= anime.slug %>/comments?animeId=<%= anime.id %>`)
-            .then(response => response.json())
-            .then(comments => {
-                const commentsList = document.getElementById('commentsList');
-                commentsList.innerHTML = comments.map(comment => `
-                    <div class="mb-4 p-4 bg-gray-100 rounded">
-                        <p class="font-bold">${comment.username} 
-                            <span class="text-sm font-normal">(${comment.user_rank})</span>
-                            ${comment.is_admin ? '<span class="bg-red-500 text-white px-2 py-1 rounded text-xs ml-2">Admin</span>' : ''}
-                        </p>
-                        <p class="mt-2">${comment.content}</p>
-                        <p class="text-sm text-gray-500 mt-2">${new Date(comment.created_at).toLocaleString()}</p>
-                    </div>
-                `).join('');
-            });
-        }
-        
-        loadAnimeData();
-        loadComments();
     });
 
+    document.getElementById('commentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const content = document.getElementById('commentContent').value.trim();
+        if (content === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Por favor, introduce un comentario válido.'
+            });
+            return;
+        }
+        fetch(`/anime/<%= anime.slug %>/comment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ animeId: <%= anime.id %>, content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Comentario agregado',
+                    showConfirmButton: false,
+                    timer: 1400
+                });
+                document.getElementById('commentContent').value = '';
+                loadComments();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message
+                });
+            }
+        });
+    });
+
+    function loadComments() {
+        fetch(`/anime/<%= anime.slug %>/comments?animeId=<%= anime.id %>`)
+        .then(response => response.json())
+        .then(comments => {
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '';
+            comments.forEach((comment, index) => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-box mb-4 p-4 bg-gray-100 rounded opacity-0';
+                commentElement.innerHTML = `
+                    <p class="font-bold">${comment.username} 
+                        <span class="text-sm font-normal"></span>
+                        ${comment.is_admin ? '<span class="admin-badge">Admin</span>' : ''}
+                    </p>
+                    <p class="mt-2">${comment.content}</p>
+                    <p class="text-sm text-gray-500 mt-2">${new Date(comment.created_at).toLocaleString()}</p>
+                `;
+                commentsList.appendChild(commentElement);
+                
+                gsap.to(commentElement, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: 'power2.out'
+                });
+            });
+        });
+    }
     
-    </script>
+    loadAnimeData();
+    loadComments();
+});
+</script>
 </body>
 </html>

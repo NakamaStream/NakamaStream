@@ -23,6 +23,8 @@ const storage = multer.diskStorage({
   },
 });
 
+
+
 const upload = multer({ storage: storage });
 
 // Ruta de registro (GET)
@@ -190,6 +192,7 @@ router.get("/logout", (req, res) => {
 
 // Ruta del perfil de usuario
 router.get("/profile", (req, res) => {
+  
   if (!req.session.loggedin) {
     return res.redirect("/login");
   }

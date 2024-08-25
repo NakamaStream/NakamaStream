@@ -4,6 +4,11 @@ const router = express.Router();
 const db = require("../services/db");
 const moment = require("moment");
 
+let announcement = {
+  message: '',
+  expiration: null
+};
+
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
   res.render("register");
@@ -372,6 +377,35 @@ router.post("/admin/demote-user", (req, res) => {
   } else {
     // Si el usuario no es administrador, redirigir al dashboard
     res.redirect("/anime");
+  }
+});
+
+router.post('/set-announcement', (req, res) => {
+  try {
+    const { message, duration } = req.body;
+    if (!message || !duration) {
+      return res.status(400).json({ success: false, error: 'Message and duration are required.' });
+    }
+
+    const expiration = new Date();
+    expiration.setMinutes(expiration.getMinutes() + parseInt(duration));
+
+    announcement.message = message;
+    announcement.expiration = expiration;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error setting announcement:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+router.get('/get-announcement', (req, res) => {
+  const now = new Date();
+  if (announcement.expiration && now <= announcement.expiration) {
+    res.json({ message: announcement.message });
+  } else {
+    res.json({ message: null });
   }
 });
 
