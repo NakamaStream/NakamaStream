@@ -17,7 +17,6 @@ body {
     );
 }
 
-
 .carousel-wrapper {
     position: relative;
     width: 100%;
@@ -31,7 +30,6 @@ body {
     min-width: 100%;
     box-sizing: border-box;
 }
-
 
 .nav-link {
     @apply text-white hover:text-gray-400;

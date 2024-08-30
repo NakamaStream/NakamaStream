@@ -8,9 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchIcon = document.getElementById('search-icon');
     const searchInput = document.getElementById('anime-search');
     const searchSvg = document.getElementById('search-svg');
-    const animeCards = document.querySelectorAll('.anime-card');
+    const animeCards = document.querySelectorAll('.anime-card')
     const noResults = document.getElementById('no-results');
-    const bannerContainer = document.querySelector('.container.mx-auto.px-4.py-4'); // Selecciona el contenedor del carrusel
 
     const prevButton = document.getElementById('prev-slide');
     const nextButton = document.getElementById('next-slide');
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let timeout;
 
-    // Fetch announcements
     fetch('/get-announcement')
     .then(response => response.json())
     .then(data => {
@@ -30,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = document.getElementById('close-announcement');
         
         if (data.message) {
+            // Cuando hay un mensaje, muestra el modal si no ha sido visto
             if (!localStorage.getItem('announcementSeen')) {
                 message.textContent = data.message;
                 modal.classList.remove('hidden');
@@ -40,19 +39,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         } else {
+            // Cuando no hay mensaje, borra el localStorage
             localStorage.removeItem('announcementSeen');
         }
     })
     .catch(error => console.error('Error fetching announcement:', error));
 
-    // Toggle menu visibility
+    // Función para alternar visibilidad de menús
     function toggleMenu(button, menu) {
         button.addEventListener('click', function() {
             menu.classList.toggle('hidden');
         });
     }
 
-    // Handle mouse enter/leave
+    // Función para manejar la entrada y salida del ratón
     function handleMouseEnterLeave(button, menu) {
         button.addEventListener('mouseenter', function() {
             clearTimeout(timeout);
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add events to menus
+    // Verificar si los elementos existen antes de agregar eventos
     if (profileButton && profileMenu) {
         toggleMenu(profileButton, profileMenu);
     }
@@ -85,8 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     searchIcon.addEventListener('click', function () {
         searchInput.classList.toggle('hidden');
-        searchInput.focus();
+        searchInput.focus();  // Foco automático en el campo de búsqueda
 
+        // Cambiar ícono de lupa a X y viceversa
         if (searchInput.classList.contains('hidden')) {
             searchSvg.innerHTML = `
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -98,14 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Filter anime cards
+    // Filtrar animes cuando se ingresa texto
     searchInput.addEventListener('input', function () {
         const query = searchInput.value.toLowerCase();
         let hasResults = false;
-
+    
         animeCards.forEach(card => {
             const animeName = card.querySelector('h2').textContent.toLowerCase();
-
+    
             if (animeName.includes(query)) {
                 card.style.display = 'block';
                 hasResults = true;
@@ -113,22 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.style.display = 'none';
             }
         });
-
+    
+        const carouselContainer = document.getElementById('carousel-container');
+        const noResults = document.getElementById('no-results'); // Asegúrate de tener este elemento en tu HTML
+    
+        // Ocultar el carousel-container siempre que se realice una búsqueda
+        carouselContainer.classList.add('hidden');
+    
+        // Mostrar u ocultar el aviso según haya resultados o no
         if (hasResults) {
             noResults.classList.add('hidden');
         } else {
             noResults.classList.remove('hidden');
         }
-
-        // Ocultar el banner si hay búsqueda activa
-        if (query) {
-            bannerContainer.classList.add('hidden');
-        } else {
-            bannerContainer.classList.remove('hidden');
-        }
     });
+    
 
-    // Close menus on click outside
+    // Cerrar menús al hacer clic fuera de ellos
     document.addEventListener('click', function(event) {
         if (profileMenu && !profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
             profileMenu.classList.add('hidden');
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close menus on Esc key press
+    // Accesibilidad: cerrar menús con la tecla Esc
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             if (profileMenu) profileMenu.classList.add('hidden');
@@ -146,6 +148,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (searchContainer) searchContainer.classList.remove('active');
         }
     });
+
+    // Función de búsqueda de anime
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.toLowerCase();
+            animeCards.forEach(card => {
+                const animeName = card.querySelector('h2').textContent.toLowerCase();
+                if (animeName.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
 
     function updateCarousel() {
         carouselItems.style.transform = `translateX(-${currentIndex * 100}%)`;
@@ -162,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startAutoSlide() {
-        interval = setInterval(nextSlide, 8000);
+        interval = setInterval(nextSlide, 8000); // Change banner every 5 seconds
     }
 
     function stopAutoSlide() {
@@ -181,5 +198,6 @@ document.addEventListener('DOMContentLoaded', function() {
         startAutoSlide();
     });
 
+    // Initialize the carousel
     startAutoSlide();
 });
