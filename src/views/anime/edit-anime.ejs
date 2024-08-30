@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Anime - NakamaStream</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        .anime-bg {
+            background-image: url('https://example.com/path-to-anime-background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-nunito anime-bg text-white">
+    <nav class="bg-indigo-900 bg-opacity-80 p-4 sticky top-0 z-50 animate__animated animate__fadeInDown">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                NakamaStream Admin
+            </h1>
+            <div>
+                <span class="mr-4">Bienvenido, <%= username %></span>
+                <a href="/admin/animes" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                    Volver al panel
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4">
+        <h2 class="text-4xl font-bold mb-6 text-center animate__animated animate__fadeInUp">Editar Anime</h2>
+        
+        <form action="/admin/animes/edit/<%= anime.id %>" method="POST" class="glass-effect p-6 animate__animated animate__fadeIn" data-aos="fade-up">
+            <div class="mb-4">
+                <label for="name" class="block text-white text-sm font-bold mb-2">Nombre:</label>
+                <input type="text" id="name" name="name" value="<%= anime.name %>" required
+                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
+            </div>
+            <div class="mb-4">
+                <label for="imageUrl" class="block text-white text-sm font-bold mb-2">URL de la imagen:</label>
+                <input type="url" id="imageUrl" name="imageUrl" value="<%= anime.imageUrl %>" required
+                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-white text-sm font-bold mb-2">Descripción:</label>
+                <textarea id="description" name="description" required
+                          class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 h-32 transition duration-300"><%= anime.description %></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                    Guardar cambios
+                </button>
+                <a href="/admin/animes" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Guardar cambios?',
+                text: "¿Estás seguro de que quieres actualizar este anime?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar',
+                background: '#1a202c',
+                color: '#ffffff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

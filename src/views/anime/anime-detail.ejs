@@ -7,19 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-    <!-- Meta etiquetas para compartir en redes sociales -->
-    <meta property="og:title" content="<%= anime.name %> - NakamaStream">
-    <meta property="og:description" content="<%= anime.description %>">
-    <meta property="og:image" content="<%= anime.imageUrl %>">
-    <meta property="og:type" content="website">
-    
-    <!-- Meta etiquetas para Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= anime.name %> - NakamaStream">
-    <meta name="twitter:description" content="<%= anime.description %>">
-    <meta name="twitter:image" content="<%= anime.imageUrl %>">
-
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -100,7 +87,17 @@
 </head>
 <body class="bg-gray-100">
     <nav class="bg-indigo-600 text-white shadow-md">
-        <!-- ... (navigation code remains the same) ... -->
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
+            <div class="flex items-center">
+                <a href="/search" class="mr-4 hover:text-indigo-200">
+                    <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </a>
+                <a href="/logout" class="hover:text-indigo-200">Logout</a>
+            </div>
+        </div>
     </nav>
 
     <div class="container mx-auto px-4 py-8">
@@ -174,6 +171,21 @@
             <div id="commentsList">
                 <!-- Los comentarios se cargarán aquí dinámicamente -->
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para la información del usuario -->
+    <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div class="flex items-center mb-4">
+                <img id="modalUserImage" src="" alt="" class="w-16 h-16 rounded-full mr-4">
+                <div>
+                    <h2 id="modalUsername" class="text-2xl font-bold"></h2>
+                    <p id="modalUserEmail" class="text-gray-600"></p>
+                </div>
+            </div>
+            <p id="modalUserBio" class="mb-4"></p>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" onclick="closeUserModal()">Close</button>
         </div>
     </div>
 
@@ -309,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     saveAnimeBtn.addEventListener('click', () => {
-        const isSaved = saveAnimeBtn.textContent === 'Guardar para más tarde';
         fetch(`/anime/<%= anime.slug %>/toggle-save`, {
             method: 'POST',
             headers: {
@@ -320,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                updateSaveButton(isSaved);
+                updateSaveButton(data.isSaved);
                 gsap.from(saveAnimeBtn, {
                     y: -20,
                     opacity: 0,
@@ -329,8 +340,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 Swal.fire({
                     icon: 'success',
-                    title: isSaved ? 'Guardado' : 'Eliminado',
-                    text: isSaved ? 'Anime guardado para ver más tarde' : 'Anime eliminado de guardados',
+                    title: data.isSaved ? 'Guardado' : 'Eliminado',
+                    text: data.message,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -428,15 +439,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-box mb-4 p-4 bg-gray-100 rounded opacity-0';
                 commentElement.innerHTML = `
-                    <p class="font-bold">${comment.username} 
-                        <span class="text-sm font-normal"></span>
-                        ${comment.is_admin ? '<span class="admin-badge">Admin</span>' : ''}
-                    </p>
+                    <div class="flex items-center mb-2">
+                        <img src="${comment.profile_image_url || '/placeholder-user.jpg'}" alt="${comment.username}" class="w-10 h-10 rounded-full mr-3 cursor-pointer">
+                        <div>
+                            <a href="/profile/${comment.username}" class="font-bold hover:text-indigo-600">${comment.username}</a>
+                            <span class="text-sm font-normal"></span>
+                            ${comment.is_admin ? '<span class="admin-badge">Admin</span>' : ''}
+                            <p class="text-sm text-gray-500">${new Date(comment.created_at).toLocaleString()}</p>
+                        </div>
+                    </div>
                     <p class="mt-2">${comment.content}</p>
-                    <p class="text-sm text-gray-500 mt-2">${new Date(comment.created_at).toLocaleString()}</p>
                 `;
                 commentsList.appendChild(commentElement);
                 
+                commentElement.querySelector('img').addEventListener('click', () => {
+                    showUserModal(comment.username);
+                });
+
                 gsap.to(commentElement, {
                     opacity: 1,
                     y: 0,
@@ -446,6 +465,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         });
+    }
+    
+    function showUserModal(username) {
+        fetch(`/api/user/${username}`)
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('modalUserImage').src = user.profile_image_url || '/placeholder-user.jpg';
+                document.getElementById('modalUsername').textContent = user.username;
+                document.getElementById('modalUserEmail').textContent = user.email;
+                document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
+                document.getElementById('userModal').classList.remove('hidden');
+            });
+    }
+
+    window.closeUserModal = function() {
+        document.getElementById('userModal').classList.add('hidden');
     }
     
     loadAnimeData();

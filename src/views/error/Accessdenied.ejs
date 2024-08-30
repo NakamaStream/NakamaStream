@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NakamaStream - Acceso denegado</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+  <style>
+
+    .waifu {
+      mask-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+
+    button {
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animated {
+      animation: fadeInUp 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero is-danger is-fullheight" style="background-color: #ffffff;">
+    <div class="hero-body animated">
+      <div class="container has-text-centered">
+        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="Error Image" style="height: 300px;" class="waifu">
+        <br>
+        <h1 class="title" style="color: #ff6b6b;">
+          Oops, algo salió mal.
+        </h1>
+        <p class="subtitle" style="color: #4a4a4a;">
+            Lo sentimos, pero no tienes acceso para entrar a esta página. Por favor, verifica tus permisos o contacta al administrador para más información.
+        </p>
+        <a href="/">
+          <button class="button is-link" style="background-color: #ff6b6b;">Volver al inicio</button>
+        </a>
+        
+      </div>
+    </div>
+  </section>
+</body>
+</html>

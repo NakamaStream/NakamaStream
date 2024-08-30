@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Management - NakamaStream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .comment-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .loading-shimmer {
+            animation: shimmer 2s infinite linear;
+            background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+            background-size: 1000px 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10 transition-colors duration-300">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/admin/panel" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">NakamaStream Admin</a>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:inline"></i>
+                </button>
+                <a href="/logout" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-indigo-600 dark:text-indigo-400 fade-in">Comment Administrator</h1>
+
+        <div class="mb-6 fade-in" style="animation-delay: 0.2s;">
+            <label for="animeSelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Anime:</label>
+            <select id="animeSelect" class="w-full p-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 transition-all duration-300">
+                <option value="">All Animes</option>
+                <!-- Anime options will be populated dynamically -->
+            </select>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 fade-in" style="animation-delay: 0.4s;">
+            <div id="commentsList" class="space-y-4">
+                <!-- Comments will be loaded here -->
+            </div>
+            <div id="pagination" class="mt-6 flex justify-center space-x-2">
+                <!-- Pagination buttons will be added here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+        
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        });
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        // Comment management
+        const animeSelect = document.getElementById('animeSelect');
+        const commentsList = document.getElementById('commentsList');
+        const pagination = document.getElementById('pagination');
+        let currentPage = 1;
+        const commentsPerPage = 10;
+
+        function createLoadingShimmer() {
+            const shimmer = document.createElement('div');
+            shimmer.className = 'loading-shimmer h-20 rounded-md mb-4';
+            return shimmer;
+        }
+
+        // Load animes for the select dropdown
+        function loadAnimes() {
+            fetch('/api/animes')
+                .then(response => response.json())
+                .then(animes => {
+                    animes.forEach(anime => {
+                        const option = document.createElement('option');
+                        option.value = anime.id;
+                        option.textContent = anime.name;
+                        animeSelect.appendChild(option);
+                    });
+                });
+        }
+
+        // Load comments based on selected anime and page
+        function loadComments(page = 1) {
+            commentsList.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                commentsList.appendChild(createLoadingShimmer());
+            }
+
+            const animeId = animeSelect.value;
+            fetch(`/api/comments?animeId=${animeId}&page=${page}&limit=${commentsPerPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayComments(data.comments);
+                    displayPagination(data.totalPages, page);
+                });
+        }
+
+        // Display comments in the list
+        function displayComments(comments) {
+            commentsList.innerHTML = '';
+            comments.forEach((comment, index) => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow comment-item';
+                commentElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold text-indigo-600 dark:text-indigo-400">${comment.username} <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(${comment.user_rank})</span></p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Anime: ${comment.anime_name} - Episode ${comment.episode_number}</p>
+                            <p class="mt-2 text-gray-700 dark:text-gray-300">${comment.content}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">${formatDate(comment.created_at)}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="deleteComment(${comment.id})" class="text-red-600 hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button onclick="editComment(${comment.id})" class="text-blue-600 hover:text-blue-800 dark:hover:text-blue-400 transition-colors duration-300">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                commentsList.appendChild(commentElement);
+                setTimeout(() => {
+                    commentElement.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
+                }, 0);
+            });
+        }
+
+        // Display pagination buttons
+        function displayPagination(totalPages, currentPage) {
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.classList.add('px-3', 'py-1', 'rounded', 'bg-indigo-600', 'text-white', 'hover:bg-indigo-700', 'transition-colors', 'duration-300');
+                if (i === currentPage) {
+                    button.classList.add('bg-indigo-800');
+                }
+                button.onclick = () => loadComments(i);
+                pagination.appendChild(button);
+            }
+        }
+
+        // Delete comment
+        function deleteComment(commentId) {
+            if (confirm('Are you sure you want to delete this comment?')) {
+                fetch(`/api/comments/${commentId}`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadComments(currentPage);
+                        } else {
+                            alert('Failed to delete comment');
+                        }
+                    });
+            }
+        }
+
+        // Edit comment
+        function editComment(commentId) {
+            const newContent = prompt('Enter the new comment content:');
+            if (newContent !== null) {
+                fetch(`/api/comments/${commentId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: newContent })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadComments(currentPage);
+                        } else {
+                            alert('Failed to update comment');
+                        }
+                    });
+            }
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            };
+            return new Date(dateString).toLocaleString('en-US', options);
+        }
+
+        // Event listeners
+        animeSelect.addEventListener('change', () => loadComments());
+
+        // Initial load
+        loadAnimes();
+        loadComments();
+    </script>
+</body>
+</html>

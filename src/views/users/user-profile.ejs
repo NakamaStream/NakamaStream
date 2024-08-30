@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de <%= user.username %> - NakamaStream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10 transition-colors duration-300">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="/anime" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">NakamaStream</a>
+            <div class="flex items-center space-x-4">
+                <a href="/search" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </a>
+                <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
+                    <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg class="w-6 h-6 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <a href="/logout" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl overflow-hidden transition-colors duration-300">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 h-48 relative">
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                    <img class="rounded-full border-4 border-white dark:border-gray-800 w-32 h-32 float-animation" src="<%= user.profile_image_url || '/placeholder-user.jpg' %>" alt="<%= user.username %>'s profile picture">
+                </div>
+            </div>
+            <div class="px-4 py-16 text-center">
+                <h1 class="text-4xl font-bold text-gray-800 dark:text-white"><%= user.username %></h1>
+                <p class="text-gray-600 dark:text-gray-400"><%= user.email %></p>
+                <p class="mt-4 text-gray-700 dark:text-gray-300"><%= user.bio || 'No bio available' %></p>
+                <div class="mt-6 flex justify-center space-x-4">
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400"><%= user.favorite_count %></p>
+                        <p class="text-gray-600 dark:text-gray-400">Favoritos</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400"><%= user.comment_count %></p>
+                        <p class="text-gray-600 dark:text-gray-400">Comentarios</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Animes Favoritos</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <% favoriteAnimes.forEach(anime => { %>
+                    <a href="/anime/<%= anime.slug %>" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+                        <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white"><%= anime.name %></h3>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+
+        <% if (isOwnProfile) { %>
+            <div class="mt-8">
+                <a href="/profile/edit" class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300">Editar Perfil</a>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+        
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        });
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var map = L.map('map').setView([20, 0], 2); // Set the view to a global view
+    var map = L.map('map').setView([20, 0], 2);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -17,10 +17,9 @@ document.addEventListener("DOMContentLoaded", function() {
             .bindPopup(location.country)
             .openPopup();
         
-        // Add country with custom number to the ordered list below the map with Bulma styling
         var listItem = document.createElement('li');
-        listItem.textContent = location.country + ": " + location.numero; // Display country and custom number
-        listItem.classList.add('mb-2'); // Add margin-bottom for spacing
+        listItem.textContent = location.country + ": " + location.numero; 
+        listItem.classList.add('mb-2');
         document.getElementById('country-list').appendChild(listItem);
     });
 });
