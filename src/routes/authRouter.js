@@ -23,13 +23,11 @@ const storage = multer.diskStorage({
   },
 });
 
-
-
 const upload = multer({ storage: storage });
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("users/register");
 });
 
 // Ruta de registro (POST)
@@ -49,7 +47,7 @@ router.post("/register", (req, res) => {
     }
 
     if (results[0].count >= 3) {
-      return res.render("register", {
+      return res.render("users/register", {
         error: "Se ha excedido el límite de cuentas permitidas desde esta IP.",
       });
     }
@@ -69,7 +67,7 @@ router.post("/register", (req, res) => {
           if (err) {
             console.error("Error al registrar el usuario:", err.message);
             if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
-              res.render("register", {
+              res.render("users/register", {
                 error: "Por favor, proporciona una contraseña.",
               });
             } else {
@@ -95,7 +93,7 @@ router.get("/login", (req, res) => {
     const captchaPhrase = words[randomIndex];
     req.session.captchaPhrase = captchaPhrase;
 
-    res.render("login", { captchaPhrase: captchaPhrase });
+    res.render("users/login", { captchaPhrase: captchaPhrase });
   } catch (e) {
     console.log(e);
     res.status(500).send("Error al cargar el captcha.");
@@ -109,7 +107,7 @@ router.post("/login", (req, res) => {
     "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
 
   if (captchaInput !== req.session.captchaPhrase) {
-    return res.render("login", {
+    return res.render("users/login", {
       errorMessage: "Captcha incorrecto.",
       captchaPhrase: req.session.captchaPhrase,
     });
@@ -118,7 +116,7 @@ router.post("/login", (req, res) => {
   db.query(sql, [username], (err, results) => {
     if (err) {
       console.error("Error al iniciar sesión:", err.message);
-      return res.render("login", {
+      return res.render("users/login", {
         errorMessage: "Error al iniciar sesión. Inténtalo de nuevo.",
         captchaPhrase: req.session.captchaPhrase,
       });
@@ -131,7 +129,7 @@ router.post("/login", (req, res) => {
       bcrypt.compare(password, hashedPassword, (err, match) => {
         if (err) {
           console.error("Error al verificar la contraseña:", err);
-          return res.render("login", {
+          return res.render("users/login", {
             errorMessage:
               "Error al verificar la contraseña. Inténtalo de nuevo.",
             captchaPhrase: req.session.captchaPhrase,
@@ -146,13 +144,13 @@ router.post("/login", (req, res) => {
               const banExpirationFormatted = moment(ban_expiration).format(
                 "DD/MM/YYYY HH:mm:ss"
               );
-              return res.render("banned", {
+              return res.render("users/banned", {
                 message: "Has sido baneado temporalmente.",
                 banExpirationFormatted,
               });
             } else {
               // Usuario baneado permanentemente
-              return res.render("banned", {
+              return res.render("users/banned", {
                 message: "Has sido baneado permanentemente.",
                 banExpirationFormatted: null,
               });
@@ -169,14 +167,14 @@ router.post("/login", (req, res) => {
           req.session.isAdmin = results[0].is_admin;
           res.redirect("/anime");
         } else {
-          res.render("login", {
+          res.render("users/login", {
             errorMessage: "Credenciales incorrectas.",
             captchaPhrase: req.session.captchaPhrase,
           });
         }
       });
     } else {
-      res.render("login", {
+      res.render("users/login", {
         errorMessage: "Credenciales incorrectas.",
         captchaPhrase: req.session.captchaPhrase,
       });
@@ -191,73 +189,90 @@ router.get("/logout", (req, res) => {
 });
 
 // Ruta del perfil de usuario
-router.get("/profile", (req, res) => {
-  
+router.get("/profile/:username", (req, res) => {
   if (!req.session.loggedin) {
     return res.redirect("/login");
   }
 
-  const { username, email, createdAt, timeCreated, isAdmin } = req.session;
-  const createdAtFormatted = moment(createdAt).format("DD/MM/YYYY HH:mm:ss");
-  const timeCreatedFormatted = moment
-    .utc(timeCreated * 1000)
-    .format("HH:mm:ss");
+  const username = req.params.username;
+  const isOwnProfile = req.session.username === username;
 
-  // Obtener el hash MD5 del correo electrónico para Gravatar
-  const emailHash = crypto
-    .createHash("md5")
-    .update(email.trim().toLowerCase())
-    .digest("hex");
-  const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}`;
-
-  // Verificar el estado de baneado del usuario
   db.query(
-    "SELECT banned, ban_expiration, profile_image, banner_image FROM usuarios WHERE id = ?",
-    [req.session.userId],
+    `SELECT u.id, u.username, u.email, u.created_at, u.is_admin, u.banned, u.ban_expiration, 
+            u.profile_image, u.banner_image, IFNULL(u.bio, '') as bio,
+            TIMESTAMPDIFF(SECOND, u.created_at, NOW()) AS time_created,
+            (SELECT COUNT(*) FROM favorites WHERE user_id = u.id) as favorite_count,
+            (SELECT COUNT(*) FROM comments WHERE user_id = u.id) as comment_count
+     FROM usuarios u WHERE u.username = ?`,
+    [username],
     (err, results) => {
       if (err) {
-        console.error("Error al obtener el estado de baneado:", err);
-        return res.redirect("/anime");
+        console.error("Error al obtener información del usuario:", err);
+        return res.status(500).send("Error al obtener información del usuario");
       }
 
-      let banned = false;
+      if (results.length === 0) {
+        return res.status(404).send("Usuario no encontrado");
+      }
+
+      const user = results[0];
+      const createdAtFormatted = moment(user.created_at).format(
+        "DD/MM/YYYY HH:mm:ss"
+      );
+      const timeCreatedFormatted = moment
+        .utc(user.time_created * 1000)
+        .format("HH:mm:ss");
+
+      // Obtener el hash MD5 del correo electrónico para Gravatar
+      const emailHash = crypto
+        .createHash("md5")
+        .update(user.email.trim().toLowerCase())
+        .digest("hex");
+      const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}`;
+
       let banExpirationFormatted = null;
-      let profileImageUrl = "https://avatars.githubusercontent.com/u/168317328?s=200&v=4";
-      let bannerImageUrl = "https://github.com/NakamaStream/Resources/blob/main/NakamaStream.png?raw=true";
-
-      if (results.length > 0) {
-        const {
-          banned: isBanned,
-          ban_expiration,
-          profile_image,
-          banner_image,
-        } = results[0];
-        banned = isBanned;
-        if (isBanned && ban_expiration > new Date()) {
-          banExpirationFormatted = moment(ban_expiration).format(
-            "DD/MM/YYYY HH:mm:ss"
-          );
-        }
-        if (profile_image) {
-          profileImageUrl = profile_image;
-        }
-        if (banner_image) {
-          bannerImageUrl = banner_image;
-        }
+      if (user.banned && user.ban_expiration > new Date()) {
+        banExpirationFormatted = moment(user.ban_expiration).format(
+          "DD/MM/YYYY HH:mm:ss"
+        );
       }
 
-      res.render("profiles", {
-        username,
-        email,
-        createdAtFormatted,
-        timeCreatedFormatted,
-        isAdmin,
-        banned,
-        banExpirationFormatted,
-        gravatarUrl,
-        profileImageUrl,
-        bannerImageUrl,
-      });
+      // Obtener los animes favoritos del usuario
+      db.query(
+        `SELECT a.id, a.name, a.imageUrl, a.slug
+         FROM animes a 
+         JOIN favorites f ON a.id = f.anime_id 
+         WHERE f.user_id = ?
+         LIMIT 5`,
+        [user.id],
+        (err, favoriteAnimes) => {
+          if (err) {
+            console.error("Error al obtener animes favoritos:", err);
+            return res.status(500).send("Error al obtener animes favoritos");
+          }
+
+          res.render("users/profiles", {
+            user: user,
+            username: user.username,
+            email: user.email,
+            createdAtFormatted,
+            timeCreatedFormatted,
+            isAdmin: user.is_admin,
+            banned: user.banned,
+            banExpirationFormatted,
+            gravatarUrl,
+            profileImageUrl:
+              user.profile_image ||
+              "https://avatars.githubusercontent.com/u/168317328?s=200&v=4",
+            bannerImageUrl:
+              user.banner_image ||
+              "https://github.com/NakamaStream/Resources/blob/main/NakamaStream.png?raw=true",
+            bio: user.bio,
+            favoriteAnimes: favoriteAnimes,
+            isOwnProfile: isOwnProfile,
+          });
+        }
+      );
     }
   );
 });
@@ -274,17 +289,21 @@ router.post(
       return res.redirect("/login");
     }
 
-    const { newUsername, email, currentPassword, newPassword } = req.body;
+    const { newUsername, email, currentPassword, newPassword, bio } = req.body;
     const userId = req.session.userId;
 
-    let profileImageUrl = null;
-    let bannerImageUrl = null;
+    let updateFields = { username: newUsername, email: email, bio: bio };
+    let updateValues = [newUsername, email, bio];
 
     if (req.files["profileImage"]) {
-      profileImageUrl = "/uploads/" + req.files["profileImage"][0].filename;
+      updateFields.profile_image =
+        "/uploads/" + req.files["profileImage"][0].filename;
+      updateValues.push(updateFields.profile_image);
     }
     if (req.files["bannerImage"]) {
-      bannerImageUrl = "/uploads/" + req.files["bannerImage"][0].filename;
+      updateFields.banner_image =
+        "/uploads/" + req.files["bannerImage"][0].filename;
+      updateValues.push(updateFields.banner_image);
     }
 
     db.query(
@@ -297,7 +316,7 @@ router.post(
         }
 
         if (results.length === 0) {
-          return res.render("profiles", {
+          return res.render("users/profiles", {
             error: "No se encontró el usuario.",
           });
         }
@@ -310,7 +329,7 @@ router.post(
           }
 
           if (!match) {
-            return res.render("profiles", {
+            return res.render("users/profiles", {
               error: "La contraseña actual es incorrecta.",
             });
           }
@@ -322,36 +341,57 @@ router.post(
               return res.redirect("/profile");
             }
 
-            db.query(
-              "UPDATE usuarios SET username = ?, email = ?, password = ?, profile_image = ?, banner_image = ? WHERE id = ?",
-              [
-                newUsername,
-                email,
-                hashedPassword,
-                profileImageUrl,
-                bannerImageUrl,
-                userId,
-              ],
-              (err, results) => {
-                if (err) {
-                  console.error(
-                    "Error al actualizar la información del usuario:",
-                    err
-                  );
-                  return res.redirect("/profile");
-                }
+            updateFields.password = hashedPassword;
+            updateValues.push(hashedPassword);
+            updateValues.push(userId);
 
-                req.session.username = newUsername;
-                req.session.email = email;
-                res.redirect("/profile");
+            const updateQuery = `UPDATE usuarios SET ${Object.keys(updateFields)
+              .map((field) => `${field} = ?`)
+              .join(", ")} WHERE id = ?`;
+
+            db.query(updateQuery, updateValues, (err, results) => {
+              if (err) {
+                console.error(
+                  "Error al actualizar la información del usuario:",
+                  err
+                );
+                return res.redirect("/profile");
               }
-            );
+
+              req.session.username = newUsername;
+              req.session.email = email;
+              res.redirect("/profile/" + newUsername);
+            });
           });
         });
       }
     );
   }
 );
+
+// Ruta para actualizar la bio del usuario
+router.post("/profile/update-bio", (req, res) => {
+  if (!req.session.loggedin) {
+    return res.status(401).json({ success: false, message: "No autorizado" });
+  }
+
+  const userId = req.session.userId;
+  const { bio } = req.body;
+
+  db.query(
+    "UPDATE usuarios SET bio = ? WHERE id = ?",
+    [bio, userId],
+    (err, result) => {
+      if (err) {
+        console.error("Error al actualizar la bio:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Error al actualizar la bio" });
+      }
+      res.json({ success: true, message: "Bio actualizada correctamente" });
+    }
+  );
+});
 
 // Ruta para quitar el rol de administrador a un usuario
 router.post("/admin/demote-user", (req, res) => {
