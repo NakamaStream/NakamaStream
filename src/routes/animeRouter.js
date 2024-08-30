@@ -65,11 +65,11 @@ router.get("/anime", isLoggedIn, (req, res) => {
       console.error(err);
       res.status(500).send("Error al recuperar animes");
     } else {
-      res.render("anime-list", {
+      res.render("anime/anime-list", {
         animes: rows,
         isAdmin: req.session.isAdmin,
         user: req.session.user,
-        username: req.session.username, // Añade esta línea
+        username: req.session.username,
       });
     }
   });
@@ -77,7 +77,7 @@ router.get("/anime", isLoggedIn, (req, res) => {
 
 // Ruta para la página de subida de anime
 router.get("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
-  res.render("upload-anime");
+  res.render("anime/upload-anime");
 });
 
 // Ruta para procesar la subida de un anime
@@ -166,7 +166,7 @@ router.get("/anime/:slug", isLoggedIn, (req, res) => {
               console.error(err);
               res.status(500).send("Error al recuperar episodios");
             } else {
-              res.render("anime-detail", {
+              res.render("anime/anime-detail", {
                 anime: anime,
                 episodes: episodeResults,
                 isAdmin: req.session.isAdmin,
@@ -204,7 +204,7 @@ router.get("/anime/:slug/episode/:episodeId", isLoggedIn, (req, res) => {
               console.error(err);
               res.status(500).send("Error al recuperar episodios siguientes");
             } else {
-              res.render("episode-detail", {
+              res.render("anime/episode-detail", {
                 anime: {
                   id: episode.anime_id,
                   name: episode.name,
@@ -232,7 +232,7 @@ router.get("/anime/:slug/upload-episode", isLoggedIn, isAdmin, (req, res) => {
     } else if (results.length === 0) {
       res.status(404).send("Anime no encontrado");
     } else {
-      res.render("episode-upload", { anime: results[0] });
+      res.render("anime/episode-upload", { anime: results[0] });
     }
   });
 });
@@ -288,7 +288,7 @@ router.get("/anime/:slug/comments", isLoggedIn, (req, res) => {
   const episodeId = req.query.episodeId || null;
 
   let query = `
-    SELECT c.*, u.username, u.is_admin, 
+    SELECT c.*, u.username, u.is_admin, u.profile_image_url,
     CASE 
       WHEN u.is_admin = 1 THEN 'Admin'
       ELSE 'Novato I'
@@ -384,9 +384,10 @@ router.get("/anime/:slug/data", isLoggedIn, (req, res) => {
      (SELECT AVG(rating) FROM ratings WHERE anime_id = a.id) AS averageRating,
      (SELECT COUNT(*) FROM ratings WHERE anime_id = a.id) AS ratingCount,
      (SELECT rating FROM ratings WHERE anime_id = a.id AND user_id = ?) AS userRating,
-     (SELECT COUNT(*) > 0 FROM favorites WHERE anime_id = a.id AND user_id = ?) AS isFavorite
+     (SELECT COUNT(*) > 0 FROM favorites WHERE anime_id = a.id AND user_id = ?) AS isFavorite,
+     (SELECT COUNT(*) > 0 FROM saved_animes WHERE anime_id = a.id AND user_id = ?) AS isSaved
      FROM animes a WHERE a.slug = ?`,
-    [userId, userId, slug],
+    [userId, userId, userId, slug],
     (err, results) => {
       if (err) {
         console.error(err);
@@ -424,45 +425,62 @@ router.get("/api/favorite-animes", isLoggedIn, (req, res) => {
   );
 });
 
-// Ruta para agregar a guardados
-router.post("/anime/:slug/save", isLoggedIn, (req, res) => {
+// Ruta para guardar para más tarde
+router.post("/anime/:slug/toggle-save", isLoggedIn, (req, res) => {
   const animeId = req.body.animeId;
   const userId = req.session.userId;
 
   db.query(
-    "INSERT INTO saved_animes (user_id, anime_id) VALUES (?, ?)",
+    "SELECT * FROM saved_animes WHERE user_id = ? AND anime_id = ?",
     [userId, animeId],
-    (err) => {
+    (err, results) => {
       if (err) {
         console.error(err);
         return res
           .status(500)
-          .json({ success: false, message: "Error al guardar anime" });
+          .json({ success: false, message: "Error al procesar la solicitud" });
       }
-      res.json({ success: true, message: "Anime guardado" });
-    }
-  );
-});
 
-// Ruta para eliminar de guardados
-router.post("/anime/:slug/unsave", isLoggedIn, (req, res) => {
-  const animeId = req.body.animeId;
-  const userId = req.session.userId;
-
-  db.query(
-    "DELETE FROM saved_animes WHERE user_id = ? AND anime_id = ?",
-    [userId, animeId],
-    (err) => {
-      if (err) {
-        console.error(err);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "Error al eliminar anime guardado",
-          });
+      if (results.length > 0) {
+        // El anime ya está guardado, así que lo eliminamos
+        db.query(
+          "DELETE FROM saved_animes WHERE user_id = ? AND anime_id = ?",
+          [userId, animeId],
+          (err) => {
+            if (err) {
+              console.error(err);
+              return res.status(500).json({
+                success: false,
+                message: "Error al quitar de guardados",
+              });
+            }
+            res.json({
+              success: true,
+              message: "Anime eliminado de guardados",
+              isSaved: false,
+            });
+          }
+        );
+      } else {
+        // El anime no está guardado, así que lo guardamos
+        db.query(
+          "INSERT INTO saved_animes (user_id, anime_id) VALUES (?, ?)",
+          [userId, animeId],
+          (err) => {
+            if (err) {
+              console.error(err);
+              return res
+                .status(500)
+                .json({ success: false, message: "Error al guardar anime" });
+            }
+            res.json({
+              success: true,
+              message: "Anime guardado para más tarde",
+              isSaved: true,
+            });
+          }
+        );
       }
-      res.json({ success: true, message: "Anime eliminado de guardados" });
     }
   );
 });
@@ -484,7 +502,7 @@ router.get("/animes/api/saved-animes", isLoggedIn, (req, res) => {
           .status(500)
           .json({ message: "Error al obtener animes guardados" });
       }
-      res.render("saved-anime-list", {
+      res.render("anime/saved-anime-list", {
         animes: results,
         isAdmin: req.session.isAdmin,
       });
@@ -507,29 +525,38 @@ router.get("/api/total-animes", isLoggedIn, (req, res) => {
 });
 
 // Ruta para agregar comentario a un episodio
-router.post("/anime/:slug/episode/:episodeId/comment", isLoggedIn, (req, res) => {
-  const { slug, episodeId } = req.params;
-  const userId = req.session.userId;
-  const content = req.body.content;
+router.post(
+  "/anime/:slug/episode/:episodeId/comment",
+  isLoggedIn,
+  (req, res) => {
+    const { slug, episodeId } = req.params;
+    const userId = req.session.userId;
+    const content = req.body.content;
 
-  db.query(
-    "INSERT INTO comments (user_id, anime_id, episode_id, content) VALUES (?, (SELECT id FROM animes WHERE slug = ?), ?, ?)",
-    [userId, slug, episodeId, content],
-    (err) => {
-      if (err) {
-        return res.status(500).json({ message: "Error al agregar comentario" });
+    db.query(
+      "INSERT INTO comments (user_id, anime_id, episode_id, content) VALUES (?, (SELECT id FROM animes WHERE slug = ?), ?, ?)",
+      [userId, slug, episodeId, content],
+      (err) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Error al agregar comentario" });
+        }
+        res.json({ success: true, reload: true });
       }
-      res.json({ success: true, reload: true });
-    }
-  );
-});
+    );
+  }
+);
 
 // Ruta para obtener comentarios de un episodio
-router.get("/anime/:slug/episode/:episodeId/comments", isLoggedIn, (req, res) => {
-  const { slug, episodeId } = req.params;
+router.get(
+  "/anime/:slug/episode/:episodeId/comments",
+  isLoggedIn,
+  (req, res) => {
+    const { slug, episodeId } = req.params;
 
-  db.query(
-    `SELECT c.*, u.username, u.is_admin, 
+    db.query(
+      `SELECT c.*, u.username, u.is_admin, u.profile_image_url,
     CASE 
       WHEN u.is_admin = 1 THEN 'Admin'
       ELSE 'Novato I'
@@ -537,12 +564,166 @@ router.get("/anime/:slug/episode/:episodeId/comments", isLoggedIn, (req, res) =>
     FROM comments c
     JOIN usuarios u ON c.user_id = u.id
     WHERE c.episode_id = ?`,
-    [episodeId],
+      [episodeId],
+      (err, results) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Error al obtener comentarios" });
+        }
+        res.json(results);
+      }
+    );
+  }
+);
+
+// Ruta para obtener información del usuario
+router.get("/api/user/:username", isLoggedIn, (req, res) => {
+  const username = req.params.username;
+  db.query(
+    "SELECT id, username, email, profile_image_url, IFNULL(bio, '') as bio FROM usuarios WHERE username = ?",
+    [username],
     (err, results) => {
       if (err) {
-        return res.status(500).json({ message: "Error al obtener comentarios" });
+        console.error(err);
+        return res
+          .status(500)
+          .json({ message: "Error al obtener información del usuario" });
       }
-      res.json(results);
+      if (results.length === 0) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      res.json(results[0]);
+    }
+  );
+});
+
+// Ruta para el perfil de usuario
+router.get("/profile/:username", isLoggedIn, (req, res) => {
+  const username = req.params.username;
+  db.query(
+    `SELECT u.id, u.username, u.email, u.profile_image_url, IFNULL(u.bio, '') as bio,
+     (SELECT COUNT(*) FROM favorites WHERE user_id = u.id) as favorite_count,
+     (SELECT COUNT(*) FROM comments WHERE user_id = u.id) as comment_count
+     FROM usuarios u WHERE u.username = ?`,
+    [username],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error al obtener información del usuario");
+      }
+      if (results.length === 0) {
+        return res.status(404).send("Usuario no encontrado");
+      }
+      const user = results[0];
+
+      // Obtener los animes favoritos del usuario
+      db.query(
+        `SELECT a.id, a.name, a.imageUrl, a.slug
+         FROM animes a 
+         JOIN favorites f ON a.id = f.anime_id 
+         WHERE f.user_id = ?
+         LIMIT 5`,
+        [user.id],
+        (err, favoriteAnimes) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send("Error al obtener animes favoritos");
+          }
+
+          res.render("users/user-profile", {
+            user: user,
+            favoriteAnimes: favoriteAnimes,
+            isOwnProfile: req.session.username === username,
+          });
+        }
+      );
+    }
+  );
+});
+
+// Admin panel route
+router.get("/admin/animes", isLoggedIn, isAdmin, (req, res) => {
+  db.query("SELECT * FROM animes ORDER BY created_at DESC", (err, animes) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error al recuperar animes");
+    }
+    res.render("admin/admin-animes", { animes, username: req.session.username });
+  });
+});
+
+// Edit anime route
+router.get("/admin/animes/edit/:id", isLoggedIn, isAdmin, (req, res) => {
+  const animeId = req.params.id;
+  db.query("SELECT * FROM animes WHERE id = ?", [animeId], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error al recuperar anime");
+    }
+    if (results.length === 0) {
+      return res.status(404).send("Anime no encontrado");
+    }
+    res.render("anime/edit-anime", {
+      anime: results[0],
+      username: req.session.username,
+    });
+  });
+});
+
+// Update anime route
+router.post("/admin/animes/edit/:id", isLoggedIn, isAdmin, (req, res) => {
+  const animeId = req.params.id;
+  const { name, imageUrl, description } = req.body;
+  generateUniqueSlug(name, (err, slug) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error al generar slug");
+    }
+    db.query(
+      "UPDATE animes SET name = ?, imageUrl = ?, description = ?, slug = ? WHERE id = ?",
+      [name, imageUrl, description, slug, animeId],
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error al actualizar anime");
+        }
+        res.redirect("/admin/animes");
+      }
+    );
+  });
+});
+
+// Delete anime route
+router.post("/admin/animes/delete/:id", isLoggedIn, isAdmin, (req, res) => {
+  const animeId = req.params.id;
+  db.query("DELETE FROM animes WHERE id = ?", [animeId], (err) => {
+    if (err) {
+      console.error(err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Error al eliminar anime" });
+    }
+    res.json({ success: true, message: "Anime eliminado correctamente" });
+  });
+});
+
+// Ruta para actualizar la bio del usuario
+router.post("/profile/update-bio", isLoggedIn, (req, res) => {
+  const userId = req.session.userId;
+  const { bio } = req.body;
+
+  db.query(
+    "UPDATE usuarios SET bio = ? WHERE id = ?",
+    [bio, userId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Error al actualizar la bio" });
+      }
+      res.json({ success: true, message: "Bio actualizada correctamente" });
     }
   );
 });
