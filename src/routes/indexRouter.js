@@ -6,19 +6,19 @@ router.get('/', (req, res) => {
 });
 
 router.get('/error', (req, res) => {
-  res.render('error');
+  res.render('error/error');
 })
 
 router.get('/tos', (req, res) => {
-  res.render('tos');
+  res.render('start/tos');
 })
 
 router.get('/privacy', (req, res) => {
-  res.render('privacy');
+  res.render('start/privacy');
 })
 
 router.get('/about/jobs', (req, res) => {
-  res.render('jobs');
+  res.render('start/jobs');
 })
 
 router.get('/jobs/frontend', (req, res) => {
