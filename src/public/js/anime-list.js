@@ -20,30 +20,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let timeout;
 
+    // Verificar si la librería `marked` está cargada
+    if (typeof marked === 'undefined') {
+        console.error('Librería `marked` no está cargada.');
+        return;
+    }
+
     fetch('/get-announcement')
-    .then(response => response.json())
-    .then(data => {
-        const modal = document.getElementById('announcement-modal');
-        const message = document.getElementById('announcement-message');
-        const closeBtn = document.getElementById('close-announcement');
-        
-        if (data.message) {
-            // Cuando hay un mensaje, muestra el modal si no ha sido visto
-            if (!localStorage.getItem('announcementSeen')) {
-                message.textContent = data.message;
-                modal.classList.remove('hidden');
-                
-                closeBtn.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                    localStorage.setItem('announcementSeen', 'true');
-                });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received data:', data); // Verifica el formato del mensaje recibido
+
+            const modal = document.getElementById('announcement-modal');
+            const message = document.getElementById('announcement-message');
+            const closeBtn = document.getElementById('close-announcement');
+            
+            if (!message) {
+                console.error('Element with id "announcement-message" not found.');
+                return;
             }
-        } else {
-            // Cuando no hay mensaje, borra el localStorage
-            localStorage.removeItem('announcementSeen');
-        }
-    })
-    .catch(error => console.error('Error fetching announcement:', error));
+
+            if (data.message) {
+                if (!localStorage.getItem('announcementSeen')) {
+                    console.log('Markdown message:', data.message); // Verifica el contenido Markdown
+                    message.innerHTML = marked.parse(data.message); // Convertir Markdown a HTML
+                    modal.classList.remove('hidden');
+                    
+                    closeBtn.addEventListener('click', () => {
+                        modal.classList.add('hidden');
+                        localStorage.setItem('announcementSeen', 'true');
+                    }, { once: true });
+                }
+            } else {
+                localStorage.removeItem('announcementSeen');
+            }
+        })
+        .catch(error => console.error('Error fetching announcement:', error));
 
     // Función para alternar visibilidad de menús
     function toggleMenu(button, menu) {
