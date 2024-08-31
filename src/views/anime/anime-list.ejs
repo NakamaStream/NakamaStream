@@ -183,12 +183,13 @@
     
     <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
-          <h2 class="text-xl font-bold mb-4">Anuncio</h2>
-          <p id="announcement-message" class="mb-4"></p>
-          <button id="close-announcement" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Cerrar</button>
+            <h2 class="text-xl font-bold mb-4">Anuncio</h2>
+            <div id="announcement-message" class="mb-4"></div> <!-- Contenido del anuncio -->
+            <button id="close-announcement" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Cerrar</button>
         </div>
-    </div>
+    </div> 
 
     <script src="/src/public/js/anime-list.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
