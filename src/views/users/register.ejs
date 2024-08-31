@@ -12,6 +12,10 @@
 <body>
   <div class="login-form">
     <h1 class="login-form-title">Registrarse</h1>
+        <!-- Alerta informativa -->
+        <div class="error-message">
+          NakamaStream requiere que tengas una cuenta para ver anime.
+       </div>
     <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()">
       <div class="field">
         <div class="control has-icons-left">
@@ -38,6 +42,14 @@
         </div>
         <progress id="strengthBar" class="progress is-small" max="100" value="0"></progress>
         <p id="passwordStrength" class="help"></p>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="terms" required>
+            Acepto los <a href="/tos" target="_blank">términos y condiciones</a> y la <a href="/privacy" target="_blank">política de privacidad</a>.
+          </label>
+        </div>
       </div>
       <div class="field">
         <div class="control">

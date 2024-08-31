@@ -1,3 +1,6 @@
+console.log("El código fuente de NakamaStream está disponible en GitHub.");
+console.log("Enlace al repositorio de NakamaStream en GitHub: https://github.com/NakamaStream/NakamaStream");
+
 document.addEventListener('DOMContentLoaded', function() {
     const profileButton = document.getElementById('profile-menu-button');
     const profileMenu = document.getElementById('profile-menu');

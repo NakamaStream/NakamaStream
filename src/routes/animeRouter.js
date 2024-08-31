@@ -75,6 +75,23 @@ router.get("/anime", isLoggedIn, (req, res) => {
   });
 });
 
+// Ruta para obtener animes recientes
+router.get('/api/recent-animes', (req, res) => {
+  const query = `
+      SELECT * FROM animes
+      ORDER BY created_at DESC
+      LIMIT 5
+  `;
+  db.query(query, (err, rows) => {
+      if (err) {
+          console.error(err);
+          res.status(500).send('Error al recuperar animes recientes');
+      } else {
+          res.json(rows);
+      }
+  });
+});
+
 // Ruta para la página de subida de anime
 router.get("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
   res.render("anime/upload-anime");

@@ -203,3 +203,8 @@ body {
 #explore-menu, #profile-menu {
     pointer-events: auto; /* Allow pointer events */
 }
+
+.no-drag {
+    user-drag: none; /* For WebKit browsers */
+    -webkit-user-drag: none; /* For WebKit browsers */
+}

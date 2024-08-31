@@ -58,3 +58,12 @@ body {
 .forgot-password-link:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid red;
+  border-radius: 5px;
+  background-color: #ffe6e6;
+}

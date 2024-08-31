@@ -222,3 +222,25 @@ img {
 img:hover {
     transform: scale(1.1);
 }
+
+.anime-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.anime-box {
+    width: 20%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.anime-box img {
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+.anime-box img:hover {
+    transform: scale(1.05);
+}
+.anime-title {
+    margin-top: 10px;
+    font-weight: bold;
+}
