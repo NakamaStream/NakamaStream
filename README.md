@@ -82,9 +82,18 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 
 ## Imagenes
 
+<details>
+  <summary>Click para ver más imágenes</summary>
+  
 <div style="text-align: left;">
-  <img src="https://github.com/user-attachments/assets/6985effb-fc83-496e-b009-188693f5e0be" alt="Inicio" style="max-width: 70%;" >
+  <img src="https://github.com/user-attachments/assets/35460199-488c-457c-8bbf-f16b5c1ae63d" alt="Inicio" style="max-width: 70%;" >
 </div>
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/64703005-17a6-4c15-9354-d7f55a25bebe" alt="Inicio2" style="max-width: 70%;" >
+</div>
+
+</details>
 
 ## Instalación y Desarrollo Local
 
