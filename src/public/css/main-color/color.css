@@ -1,0 +1,26 @@
+.bg-gray-ff6b6b {
+    background-color: #ff6b6b;
+}
+
+.bg-gray-e55b5b {
+    background-color: #e55b5b;
+}
+
+.btm-episode {
+    background-color: white;
+    color: #ff6b6b;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 2px solid #ff6b6b;
+    transition: all 0.3s ease;
+}
+
+.btm-episode:hover {
+    background-color: #ff6b6b;
+    color: white;
+    transform: scale(1.05);
+}
+
+.anime-title {
+    color: black;
+}
