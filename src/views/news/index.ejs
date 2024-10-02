@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaNotice - Noticias</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/src/public/css/news.main.css">
+</head>
+
+<body>
+
+    <!-- Botón para abrir el menú -->
+    <button id="openMenuBtn" onclick="openNav()" class="fixed top-4 left-4 z-50 bg-red-600 text-white p-2 rounded-md">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Menú de navegación lateral -->
+    <div class="sidenav fixed top-0 left-0 h-full w-0 bg-gray-900 overflow-x-hidden transition-all duration-300 z-40" id="mySidenav">
+        <a href="javascript:void(0)" class="closebtn absolute top-0 right-4 text-4xl text-white" onclick="closeNav()">&times;</a>
+        
+        <!-- Logo -->
+        <a href="#" class="logo-link block mt-8 mb-8">
+            <img src="https://github.com/NakamaStream/Resources/blob/main/img/nakamaNotice.png?raw=true" alt="Logo" class="logo w-32 mx-auto">
+        </a>
+        
+        <nav class="mt-8">
+            <a href="#" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fas fa-home mr-2"></i> Inicio</a>
+            <a href="#" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fas fa-newspaper mr-2"></i> Últimas Noticias</a>
+            <a href="#" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fas fa-list-alt mr-2"></i> Categorías</a>
+            <a href="https://discord.gg/VPsApHSyVX" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fa-brands fa-discord mr-2"></i> Discord</a>
+            <a href="https://github.com/NakamaStream" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fab fa-github mr-2"></i> GitHub</a>
+            <a href="https://www.patreon.com/sstudiosdevelopment/membership" class="block py-2 px-4 text-white hover:bg-red-700 transition"><i class="fas fa-donate mr-2"></i> Donaciones</a>
+        </nav>
+        
+        <div class="absolute bottom-0 left-0 w-full p-4">
+            <% if (locals.username) { %>
+                <div class="flex items-center mb-4">
+                    <img src="<%= locals.profileImageUrl || '/uploads/default-profile.png' %>" 
+                         alt="Foto de perfil de <%= username %>" 
+                         class="w-10 h-10 rounded-full mr-2">
+                    <a href="/profile/<%= username %>" class="text-white hover:text-red-300 transition">
+                        <%= username %>
+                    </a>
+                </div>
+                <a href="/profile/<%= username %>" class="block w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition mb-2 text-center">
+                    <i class="fas fa-user mr-2"></i> Ver Perfil
+                </a>
+                <a href="/logout" class="block w-full bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition text-center">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                </a>
+            <% } else { %>
+                <a href="/login" class="block w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition text-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Iniciar sesión
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="main-content transition-all duration-300" id="mainContent">
+        <section class="py-12 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-4xl text-center font-bold text-red-600 mb-12">Últimas Noticias</h1>
+
+                <% if (isAdmin) { %>
+                <div class="text-center mb-10">
+                    <a href="/news/create" class="inline-block bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition shadow-lg hover:shadow-xl">Crear Noticia</a>
+                </div>
+                <% } %>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <% news.forEach(n => { %>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition">
+                        <img src="<%= n.image %>" alt="<%= n.title %>" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2"><%= n.title %></h2>
+                            <p class="text-gray-500 text-sm mb-4">Publicado el: <%= new Date(n.created_at).toLocaleString('es-ES') %></p>
+                            <p class="text-gray-700 mb-6">Resumen breve de la noticia que atraiga al lector. Más detalles del contenido a seguir...</p>
+                            <div class="flex justify-between items-center">
+                                <a href="/news/<%= n.id %>" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Leer Más</a>
+                                <% if (isAdmin) { %>
+                                <div class="flex space-x-4">
+                                    <form action="/news/delete/<%= n.id %>" method="POST" class="inline">
+                                        <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">Eliminar</button>
+                                    </form>
+                                    <a href="/news/edit/<%= n.id %>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Editar</a>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="fixed top-4 right-4 z-50">
+        <% if (locals.username) { %>
+            <div class="flex items-center bg-white rounded-full shadow-lg p-2">
+                <img src="<%= locals.profileImageUrl || '/uploads/default-profile.png' %>" 
+                     alt="Foto de perfil de <%= username %>" 
+                     class="w-8 h-8 rounded-full mr-2">
+                <span class="text-gray-800 font-semibold"><%= username %></span>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            closeNav(); // Cerrar el menú al cargar la página
+        });
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mainContent").style.marginLeft = "0";
+            document.getElementById("openMenuBtn").style.display = "block";
+        }
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("mainContent").style.marginLeft = "250px";
+            document.getElementById("openMenuBtn").style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>

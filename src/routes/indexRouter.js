@@ -21,6 +21,10 @@ router.get('/about/jobs', (req, res) => {
   res.render('start/jobs');
 })
 
+router.get('/donate', (req, res) => {
+  res.render('start/donate');
+});
+
 router.get('/jobs/frontend', (req, res) => {
   res.redirect('https://github.com/orgs/NakamaStream/discussions/10');
 });

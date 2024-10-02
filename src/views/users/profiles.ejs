@@ -6,20 +6,17 @@
     <title>Profile - NakamaStream</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.css">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="/src/public/js/users/myperfil.js"></script>
     <style>
         body {
             font-family: 'Nunito', sans-serif;
             background-color: #f0f2f5;
             transition: background-color 0.3s ease;
-        }
-        .dark-mode {
-            background-color: #1a202c;
-            color: #fff;
-        }
-        .dark-mode .box {
-            background-color: #2d3748;
         }
         .anime-card {
             border-radius: 20px;
@@ -66,13 +63,10 @@
                     <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
                 </div>
                 <div class="flex items-center">
-                <img src="" alt="Profile" class="h-8 w-8 rounded-full mr-2">
+                    <img src="<%= profileImageUrl %>" alt="Profile" class="h-8 w-8 rounded-full mr-2">
                     <a href="/search" class="mr-4 hover:text-indigo-200">
                         <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </a>
-                    <button id="darkModeToggle" class="mr-4 hover:text-indigo-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                    </button>
                     <a href="/logout" class="hover:text-indigo-200">Logout</a>
                 </div>
             </div>
@@ -81,9 +75,9 @@
 
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white shadow-xl rounded-3xl overflow-hidden anime-card">
-            <div class="bg-cover bg-center h-64 relative" style="background-image: url('');">
+            <div class="bg-cover bg-center h-64 relative" style="background-image: url('<%= bannerImageUrl %>');">
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                    <img class="rounded-full border-4 border-white w-32 h-32 profile-image float-animation" src="" alt="Profile picture">
+                    <img class="rounded-full border-4 border-white w-32 h-32 profile-image float-animation" src="<%= profileImageUrl %>" alt="Profile picture">
                 </div>
             </div>
             <div class="px-4 py-16 text-center">
@@ -101,8 +95,10 @@
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
-                <h2 class="text-2xl font-bold mb-4 text-center">Estadísticas de Anime</h2>
-                <canvas id="animeStatsChart"></canvas>
+                <h2 class="text-2xl font-bold mb-4 text-center">Historial de Anime Visto</h2>
+                <ul id="watchedAnimeList" class="space-y-4">
+                    <!-- Se llenará dinámicamente con JavaScript -->
+                </ul>
             </div>
 
             <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
@@ -113,9 +109,10 @@
             </div>
         </div>
 
+        <!-- Actualizar Información Personal -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
             <h2 class="text-2xl font-bold mb-4 text-center">Actualizar Información Personal</h2>
-            <form action="/profile/update-info" method="POST">
+            <form id="updateInfoForm">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">Nuevo nombre de usuario</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
@@ -124,15 +121,20 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Correo electrónico</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Correo electrónico" value="<%= email %>" required>
                 </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bio">Biografía</label>
+                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bio" name="bio" placeholder="Tu biografía"><%= bio %></textarea>
+                </div>
                 <div class="flex items-center justify-between mb-6">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Actualizar información</button>
                 </div>
             </form>
         </div>
 
+        <!-- Cambiar Contraseña -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
             <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Contraseña</h2>
-            <form action="/profile/update-password" method="POST">
+            <form id="changePasswordForm">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">Contraseña actual</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currentPassword" type="password" name="currentPassword" placeholder="Contraseña actual" required>
@@ -150,109 +152,33 @@
                 </div>
             </form>
         </div>
-
+        <!-- Cambiar Imagen de Perfil -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
-            <h2 class="text-2xl font-bold mb-4 text-center">Editar Imágenes</h2>
-            
-            <form action="/profile/update-profile-image" method="POST" enctype="multipart/form-data" class="mb-6">
+            <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Imagen de Perfil</h2>
+            <form id="changeProfileImageForm" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImage">Imagen de perfil</label>
-                    <input type="file" id="profileImage" name="profileImage" accept="image/*" class="hidden">
-                    <label for="profileImage" class="cursor-pointer bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-purple-500 hover:to-pink-600 transition duration-300">Seleccionar imagen de perfil</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImageInput">Imagen de perfil</label>
+                    <input type="file" id="profileImageInput" name="profileImage" accept="image/*" class="hidden">
+                    <label for="profileImageInput" class="cursor-pointer bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-purple-500 hover:to-pink-600 transition duration-300">Seleccionar imagen de perfil</label>
                 </div>
-                <button class="btn-anime py-2 px-6" type="submit">Cambiar Imagen de Perfil</button>
+                <img id="profileImage" class="hidden w-full mb-4 rounded-lg" />
+                <button id="cropProfileImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar Imagen de Perfil</button>
             </form>
+        </div>
 
-            <form action="/profile/update-banner-image" method="POST" enctype="multipart/form-data">
+        <!-- Cambiar Imagen de Banner -->
+        <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
+            <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Imagen de Banner</h2>
+            <form id="changeBannerImageForm" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImage">Imagen de banner</label>
-                    <input type="file" id="bannerImage" name="bannerImage" accept="image/*" class="hidden">
-                    <label for="bannerImage" class="cursor-pointer bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-blue-500 hover:to-indigo-600 transition duration-300">Seleccionar imagen de banner</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImageInput">Imagen de banner</label>
+                    <input type="file" id="bannerImageInput" name="bannerImage" accept="image/*" class="hidden">
+                    <label for="bannerImageInput" class="cursor-pointer bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-blue-500 hover:to-indigo-600 transition duration-300">Seleccionar imagen de banner</label>
                 </div>
-                <button class="btn-anime py-2 px-6" type="submit">Cambiar Imagen de Banner</button>
+                <img id="bannerImage" class="hidden w-full mb-4 rounded-lg" />
+                <button id="cropBannerImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar Imagen de Banner</button>
             </form>
         </div>
     </div>
-
-    <script>
-        // Toggle dark mode
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        // Anime stats chart
-        const ctx = document.getElementById('animeStatsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'polarArea',
-            data: {
-                labels: ['Vistos', 'En progreso', 'Pendientes'],
-                datasets: [{
-                    data: [12, 19, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.8)',
-                        'rgba(54, 162, 235, 0.8)',
-                        'rgba(255, 206, 86, 0.8)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Estado de los Animes'
-                    }
-                }
-            }
-        });
-
-        // Fetch and display favorite animes
-        fetch('/api/favorite-animes')
-            .then(response => response.json())
-            .then(animes => {
-                const favoriteAnimeList = document.getElementById('favoriteAnimeList');
-                favoriteAnimeList.innerHTML = ''; // Clear existing content
-                if (animes.length === 0) {
-                    favoriteAnimeList.innerHTML = '<li class="text-center">No tienes animes favoritos aún.</li>';
-                } else {
-                    animes.forEach((favoriteAnime, index) => { // Cambiar 'anime' a 'favoriteAnime'
-                        const li = document.createElement('li');
-                        li.className = 'flex items-center space-x-4 bg-gray-100 p-3 rounded-lg transition-all duration-300 hover:bg-gray-200';
-                        li.innerHTML = `
-                            <img src="${favoriteAnime.imageUrl}" alt="${favoriteAnime.name}" class="w-12 h-12 rounded-full object-cover">
-                            <a href="/anime/${favoriteAnime.slug}" class="hover:text-purple-600 transition-colors duration-300">${favoriteAnime.name}</a>
-                        `;
-                        favoriteAnimeList.appendChild(li);
-                        
-                        // Animate list items
-                        anime({ // Aquí 'anime' se refiere a la función de Anime.js
-                            targets: li,
-                            opacity: [0, 1],
-                            translateY: [20, 0],
-                            delay: index * 100,
-                            easing: 'easeOutExpo'
-                        });
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching favorite animes:', error);
-                document.getElementById('favoriteAnimeList').innerHTML = '<li class="text-center text-red-500">Error al cargar los animes favoritos.</li>';
-            });
-
-        // Add some animations to the anime cards
-        anime({
-            targets: '.anime-card',
-            scale: [0.9, 1],
-            opacity: [0, 1],
-            delay: anime.stagger(200),
-            duration: 1000,
-            easing: 'easeOutElastic(1, .5)'
-        });
-    </script>
 </body>
 </html>

@@ -1,65 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="h-full bg-gray-50">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NakamaStream - Login</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="/src/public/css/login.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        custom: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-  <div class="login-form">
-    <h1 class="login-form-title">Inicio de sesión</h1>
-    
-    <!-- Alerta informativa -->
-    <div class="error-message">
-       NakamaStream requiere que tengas una cuenta para ver anime.
+<body class="h-full flex items-center justify-center p-4 bg-gray-50">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8 space-y-8">
+                <div class="text-center">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="mx-auto h-20 w-auto mb-4">
+                    <h1 class="text-3xl font-bold text-custom">NakamaStream</h1>
+                    <p class="mt-2 text-sm text-gray-600">Inicio de sesión</p>
+                </div>
+
+                <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                    <p class="text-sm">NakamaStream requiere que tengas una cuenta para ver anime.</p>
+                </div>
+
+                <!-- Error messages -->
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                        <p class="text-sm"><%= error %></p>
+                    </div>
+                <% } %>
+
+                <% if (typeof errors !== 'undefined') { %>
+                    <% if (errors.username) { %>
+                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                            <p class="text-sm"><%= errors.username %></p>
+                        </div>
+                    <% } %>
+                    <% if (errors.email) { %>
+                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                            <p class="text-sm"><%= errors.email %></p>
+                        </div>
+                    <% } %>
+                    <% if (errors.password) { %>
+                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                            <p class="text-sm"><%= errors.password %></p>
+                        </div>
+                    <% } %>
+                <% } %>
+
+                <form action="/login" method="post" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Nombre de usuario</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-custom"></i>
+                            </div>
+                            <input type="text" id="username" name="username" required
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Nombre de usuario">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-custom"></i>
+                            </div>
+                            <input type="password" id="password" name="password" required
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Contraseña">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="captcha" class="block text-sm font-medium text-gray-700">Captcha</label>
+                        <p class="mt-1 text-sm text-gray-500"><%= captchaPhrase %></p>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-comment text-custom"></i>
+                            </div>
+                            <input type="text" id="captcha" name="captchaInput" required
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Completa la frase">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-custom hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition duration-150 ease-in-out">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="px-8 py-6 bg-gray-50 border-t border-gray-200 space-y-2 sm:px-10">
+                <p class="text-xs leading-5 text-gray-500 text-center">
+                    <a href="/register" class="font-medium text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                        ¿No estás registrado? Regístrate aquí
+                    </a>
+                </p>
+                <p class="text-xs leading-5 text-gray-500 text-center">
+                    <a href="#" class="font-medium text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </p>
+            </div>
+        </div>
     </div>
-
-    <% if (typeof errorMessage !== 'undefined') { %>
-      <div class="error-message"><%= errorMessage %></div>
-    <% } %>
-
-    <form action="/login" method="post">
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="text" class="input" placeholder="Nombre de usuario" id="username" name="username" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-        </div>
-      </div>
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="password" class="input" placeholder="Contraseña" id="password" name="password" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-        </div>
-      </div>
-      <div class="field">
-        <p class="captcha-phrase"><%= captchaPhrase %></p>
-      </div>
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="text" class="input" placeholder="Completa la frase" name="captchaInput" required>
-          <span class="icon is-small is-left">
-            <i class="fa fa-comment" aria-hidden="true"></i>
-          </span>
-        </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-fullwidth">Iniciar sesión</button>
-        </div>
-      </div>
-      <div class="has-text-centered">
-        <a href="register" class="forgot-password-link">¿No estás registrado? Regístrate aquí</a>
-        <br>
-        <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
-      </div>
-    </form>
-  </div>
 </body>
 </html>

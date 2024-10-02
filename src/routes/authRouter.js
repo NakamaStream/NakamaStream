@@ -43,7 +43,9 @@ router.post("/register", (req, res) => {
   db.query(checkIpSql, [ipAddress], (err, results) => {
     if (err) {
       console.error("Error al verificar la IP:", err);
-      return res.redirect("/register");
+      return res.render("users/register", {
+        error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
+      });
     }
 
     if (results[0].count >= 3) {
@@ -52,33 +54,60 @@ router.post("/register", (req, res) => {
       });
     }
 
-    // Encriptar la contraseña
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
+    // Verificar si el nombre de usuario o el correo electrónico ya están en uso
+    const checkUserSql = "SELECT * FROM usuarios WHERE username = ? OR email = ?";
+    db.query(checkUserSql, [username, email], (err, userResults) => {
       if (err) {
-        console.error("Error al encriptar la contraseña:", err);
-        return res.redirect("/register");
+        console.error("Error al verificar el usuario:", err);
+        return res.render("users/register", {
+          error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
+        });
       }
 
-      const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
-      db.query(
-        sql,
-        [username, email, hashedPassword, createdAt, false, ipAddress],
-        (err, result) => {
-          if (err) {
-            console.error("Error al registrar el usuario:", err.message);
-            if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
-              res.render("users/register", {
-                error: "Por favor, proporciona una contraseña.",
-              });
-            } else {
-              res.redirect("/register");
-            }
-            return;
+      if (userResults.length > 0) {
+        let errors = {};
+        userResults.forEach(user => {
+          if (user.username === username) {
+            errors.username = "El nombre de usuario ya está en uso.";
           }
-          console.log("Usuario registrado correctamente");
-          res.redirect("/login");
+          if (user.email === email) {
+            errors.email = "El correo electrónico ya está registrado.";
+          }
+        });
+        return res.render("users/register", { errors });
+      }
+
+      // Encriptar la contraseña
+      bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+          console.error("Error al encriptar la contraseña:", err);
+          return res.render("users/register", {
+            error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
+          });
         }
-      );
+
+        const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
+        db.query(
+          sql,
+          [username, email, hashedPassword, createdAt, false, ipAddress],
+          (err, result) => {
+            if (err) {
+              console.error("Error al registrar el usuario:", err.message);
+              if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
+                return res.render("users/register", {
+                  errors: { password: "Por favor, proporciona una contraseña." }
+                });
+              } else {
+                return res.render("users/register", {
+                  error: "Error al registrar el usuario. Por favor, inténtalo de nuevo."
+                });
+              }
+            }
+            console.log("Usuario registrado correctamente");
+            res.redirect("/login");
+          }
+        );
+      });
     });
   });
 });
@@ -166,6 +195,7 @@ router.post("/login", (req, res) => {
           req.session.timeCreated = results[0].time_created;
           req.session.isAdmin = results[0].is_admin;
           res.redirect("/anime");
+          
         } else {
           res.render("users/login", {
             errorMessage: "Credenciales incorrectas.",
@@ -180,6 +210,76 @@ router.post("/login", (req, res) => {
       });
     }
   });
+});
+
+router.post("/profile/update-password", (req, res) => {
+  if (!req.session.loggedin) {
+    return res.status(401).json({ error: "No autorizado" });
+  }
+
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.session.userId;
+
+  // Verify current password and update to new password
+  db.query(
+    "SELECT password FROM usuarios WHERE id = ?",
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al obtener la contraseña actual:", err);
+        return res.status(500).json({ error: "Error interno del servidor" });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Usuario no encontrado" });
+      }
+
+      const currentPasswordHash = results[0].password;
+      bcrypt.compare(currentPassword, currentPasswordHash, (err, match) => {
+        if (err) {
+          console.error("Error al verificar la contraseña actual:", err);
+          return res
+            .status(500)
+            .json({ error: "Error al verificar la contraseña" });
+        }
+
+        if (!match) {
+          return res
+            .status(400)
+            .json({ error: "La contraseña actual es incorrecta" });
+        }
+
+        // Hash the new password
+        bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+          if (err) {
+            console.error("Error al encriptar la nueva contraseña:", err);
+            return res
+              .status(500)
+              .json({ error: "Error al actualizar la contraseña" });
+          }
+
+          // Update the password in the database
+          db.query(
+            "UPDATE usuarios SET password = ? WHERE id = ?",
+            [hashedPassword, userId],
+            (err, result) => {
+              if (err) {
+                console.error("Error al actualizar la contraseña:", err);
+                return res
+                  .status(500)
+                  .json({ error: "Error al actualizar la contraseña" });
+              }
+
+              res.json({
+                success: true,
+                message: "Contraseña actualizada correctamente",
+              });
+            }
+          );
+        });
+      });
+    }
+  );
 });
 
 // Ruta de cierre de sesión
@@ -260,7 +360,6 @@ router.get("/profile/:username", (req, res) => {
             isAdmin: user.is_admin,
             banned: user.banned,
             banExpirationFormatted,
-            gravatarUrl,
             profileImageUrl:
               user.profile_image ||
               "https://avatars.githubusercontent.com/u/168317328?s=200&v=4",
@@ -286,86 +385,123 @@ router.post(
   ]),
   (req, res) => {
     if (!req.session.loggedin) {
-      return res.redirect("/login");
+      return res.status(401).json({ error: "No autorizado" });
     }
+
+    //console.log("req.files:", req.files);
+    //console.log("req.body:", req.body);
 
     const { newUsername, email, currentPassword, newPassword, bio } = req.body;
     const userId = req.session.userId;
 
-    let updateFields = { username: newUsername, email: email, bio: bio };
-    let updateValues = [newUsername, email, bio];
-
-    if (req.files["profileImage"]) {
-      updateFields.profile_image =
-        "/uploads/" + req.files["profileImage"][0].filename;
-      updateValues.push(updateFields.profile_image);
-    }
-    if (req.files["bannerImage"]) {
-      updateFields.banner_image =
-        "/uploads/" + req.files["bannerImage"][0].filename;
-      updateValues.push(updateFields.banner_image);
+    // Check if required fields are present
+    if (!newUsername || !email) {
+      return res
+        .status(400)
+        .json({ error: "Nombre de usuario y email son requeridos" });
     }
 
-    db.query(
-      "SELECT password FROM usuarios WHERE id = ?",
-      [userId],
-      (err, results) => {
+    // If currentPassword is not provided, we'll skip password verification
+    // This allows users to update their profile without changing their password
+    let updateFields = { username: newUsername, email: email };
+    let updateValues = [newUsername, email];
+
+    if (bio !== undefined) {
+      updateFields.bio = bio;
+      updateValues.push(bio);
+    }
+
+    if (req.files) {
+      if (req.files["profileImage"] && req.files["profileImage"][0]) {
+        updateFields.profile_image =
+          "/uploads/" + req.files["profileImage"][0].filename;
+        updateValues.push(updateFields.profile_image);
+      }
+      if (req.files["bannerImage"] && req.files["bannerImage"][0]) {
+        updateFields.banner_image =
+          "/uploads/" + req.files["bannerImage"][0].filename;
+        updateValues.push(updateFields.banner_image);
+      }
+    }
+
+    const updateUser = () => {
+      updateValues.push(userId);
+      const updateQuery = `UPDATE usuarios SET ${Object.keys(updateFields)
+        .map((field) => `${field} = ?`)
+        .join(", ")} WHERE id = ?`;
+
+      db.query(updateQuery, updateValues, (err, results) => {
         if (err) {
-          console.error("Error al obtener la contraseña actual:", err);
-          return res.redirect("/profile");
+          console.error("Error al actualizar la información del usuario:", err);
+          return res
+            .status(500)
+            .json({ error: "Error al actualizar la información del usuario" });
         }
 
-        if (results.length === 0) {
-          return res.render("users/profiles", {
-            error: "No se encontró el usuario.",
-          });
-        }
+        req.session.username = newUsername;
+        req.session.email = email;
+        res.json({
+          success: true,
+          message: "Perfil actualizado correctamente",
+        });
+      });
+    };
 
-        const currentPasswordHash = results[0].password;
-        bcrypt.compare(currentPassword, currentPasswordHash, (err, match) => {
+    if (currentPassword) {
+      // If currentPassword is provided, verify it before updating
+      db.query(
+        "SELECT password FROM usuarios WHERE id = ?",
+        [userId],
+        (err, results) => {
           if (err) {
-            console.error("Error al verificar la contraseña actual:", err);
-            return res.redirect("/profile");
+            console.error("Error al obtener la contraseña actual:", err);
+            return res
+              .status(500)
+              .json({ error: "Error interno del servidor" });
           }
 
-          if (!match) {
-            return res.render("users/profiles", {
-              error: "La contraseña actual es incorrecta.",
-            });
+          if (results.length === 0) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
           }
 
-          // Encriptar la nueva contraseña
-          bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+          const currentPasswordHash = results[0].password;
+          bcrypt.compare(currentPassword, currentPasswordHash, (err, match) => {
             if (err) {
-              console.error("Error al encriptar la nueva contraseña:", err);
-              return res.redirect("/profile");
+              console.error("Error al verificar la contraseña actual:", err);
+              return res
+                .status(500)
+                .json({ error: "Error al verificar la contraseña" });
             }
 
-            updateFields.password = hashedPassword;
-            updateValues.push(hashedPassword);
-            updateValues.push(userId);
+            if (!match) {
+              return res
+                .status(400)
+                .json({ error: "La contraseña actual es incorrecta" });
+            }
 
-            const updateQuery = `UPDATE usuarios SET ${Object.keys(updateFields)
-              .map((field) => `${field} = ?`)
-              .join(", ")} WHERE id = ?`;
+            if (newPassword) {
+              bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+                if (err) {
+                  console.error("Error al encriptar la nueva contraseña:", err);
+                  return res
+                    .status(500)
+                    .json({ error: "Error al actualizar la contraseña" });
+                }
 
-            db.query(updateQuery, updateValues, (err, results) => {
-              if (err) {
-                console.error(
-                  "Error al actualizar la información del usuario:",
-                  err
-                );
-                return res.redirect("/profile");
-              }
-
-              req.session.username = newUsername;
-              req.session.email = email;
-              res.redirect("/profile/" + newUsername);
-            });
+                updateFields.password = hashedPassword;
+                updateValues.push(hashedPassword);
+                updateUser();
+              });
+            } else {
+              updateUser();
+            }
           });
-        });
-      }
-    );
+        }
+      );
+    } else {
+      // If currentPassword is not provided, update user without password verification
+      updateUser();
+    }
   }
 );
 

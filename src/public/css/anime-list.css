@@ -17,23 +17,10 @@ body {
     );
 }
 
-.carousel-wrapper {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-.carousel-items {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-.carousel-item {
-    min-width: 100%;
-    box-sizing: border-box;
-}
-
 .nav-link {
     @apply text-white hover:text-gray-400;
 }
+
 .relative.group:hover #explore-menu {
     display: grid;
 }
@@ -48,6 +35,7 @@ body {
         transform: scale(1);
     }
 }
+
 .search-icon svg {
     transition: transform 0.3s ease;
 }
@@ -88,107 +76,52 @@ body {
     left: 0.75rem;
     transform: translateY(-50%);
 }
+
 #explore-menu {
-  display: grid;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    display: grid;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 #explore-menu.active {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.anime-card {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 250px;
-    height: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    transform: scale(0.95);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.anime-card img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease;
-}
-
-.anime-card::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    z-index: -1;
-}
-
-.anime-card:hover {
-    transform: scale(1);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-.anime-card:hover img {
-    transform: translateY(-5px);
-}
-
-.anime-card:hover::before {
-    transform: scaleY(1);
-}
-
-.anime-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-radius: 20px; /* Increased border radius */
-    overflow: hidden;
-    border: 2px solid transparent; /* Transparent border for hover effect */
-}
-.anime-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    border-color: #ffcc00; /* Gold border on hover */
-}
-.anime-card img {
-    transition: transform 0.3s;
-    border-radius: 20px 20px 0 0; /* Rounded top corners for the image */
-}
-.anime-card:hover img {
-    transform: scale(1.1);
-}
 .nav-link:hover {
     text-decoration: underline;
-    color: #ffcc00; /* Gold text on hover */
+    color: #e55b5b;
 }
+
 .dropdown:hover #explore-menu,
 .dropdown:focus-within #explore-menu {
     display: grid;
+    opacity: 1;
+    transform: translateY(0);
 }
+
 #explore-menu {
     display: none;
 }
+
 .profile-menu:hover #profile-menu,
 .profile-menu:focus-within #profile-menu {
     display: block;
 }
+
 #profile-menu {
     display: none;
 }
-/* Ensure dropdown stays visible when hovering over it */
+
 .dropdown {
     position: relative;
 }
-/* Add animations to the dropdown menu */
+
 #explore-menu {
     animation: fadeIn 0.3s ease-in-out;
 }
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -199,12 +132,177 @@ body {
         transform: translateY(0);
     }
 }
-/* Allow pointer events on the explore and profile menus */
+
 #explore-menu, #profile-menu {
-    pointer-events: auto; /* Allow pointer events */
+    pointer-events: auto;
+}
+
+#explore-menu a {
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+#explore-menu a:hover {
+    background-color: #e55b5b;
+    transform: scale(1.05);
+    cursor: pointer;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .no-drag {
-    user-drag: none; /* For WebKit browsers */
-    -webkit-user-drag: none; /* For WebKit browsers */
+    user-drag: none;
+    -webkit-user-drag: none;
+}
+
+.description-container {
+    max-height: 6rem; /* Ajusta la altura máxima visible para el contenedor de la descripción */
+    overflow-y: auto; /* Habilita el scroll vertical cuando el contenido es mayor que la altura */
+    margin-top: 0.5rem; /* Espacio superior para separar del nombre */
+    margin-bottom: 0.5rem; /* Espacio inferior para separar del borde del contenedor */
+    position: relative;
+    padding-right: 0.5rem; /* Espacio adicional para el scroll */
+}
+
+.description-text {
+    line-height: 1.4; /* Ajusta la altura de línea para mejor legibilidad */
+    text-align: center; /* Centra el texto dentro del contenedor */
+}
+
+.description-container::-webkit-scrollbar {
+    width: 8px; /* Estilo del scrollbar para navegadores WebKit */
+}
+
+.description-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+}
+
+.description-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Tamaño del scroll */
+::-webkit-scrollbar {
+    width: 12px; /* Ancho estilizado */
+    height: 12px; /* Alto estilizado */
+}
+
+/* Fondo de la pista del scroll */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color base de la pista */
+    border-radius: 20px; /* Bordes redondeados */
+    position: relative; /* Necesario para el efecto de diseño */
+}
+
+/* Pista con borde estilizado */
+::-webkit-scrollbar-track::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 16px; /* Borde redondeado del diseño */
+    border: 2px solid #ff6b6b; /* Borde en color principal */
+    background: #f1f1f1; /* Color base */
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1); /* Sombra interna */
+    pointer-events: none; /* Asegura que el efecto no interfiera con el uso */
+}
+
+/* Barra que se desplaza (thumb) */
+::-webkit-scrollbar-thumb {
+    background: #ff6b6b; /* Color principal */
+    border-radius: 12px; /* Bordes redondeados */
+    border: 4px solid #f1f1f1; /* Borde contrastante para resaltar */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+/* Hover de la barra */
+::-webkit-scrollbar-thumb:hover {
+    background: #e38181; /* Color más claro en hover */
+    transform: scale(1.1); /* Efecto de expansión en hover */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3); /* Sombra más intensa en hover */
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* Profile animated hover */
+
+.profile-menu a {
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.profile-menu a:hover {
+    background-color: #ff6b6b;
+    transform: scale(1.05);
+    cursor: pointer;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#profile-menu-button {
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50%;
+}
+
+#profile-menu-button:hover {
+    background-color: #ff6b6b;
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* BTM */
+
+#submit-comment {
+    background-color: white;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 10px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega sombra */
+}
+
+#submit-comment:hover {
+    background-color: #ff6b6b;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al hacer hover */
+}
+
+.nextEpisode {
+    background-color: white;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 10px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none; /* Asegúrate de que el texto del enlace no tenga subrayado */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega sombra */
+}
+
+.nextEpisode:hover {
+    background-color: #ff6b6b;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al hacer hover */
+}
+
+/* Miembro nakama */
+
+.miembro-nakama {
+    font-size: 12px; /* Tamaño del texto */
+    color: #F2A922; /* Color sólido */
+    font-weight: bold;
 }

@@ -6,7 +6,13 @@ function enSecurePassword(contraseña) {
   const hasNumber = /[0-9]/.test(contraseña);
   const hasSpecialChar = /[^A-Za-z0-9]/.test(contraseña);
 
-  return contraseña.length >= longitudMinima && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+  return (
+    contraseña.length >= longitudMinima &&
+    hasUpperCase &&
+    hasLowerCase &&
+    hasNumber &&
+    hasSpecialChar
+  );
 }
 
 // Calcula el nivel de seguridad de la contraseña
@@ -31,14 +37,17 @@ function updateProgressBar() {
   barraProgreso.classList.remove("is-danger", "is-warning", "is-success");
 
   if (seguridad < 40) {
-      barraProgreso.classList.add("is-danger");
-      document.getElementById("passwordStrength").textContent = "La contraseña es débil";
+    barraProgreso.classList.add("is-danger");
+    document.getElementById("passwordStrength").textContent =
+      "La contraseña es débil";
   } else if (seguridad < 70) {
-      barraProgreso.classList.add("is-warning");
-      document.getElementById("passwordStrength").textContent = "La contraseña es moderada";
+    barraProgreso.classList.add("is-warning");
+    document.getElementById("passwordStrength").textContent =
+      "La contraseña es moderada";
   } else {
-      barraProgreso.classList.add("is-success");
-      document.getElementById("passwordStrength").textContent = "La contraseña es segura";
+    barraProgreso.classList.add("is-success");
+    document.getElementById("passwordStrength").textContent =
+      "La contraseña es segura";
   }
 }
 
@@ -46,11 +55,15 @@ function updateProgressBar() {
 function validateForm() {
   const contraseña = document.getElementById("password").value;
   if (!enSecurePassword(contraseña)) {
-      alert("La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
-      return false;
+    alert(
+      "La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+    );
+    return false;
   }
   return true;
 }
 
 // Añadir evento para validación en tiempo real
-document.getElementById("password").addEventListener("input", updateProgressBar);
+document
+  .getElementById("password")
+  .addEventListener("input", updateProgressBar);

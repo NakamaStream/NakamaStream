@@ -2,6 +2,10 @@
     background-color: #ff6b6b;
 }
 
+.text-ff6b6b {
+    color: #ff6b6b;
+}
+
 .bg-gray-e55b5b {
     background-color: #e55b5b;
 }
@@ -22,5 +26,5 @@
 }
 
 .anime-title {
-    color: black;
+    color: #1a1815;
 }

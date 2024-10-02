@@ -1,67 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="h-full bg-gray-50">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NakamaStream - Register</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="/src/public/css/register.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <script src="/src/public/js/SecurePassword.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream - Registrarse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        custom: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="/src/public/js/start/SecurePassword.js"></script>
 </head>
-<body>
-  <div class="login-form">
-    <h1 class="login-form-title">Registrarse</h1>
-        <!-- Alerta informativa -->
-        <div class="error-message">
-          NakamaStream requiere que tengas una cuenta para ver anime.
-       </div>
-    <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()">
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="text" class="input" placeholder="Nombre de usuario" id="username" name="username" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
+<body class="h-full flex items-center justify-center p-4 bg-gray-50">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8 space-y-8">
+                <div class="text-center">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="mx-auto h-20 w-auto mb-4">
+                    <h1 class="text-3xl font-bold text-custom">Registrarse</h1>
+                    <p class="mt-2 text-sm text-gray-600">Crea una cuenta para comenzar a ver anime.</p>
+                </div>
+
+                <!-- Alerta informativa -->
+                <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                    <p class="text-sm">NakamaStream requiere que tengas una cuenta para ver anime.</p>
+                </div>
+
+                <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Nombre de usuario</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-custom"></i>
+                            </div>
+                            <input type="text" id="username" name="username" required
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Nombre de usuario">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-custom"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required
+                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Correo electrónico">
+                        </div>
+                    </div>
+
+                    <div>
+                      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                      <div class="mt-1 relative rounded-md shadow-sm">
+                          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-lock text-custom"></i>
+                          </div>
+                          <input type="password" id="password" name="password" required oninput="updateProgressBar()"
+                                 class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                 placeholder="Contraseña">
+                      </div>
+                      <div class="mt-2">
+                          <progress id="strengthBar" class="progress h-2 w-full" max="100" value="0"></progress>
+                          <p id="passwordStrength" class="text-sm mt-1"></p>
+                      </div>
+                    </div>                  
+
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="terms" required class="form-checkbox h-5 w-5 text-custom">
+                            <span class="ml-2 text-sm text-gray-700">Acepto los <a href="/tos" class="text-custom underline" target="_blank">términos y condiciones</a> y la <a href="/privacy" class="text-custom underline" target="_blank">política de privacidad</a>.</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-custom hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition duration-150 ease-in-out">
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center">
+                    <a href="/login" class="text-sm text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                        ¿Ya tienes una cuenta? Logeate aquí
+                    </a>
+                    <br>
+                    <a href="#" class="text-sm text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="email" class="input" placeholder="Correo electrónico" id="email" name="email" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-          </span>
-        </div>
-      </div>
-      <div class="field">
-        <div class="control has-icons-left">
-          <input type="password" class="input" placeholder="Contraseña" id="password" name="password" required oninput="updateProgressBar()">
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-        </div>
-        <progress id="strengthBar" class="progress is-small" max="100" value="0"></progress>
-        <p id="passwordStrength" class="help"></p>
-      </div>
-      <div class="field">
-        <div class="control">
-          <label class="checkbox">
-            <input type="checkbox" name="terms" required>
-            Acepto los <a href="/tos" target="_blank">términos y condiciones</a> y la <a href="/privacy" target="_blank">política de privacidad</a>.
-          </label>
-        </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-fullwidth">Registrarse</button>
-        </div>
-      </div>
-      <div class="has-text-centered">
-        <a href="/login" class="forgot-password-link">¿Ya tienes una cuenta? Logeate aquí</a>
-        <br>
-        <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
-      </div>
-    </form>
-  </div>
+    </div>
 </body>
 </html>

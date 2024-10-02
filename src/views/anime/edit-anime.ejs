@@ -49,21 +49,38 @@
     <div class="container mx-auto mt-8 p-4">
         <h2 class="text-4xl font-bold mb-6 text-center animate__animated animate__fadeInUp">Editar Anime</h2>
         
-        <form action="/admin/animes/edit/<%= anime.id %>" method="POST" class="glass-effect p-6 animate__animated animate__fadeIn" data-aos="fade-up">
+        <form action="/admin/animes/update/<%= anime.id %>" method="POST" enctype="multipart/form-data" class="glass-effect p-6 animate__animated animate__fadeIn" data-aos="fade-up">
             <div class="mb-4">
                 <label for="name" class="block text-white text-sm font-bold mb-2">Nombre:</label>
                 <input type="text" id="name" name="name" value="<%= anime.name %>" required
                        class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
             </div>
             <div class="mb-4">
-                <label for="imageUrl" class="block text-white text-sm font-bold mb-2">URL de la imagen:</label>
-                <input type="url" id="imageUrl" name="imageUrl" value="<%= anime.imageUrl %>" required
-                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
-            </div>
-            <div class="mb-4">
                 <label for="description" class="block text-white text-sm font-bold mb-2">Descripción:</label>
                 <textarea id="description" name="description" required
                           class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 h-32 transition duration-300"><%= anime.description %></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="release_date" class="block text-white text-sm font-bold mb-2">Fecha de lanzamiento:</label>
+                <input type="date" id="release_date" name="release_date" value="<%= anime.release_date %>" required
+                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
+            </div>
+            <div class="mb-4">
+                <label for="status" class="block text-white text-sm font-bold mb-2">Estado:</label>
+                <select id="status" name="status" required
+                        class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
+                    <option value="ongoing" <%= anime.status === 'ongoing' ? 'selected' : '' %>>En emisión</option>
+                    <option value="completed" <%= anime.status === 'completed' ? 'selected' : '' %>>Completado</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="cover_image" class="block text-white text-sm font-bold mb-2">Imagen de portada:</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*"
+                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-3 leading-tight focus:outline-none focus:border-purple-500 transition duration-300">
+                <input type="hidden" name="current_cover_image" value="<%= anime.cover_image %>">
+                <% if (anime.cover_image) { %>
+                    <img src="<%= anime.cover_image %>" alt="Current cover image" class="mt-2 h-32 w-auto">
+                <% } %>
             </div>
             <div class="flex items-center justify-between">
                 <button type="submit" class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">

@@ -78,6 +78,23 @@
                                 <i class="fas fa-play mr-2"></i>Vista previa del vídeo
                             </button>
                         </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-semibold mb-2" for="categoryId">
+                                <i class="fas fa-tags mr-2"></i>Categoría
+                            </label>
+                            <select class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="categoryId" name="categoryId" required>
+                                <option value="">Seleccione una categoría</option>
+                                <% categories.forEach(function(category) { %>
+                                    <option value="<%= category.id %>"><%= category.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-semibold mb-2" for="releaseDate">
+                                <i class="fas fa-calendar-alt mr-2"></i>Fecha de lanzamiento
+                            </label>
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="releaseDate" type="date" name="releaseDate" required>
+                        </div>
                         <div id="videoPreview" class="hidden mt-6">
                             <h3 class="text-xl font-semibold mb-3 text-gray-800">Vista previa del vídeo</h3>
                             <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden custom-shadow">

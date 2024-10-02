@@ -1,97 +1,151 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - NakamaStream</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
     <style>
-        .anime-bg {
-            background-image: url('https://example.com/path-to-anime-background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-gradient {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
         .glass-effect {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: scale(1.05);
         }
     </style>
 </head>
-<body class="bg-gray-900 font-nunito anime-bg text-white">
-    <nav class="bg-indigo-900 bg-opacity-80 p-4 sticky top-0 z-50 animate__animated animate__fadeInDown">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                NakamaStream Admin
-            </h1>
-            <div>
-                <span class="mr-4">Bienvenido, <%= username %></span>
-                <a href="/anime" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
-                    Volver al sitio
-                </a>
+<body class="bg-gray-900 font-sans text-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0">
+                        <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="NakamaStream">
+                    </a>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Animes</a>
+                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                            <span class="sr-only">View notifications</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </button>
+                        <div class="ml-3 relative">
+                            <div>
+                                <button type="button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto mt-8 p-4">
-        <h2 class="text-4xl font-bold mb-6 text-center animate__animated animate__fadeInUp">Gestión de Animes</h2>
-        
-        <a href="/anime/upload" class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-6 rounded-full mb-6 inline-block transition duration-300 ease-in-out transform hover:scale-105 animate__animated animate__fadeInLeft">
-            Subir Nuevo Anime
-        </a>
-
-        <div class="glass-effect p-6 animate__animated animate__fadeIn" data-aos="fade-up">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-800 text-gray-300">
-                    <tr>
-                        <th class="py-3 px-4 text-left">Nombre</th>
-                        <th class="py-3 px-4 text-left">Imagen</th>
-                        <th class="py-3 px-4 text-left">Descripción</th>
-                        <th class="py-3 px-4 text-left">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-700">
-                    <% animes.forEach(anime => { %>
-                        <tr class="hover:bg-gray-800 transition-colors duration-200">
-                            <td class="py-3 px-4"><%= anime.name %></td>
-                            <td class="py-3 px-4">
-                                <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-20 h-20 object-cover rounded-lg hover-scale">
-                            </td>
-                            <td class="py-3 px-4"><%= anime.description.substring(0, 100) %>...</td>
-                            <td class="py-3 px-4">
-                                <a href="/admin/animes/edit/<%= anime.id %>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full mr-2 transition duration-300 ease-in-out transform hover:scale-105">
-                                    Editar
-                                </a>
-                                <button onclick="deleteAnime(<%= anime.id %>)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+    <header class="bg-white dark:bg-gray-800 shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Gestión de Animes</h1>
         </div>
-    </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 py-6 sm:px-0">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Lista de Animes</h2>
+                    <a href="/anime/upload" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-plus mr-2"></i> Subir Nuevo Anime
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
+                    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <% animes.forEach(anime => { %>
+                            <li class="transition duration-300 ease-in-out hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-16 w-16 rounded-lg object-cover" src="<%= anime.imageUrl || anime.cover_image %>" alt="<%= anime.name %>">
+                                            <div class="ml-4">
+                                                <p class="text-sm font-medium text-primary-600 truncate"><%= anime.name %></p>
+                                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= anime.description ? anime.description.substring(0, 100) + '...' : 'Sin descripción' %></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <a href="/admin/animes/edit/<%= anime.id %>" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:border-primary-700 focus:shadow-outline-primary active:bg-primary-700 transition ease-in-out duration-150">
+                                                <i class="fas fa-edit mr-1"></i> Editar
+                                            </a>
+                                            <button onclick="deleteAnime(<%= anime.id %>)" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition ease-in-out duration-150">
+                                                <i class="fas fa-trash-alt mr-1"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-400 text-sm">
+                &copy; 2023 NakamaStream. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
 
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
-
         function deleteAnime(animeId) {
             Swal.fire({
                 title: '¿Estás seguro?',

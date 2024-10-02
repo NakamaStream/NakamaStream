@@ -1,245 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Admin Panel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/src/public/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <% if (req.session.isAdmin) { %>
-            <div class="admin-header">
-                <div class="admin-name">
-                    Bienvenido, <%= req.session.username %> ❤️
-                </div>
-                <div class="admin-actions">
-                    <a href="/anime" class="button is-primary">Ir a Anime list</a>
-                </div>
+<body class="min-h-screen bg-gray-100">
+    <div class="flex h-screen bg-gray-200">
+        <!-- Sidebar -->
+        <div class="bg-indigo-800 text-white w-64 py-6 flex-shrink-0">
+            <div class="flex items-center justify-center mb-8">
+                <img src="/uploads/NakamStream-logo-HD-removebg.png" alt="NakamaStream Logo" class="h-12 w-auto">
             </div>
-            <h1 class="title">Admin Panel</h1>
-            <% if (users) { %>
-                <div class="table-container">
-                    <table class="table is-fullwidth">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% users.forEach(user => { %>
-                                <tr>
-                                    <td><%= user.id %></td>
-                                    <td><%= user.username %></td>
-                                    <td><%= user.email %></td>
-                                    <td>
-                                        <% if (user.isAdmin) { %>
-                                            <span class="tag is-admin">Admin</span>
-                                        <% } else { %>
-                                            <span class="tag is-novice">Novato</span>
-                                        <% } %>
-                                        <% if (user.isBanned) { %>
-                                            <span class="tag is-banned">Baneado</span>
-                                        <% } %>
-                                    </td>
-                                    <td>
-                                        <div class="field is-grouped">
-                                            <div class="control">
-                                                <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')">
-                                                    <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-danger is-small">Eliminar</button>
-                                                </form>
-                                            </div>
-                                            <div class="control">
-                                                <form action="/admin/ban-user" method="POST" class="ban-form">
-                                                    <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <div class="select is-small">
-                                                        <select name="banType">
-                                                            <option value="temporary">Temporal</option>
-                                                            <option value="permanent">Permanente</option>
-                                                        </select>
+            <nav>
+                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
+                    <i class="fas fa-home mr-2"></i>Dashboard
+                </a>
+                <a href="/admin/animes" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
+                    <i class="fas fa-film mr-2"></i>Anime Panel
+                </a>
+                <a href="/admin/comments" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
+                    <i class="fas fa-comments mr-2"></i>Comments
+                </a>
+                <a href="/anime" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
+                    <i class="fas fa-list mr-2"></i>Anime List
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top bar -->
+            <header class="bg-white shadow-md">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <h1 class="text-2xl font-semibold text-gray-900">Admin Dashboard</h1>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-3">
+                            <% if (req.session.user && req.session.user.profile_image_url) { %>
+                                <img src="<%= req.session.user.profile_image_url %>" alt="Admin profile" class="h-10 w-10 rounded-full object-cover">
+                            <% } else { %>
+                                <img src="/default-profile-image.png" alt="Default profile" class="h-10 w-10 rounded-full object-cover">
+                            <% } %>
+                            <span class="font-medium text-gray-800">Welcome, <%= req.session.user ? req.session.user.username : 'Admin' %></span>
+                        </div>
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main content area -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+                <div class="container mx-auto px-6 py-8">
+                    <!-- User Management Section -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">User Management</h2>
+                        <% if (users && users.length > 0) { %>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% users.forEach(user => { %>
+                                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <img src="<%= user.profile_image_url || '/default-profile-image.png' %>" alt="<%= user.username %>'s profile" class="h-10 w-10 rounded-full object-cover">
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= user.id %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= user.username %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= user.email %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <% if (user.banned) { %>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Banned</span>
+                                                    <% } else if (user.is_admin) { %>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admin</span>
+                                                    <% } else { %>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">User</span>
+                                                    <% } %>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <div class="flex space-x-2">
+                                                        <button onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')" class="text-indigo-600 hover:text-indigo-900" title="Edit"><i class="fas fa-edit"></i></button>
+                                                        <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-red-600 hover:text-red-900" title="Delete"><i class="fas fa-trash"></i></button>
+                                                        </form>
+                                                        <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <select name="banType" class="text-sm border-gray-300 rounded-md">
+                                                                <option value="temporary">Temp</option>
+                                                                <option value="permanent">Perm</option>
+                                                            </select>
+                                                            <input type="number" name="banDuration" placeholder="Days" required class="w-16 text-sm border-gray-300 rounded-md">
+                                                            <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Ban"><i class="fas fa-ban"></i></button>
+                                                        </form>
+                                                        <form action="/admin/unban-user" method="POST">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-green-600 hover:text-green-900" title="Unban"><i class="fas fa-user-check"></i></button>
+                                                        </form>
+                                                        <form action="/admin/promote-user" method="POST">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promote"><i class="fas fa-user-plus"></i></button>
+                                                        </form>
+                                                        <form action="/admin/demote-user" method="POST">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-orange-600 hover:text-orange-900" title="Demote"><i class="fas fa-user-minus"></i></button>
+                                                        </form>
                                                     </div>
-                                                    <input type="number" name="banDuration" placeholder="Days" required>
-                                                    <button class="button is-warning is-small">Ban</button>
-                                                </form>
-                                            </div>
-                                            <div class="control">
-                                                <form action="/admin/unban-user" method="POST">
-                                                    <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-success is-small">Unban</button>
-                                                </form>
-                                            </div>
-                                            <div class="control">
-                                                <form action="/admin/promote-user" method="POST">
-                                                    <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-primary is-small">Promover</button>
-                                                </form>
-                                            </div>
-                                            <div class="control">
-                                                <form action="/admin/demote-user" method="POST">
-                                                    <input type="hidden" name="userId" value="<%= user.id %>">
-                                                    <button class="button is-warning is-small">Degradar</button>
-                                                </form>
-                                            </div>
-                                            <div class="control">
-                                                <button class="button is-primary is-small" onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')">Actualizar</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-            <% } else { %>
-                <p>No se han encontrado usuarios.</p>
-            <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <p class="text-gray-600">No users found.</p>
+                        <% } %>
+                    </div>
 
-            <h2 class="title">Añadir usuario administrador</h2>
-            <button class="button is-primary" onclick="showAddAdminModal()">Añadir Admin</button>
+                    <!-- Add Admin Section -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Add Admin User</h2>
+                        <button onclick="showAddAdminModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Add Admin
+                        </button>
+                    </div>
 
-            <div id="addAdminModal" class="modal">
-                <div class="modal-content">
-                    <form action="/admin/add-admin" method="POST">
-                        <div class="field">
-                            <label class="label">Usuario</label>
-                            <div class="control">
-                                <input class="input" type="text" name="username" placeholder="Username" required>
+                    <!-- Announcement Section -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Send Announcement</h2>
+                        <form id="announcement-form" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="message">
+                                    Announcement Message:
+                                </label>
+                                <textarea id="message" name="message" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Type your message here..." required></textarea>
                             </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control">
-                                <input class="input" type="email" name="email" placeholder="Email" required>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="duration">
+                                    Duration (minutes):
+                                </label>
+                                <input type="number" id="duration" name="duration" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter duration in minutes" min="1" required>
                             </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Contraseña</label>
-                            <div class="control">
-                                <input class="input" type="password" name="password" placeholder="Password" required>
+                            <div class="flex items-center justify-between">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                    Send
+                                </button>
+                                <button type="button" onclick="resetForm()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                    Cancel
+                                </button>
                             </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <button class="button is-primary" type="submit">Add Admin</button>
-                                <button class="button" type="button" onclick="hideModal('addAdminModal')">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+        </div>
+    </div>
 
-            <section class="section">
-                <h2 class="title">Enviar Anuncio a Todos los Usuarios</h2>
-                <div class="box">
-                    <form id="announcement-form">
-                        <div class="field">
-                            <label class="label" for="message">Mensaje de anuncio:</label>
-                            <div class="control">
-                                <textarea id="message" name="message" class="textarea" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                            </div>
-                        </div>
-            
-                        <div class="field">
-                            <label class="label" for="duration">Duración (minutos):</label>
-                            <div class="control">
-                                <input type="number" id="duration" name="duration" class="input" placeholder="Ingrese la duración en minutos" min="1" required>
-                            </div>
-                        </div>
-            
-                        <div class="field is-grouped">
-                            <div class="control">
-                                <button type="submit" class="button is-primary">Enviar</button>
-                            </div>
-                            <div class="control">
-                                <button type="button" class="button is-light" onclick="resetForm()">Cancelar</button>
-                            </div>
-                        </div>
-                    </form>
+    <!-- Add Admin Modal -->
+    <div id="addAdminModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center hidden z-50">
+        <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Add Admin User</h3>
+            <form action="/admin/add-admin" method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" name="username" required>
                 </div>
-            </section>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="submit">
+                        Add Admin
+                    </button>
+                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="button" onclick="hideModal('addAdminModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            <div id="updateModal" class="modal">
-                <div class="modal-content">
-                    <form action="/admin/update-user" method="POST">
-                        <input type="hidden" id="updateUserId" name="userId">
-                        <div class="field">
-                            <label class="label">Usuario</label>
-                            <div class="control">
-                                <input class="input" id="updateUsername" type="text" name="username" placeholder="Username" required>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control">
-                                <input class="input" id="updateEmail" type="email" name="email" placeholder="Email" required>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Contraseña</label>
-                            <div class="control">
-                                <input class="input" type="password" name="password" placeholder="Password" required>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <button class="button is-primary" type="submit">Update</button>
-                                <button class="button" type="button" onclick="hideModal('updateModal')">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
+    <!-- Update User Modal -->
+    <div id="updateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center hidden z-50">
+        <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Update User</h3>
+            <form action="/admin/update-user" method="POST">
+                <input type="hidden" id="updateUserId" name="userId">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updateUsername">Username</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="updateUsername" type="text" name="username" required>
                 </div>
-            </div>
-        <% } else { %>
-            <p>No tienes permisos de administrador.</p>
-        <% } %>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updateEmail">Email</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="updateEmail" type="email" name="email" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updatePassword">Password</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="updatePassword" type="password" name="password" placeholder="Leave blank to keep current password">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="submit">
+                        Update
+                    </button>
+                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="button" onclick="hideModal('updateModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
         function confirmDelete(username) {
-            return confirm("¿Estás seguro que quieres banear a '" + username + "'? Esto no se puede revertir.");
+            return confirm("Are you sure you want to delete '" + username + "'? This action cannot be undone.");
         }
 
         document.getElementById('announcement-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+            event.preventDefault();
 
-        const message = document.getElementById('message').value;
-        const duration = parseInt(document.getElementById('duration').value, 10);
+            const message = document.getElementById('message').value;
+            const duration = parseInt(document.getElementById('duration').value, 10);
 
-        if (duration <= 0) {
-            alert('La duración debe ser un número positivo.');
-            return;
-        }
-
-        fetch('/set-announcement', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message, duration }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Anuncio enviado correctamente.');
-                resetForm();
+            if (duration <= 0) {
+                alert('Duration must be a positive number.');
+                return;
             }
-        })
-        .catch(error => console.error('Error enviando anuncio:', error));
+
+            fetch('/set-announcement', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message, duration }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Announcement sent successfully.');
+                    resetForm();
+                }
+            })
+            .catch(error => console.error('Error sending announcement:', error));
+        });
 
         function resetForm() {
             document.getElementById('announcement-form').reset();
         }
-    });
+
+        function showAddAdminModal() {
+            document.getElementById('addAdminModal').classList.remove('hidden');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function showUpdateModal(userId, username, email) {
+            document.getElementById('updateUserId').value = userId;
+            document.getElementById('updateUsername').value = username;
+            document.getElementById('updateEmail').value = email;
+            document.getElementById('updatePassword').value = '';
+            document.getElementById('updateModal').classList.remove('hidden');
+        }
     </script>
-    <script src="/src/public/js/addAdminModal.js"></script>
 </body>
 </html>

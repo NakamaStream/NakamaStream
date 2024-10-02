@@ -9,14 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchSvg = document.getElementById('search-svg');
     const animeCards = document.querySelectorAll('.anime-list a'); // Selección actualizada
     const noResults = document.getElementById('no-results');
-    const carouselContainer = document.getElementById('carousel-container');
-
-    const prevButton = document.getElementById('prev-slide');
-    const nextButton = document.getElementById('next-slide');
-    const carouselItems = document.querySelector('.carousel-items');
-    const totalItems = document.querySelectorAll('.carousel-item').length;
-    let currentIndex = 0;
-    let interval;
 
     let timeout;
 
@@ -156,41 +148,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Función de actualización del carrusel
-    function updateCarousel() {
-        carouselItems.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
-
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % totalItems;
-        updateCarousel();
-    }
-
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-        updateCarousel();
-    }
-
-    function startAutoSlide() {
-        interval = setInterval(nextSlide, 8000); // Cambia el banner cada 8 segundos
-    }
-
-    function stopAutoSlide() {
-        clearInterval(interval);
-    }
-
-    prevButton.addEventListener('click', function () {
-        stopAutoSlide();
-        prevSlide();
-        startAutoSlide();
-    });
-
-    nextButton.addEventListener('click', function () {
-        stopAutoSlide();
-        nextSlide();
-        startAutoSlide();
-    });
-
-    // Inicializar el carrusel
-    startAutoSlide();
 });

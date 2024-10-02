@@ -50,7 +50,12 @@
 
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl overflow-hidden transition-colors duration-300">
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 h-48 relative">
+            <div class="h-48 relative">
+                <% if (user.banner_image_url) { %>
+                    <img src="<%= user.banner_image_url %>" alt="Banner de <%= user.username %>" class="w-full h-full object-cover">
+                <% } else { %>
+                    <div class="w-full h-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+                <% } %>
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
                     <img class="rounded-full border-4 border-white dark:border-gray-800 w-32 h-32 float-animation" src="<%= user.profile_image_url || '/placeholder-user.jpg' %>" alt="<%= user.username %>'s profile picture">
                 </div>
@@ -87,8 +92,20 @@
         </div>
 
         <% if (isOwnProfile) { %>
-            <div class="mt-8">
-                <a href="/profile/edit" class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300">Editar Perfil</a>
+            <div class="mt-8 space-y-4">
+                <a href="/profile/" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300">Editar Perfil</a>
+                
+                <form action="/profile/update-profile-image" method="POST" enctype="multipart/form-data" class="inline-block">
+                    <input type="file" name="profileImage" id="profileImage" class="hidden" accept="image/*">
+                    <!-- <label for="profileImage" class="cursor-pointer bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition duration-300">Cambiar Foto de Perfil</label>
+                    <button type="submit" class="ml-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">Subir Foto de Perfil</button> -->
+                </form>
+                
+                <form action="/profile/update-banner-image" method="POST" enctype="multipart/form-data" class="inline-block">
+                    <input type="file" name="bannerImage" id="bannerImage" class="hidden" accept="image/*">
+                    <!-- <label for="bannerImage" class="cursor-pointer bg-yellow-600 text-white px-6 py-2 rounded-full hover:bg-yellow-700 transition duration-300">Cambiar Banner</label>
+                    <button type="submit" class="ml-2 bg-orange-600 text-white px-6 py-2 rounded-full hover:bg-orange-700 transition duration-300">Subir Banner</button> -->
+                </form>
             </div>
         <% } %>
     </div>

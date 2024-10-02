@@ -3,21 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= anime.name %> - Episode <%= episode.title %></title>
+    <title><%= anime.name %> - <%= episode.title %></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/src/public/css/anime-list.css">
+    <link rel="stylesheet" href="/src/public/css/main-color/color.css">
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -42,45 +32,123 @@
             height: 100%;
             border: none;
         }
+        .admin-badge {
+            background-color: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10 transition-colors duration-300">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="/anime" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Anime List</a>
-            <div class="flex items-center space-x-4">
-                <a href="/search" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </a>
-                <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">
-                    <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <svg class="w-6 h-6 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
-                <a href="/logout" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300">Logout</a>
+<body class="bg-white dark:bg-white text-black dark:text-black transition-colors duration-300">
+    <nav class="bg-gray-ff6b6b text-white shadow-md">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-8 w-8 mr-2">
+                    <a href="/anime" class="text-2xl font-bold text-white">NakamaStream</a>
+                    <div class="relative group dropdown">
+                        <a href="#" class="nav-link ml-8 flex items-center" id="explore-menu-button" tabindex="0">
+                            Explorar
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                        <div id="explore-menu" class="absolute left-0 bg-gray-ff6b6b text-white rounded-md shadow-lg mt-2 py-2 w-96 z-20 grid grid-cols-3 gap-4">
+                            <!-- Explore menu content -->
+                        </div>
+                    </div>
+                    <a href="#" class="nav-link ml-8">Noticias</a>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center">                                                                                                                                                                                                                                                                                                       
+                    <a href="/animes/api/saved-animes" class="mr-4 nav-link">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v16l7-7 7 7V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"></path>
+                        </svg>
+                    </a>
+                    <% if (typeof user !== 'undefined' && user) { %>
+                    <div class="relative profile-menu">
+                        <img src="<%= user.profile_image_url || '/default-profile-image.png' %>" alt="Profile Picture" class="h-8 w-8 rounded-full cursor-pointer" id="profile-menu-button" tabindex="0">
+                        <div id="profile-menu" class="absolute right-0 mt-2 w-64 bg-gray-ff6b6b rounded-md shadow-lg py-3 z-20 text-white">
+                            <div class="flex items-center px-4 pb-2 bg-gray-ff6b6b">
+                                <img src="<%= user.profile_image_url || '/default-profile-image.png' %>" alt="Profile Picture" class="h-10 w-10 rounded-full">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold"><%= user.username %></span>
+                                    <span class="text-xs text-yellow-400">Miembro Premium</span>
+                                </div>
+                            </div>
+                            <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill mr-2" viewBox="0 0 16 16">
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                </svg>
+                                Perfil
+                            </a>
+                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill mr-2" viewBox="0 0 16 16">
+                                    <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+                                </svg>
+                                Guardados
+                            </a>
+                            <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927a1 1 0 011.902 0l.917 4.585h4.85a1 1 0 01.608 1.786l-3.9 3.012 1.493 4.657a1 1 0 01-1.537 1.144L10 15.347l-4.383 2.764a1 1 0 01-1.537-1.144l1.493-4.657-3.9-3.012a1 1 0 01.608-1.786h4.85l.917-4.585z" />
+                                </svg>
+                                Favoritos
+                            </a>
+                            <% if (user.isAdmin) { %>
+                            <div class="bg-gray-ff6b6b mt-2"></div>
+                            <a href="/admin/panel" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2-5a2 2 0 114 0h-4z" clip-rule="evenodd" />
+                                </svg>
+                                Panel de Admin
+                            </a>
+                            <a href="/anime/upload" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-yellow-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-up-fill mr-2" viewBox="0 0 16 16">
+                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                                Subir Anime
+                            </a>
+                            <% } %>
+                            <a href="/logout" class="block px-4 py-2 text-sm hover:bg-gray-700 hover:text-red-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill mr-2" viewBox="0 0 16 16">
+                                    <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                </svg>
+                                Desconectar
+                            </a>
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <a href="/login" class="nav-link">Iniciar sesión</a>
+                    <% } %>
+                    </div>                    
+                </div>
             </div>
         </div>
     </nav>
 
     <main class="container mx-auto px-4 py-8 flex flex-col md:flex-row">
         <aside class="w-full md:w-1/4 pr-4 mb-8 md:mb-0">
-            <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4">Next Episodes</h3>
+            <h3 class="text-xl font-semibold anime-title mb-4">Próximos episodios</h3>
             <ul class="space-y-2">
-                <% nextEpisodes.forEach(nextEpisode => { %>
-                    <li>
-                        <a href="/anime/<%= anime.slug %>/episode/<%= nextEpisode.id %>" class="block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                            Episode <%= nextEpisode.title %>
-                        </a>
-                    </li>
-                <% }) %>
+            <% nextEpisodes.forEach(nextEpisode => { %>
+                <li>
+                <a href="/anime/<%= anime.slug %>/episode/<%= nextEpisode.episode_number %>" class="nextEpisode">
+                    Episodio <%= nextEpisode.episode_number %>: <%= nextEpisode.title %>
+                </a>
+                </li>
+            <% }) %>
             </ul>
         </aside>
 
         <div class="w-full md:w-3/4">
             <header class="mb-8 text-center">
-                <h1 class="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-2"><%= anime.name %></h1>
-                <h2 class="text-2xl font-semibold text-indigo-500 dark:text-indigo-300">Episode <%= episode.title %></h2>
+                <h1 class="text-4xl font-extrabold anime-title mb-2"><%= anime.name %></h1>
+                <h2 class="text-2xl font-semibold anime-title"><%= episode.title %></h2>
             </header>
 
             <section class="w-full max-w-4xl mx-auto mb-8">
@@ -89,30 +157,36 @@
                 </div>
             </section>
 
-            <section class="max-w-4xl mx-auto mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
-                <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4">Episode Description</h3>
-                <p class="text-gray-700 dark:text-gray-300"><%= episode.description || 'No description available.' %></p>
+            <section class="max-w-4xl mx-auto mb-8 bg-white rounded-lg shadow-md p-6 transition-colors duration-300">
+                <h3 class="text-xl font-semibold anime-title mb-4">Episode Description</h3>
+                <p class="text-gray-700"><%= episode.description || 'No description available.' %></p>
             </section>
 
-            <section class="max-w-4xl mx-auto mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
-                <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4">Comentarios</h3>
+            <section class="max-w-4xl mx-auto mb-8 bg-white rounded-lg shadow-md p-6 transition-colors duration-300">
+                <h3 class="text-xl font-semibold anime-title mb-4">Comentarios</h3>
+                <% if (typeof user !== 'undefined' && user) { %>
                 <form id="comment-form" class="mb-4">
-                    <textarea id="comment-content" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" rows="4" placeholder="Escribe tu comentario..."></textarea>
-                    <p id="comment-error" class="text-red-500 dark:text-red-400 mt-2 hidden"></p>
-                    <button type="submit" id="submit-comment" class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition duration-300">Enviar</button>
+                    <textarea id="comment-content" class="w-full p-2 border rounded" rows="4" placeholder="Escribe tu comentario..."></textarea>
+                    <p id="comment-error" class="text-red-500 mt-2 hidden"></p>
+                    <button type="submit" id="submit-comment" class="mt-2 bg-white text-[#ff6b6b] border-2 border-[#ff6b6b] px-4 py-2 rounded transition-all duration-300 hover:bg-[#ff6b6b] hover:text-white hover:scale-105">
+                        Enviar
+                    </button>                    
                 </form>
+                <% } else { %>
+                <p class="mb-4 text-gray-600">Debes <a href="/login" class="text-blue-500 hover:underline">iniciar sesión</a> para comentar.</p>
+                <% } %>
                 <div id="comments-list" class="space-y-4">
                     <!-- Aquí se cargarán los comentarios -->
                 </div>
             </section>
 
             <footer class="flex flex-col sm:flex-row justify-between max-w-4xl mx-auto space-y-4 sm:space-y-0">
-                <a href="/anime/<%= anime.slug %>" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 text-center">
-                    Back to Anime Details
-                </a>
-                <% if (isAdmin) { %>
+                <a href="/anime/<%= anime.slug %>" class="bg-gray-ff6b6b hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded transition duration-300 text-center">
+                    Volver a Detalles del anime
+                </a>           
+                <% if (typeof user !== 'undefined' && user && user.isAdmin) { %>
                     <a href="/anime/<%= anime.slug %>/upload-episode" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 text-center">
-                        Upload New Episode
+                        Subir nuevo episodio
                     </a>
                 <% } %>
             </footer>
@@ -121,12 +195,12 @@
 
     <!-- Modal para la información del usuario -->
     <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <div class="flex items-center mb-4">
                 <img id="modalUserImage" src="" alt="" class="w-16 h-16 rounded-full mr-4">
                 <div>
                     <h2 id="modalUsername" class="text-2xl font-bold"></h2>
-                    <p id="modalUserEmail" class="text-gray-600 dark:text-gray-400"></p>
+                    <p id="modalUserEmail" class="text-gray-600"></p>
                 </div>
             </div>
             <p id="modalUserBio" class="mb-4"></p>
@@ -135,81 +209,74 @@
     </div>
 
     <script>
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const html = document.documentElement;
-        
-        darkModeToggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            localStorage.setItem('darkMode', html.classList.contains('dark'));
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        const commentForm = document.getElementById("comment-form");
+        const commentContent = document.getElementById("comment-content");
+        const commentsList = document.getElementById("comments-list");
+        const submitButton = document.getElementById("submit-comment");
+        const commentError = document.getElementById("comment-error");
 
-        if (localStorage.getItem('darkMode') === 'true') {
-            html.classList.add('dark');
-        } else {
-            html.classList.remove('dark');
+        let lastCommentTime = 0;
+        const cooldownPeriod = 30000; // 30 seconds cooldown
+
+        function loadComments() {
+            console.log("Fetching comments...");
+            fetch(`/anime/<%= anime.slug %>/episode/<%= episode.episode_number %>/comments`)
+                .then(response => response.json())
+                .then(comments => {
+                    console.log("Received comments:", comments);
+                    commentsList.innerHTML = comments.map(comment => `
+                        <div class="bg-gray-50 p-4 rounded-lg shadow fade-in">
+                            <div class="flex items-center mb-2">
+                                <img src="${comment.profile_image_url || '/default-profile-image.png'}" alt="${comment.username}" class="w-10 h-10 rounded-full mr-3 cursor-pointer" onclick="window.showUserModal('${comment.username}')">
+                                <div>
+                                    <a href="/profile/${comment.username}" class="font-bold text-ff6b6b hover:underline">${comment.username}</a>
+                                    <span class="text-sm font-normal text-gray-500">(${comment.user_rank})</span>
+                                    ${comment.is_admin ? '<span class="admin-badge ml-2">Admin</span>' : ''}
+                                    <p class="text-sm text-gray-500">${formatDate(comment.created_at)}</p>
+                                </div>
+                            </div>
+                            <p class="mt-2 text-gray-700">${comment.content}</p>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error("Error fetching comments:", error);
+                });
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const commentForm = document.getElementById("comment-form");
-            const commentContent = document.getElementById("comment-content");
-            const commentsList = document.getElementById("comments-list");
-            const submitButton = document.getElementById("submit-comment");
-            const commentError = document.getElementById("comment-error");
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            };
+            return new Date(dateString).toLocaleString('en-US', options);
+        }
 
-            let lastCommentTime = 0;
-            const cooldownPeriod = 30000; // 30 seconds cooldown
+        function checkCooldown() {
+            const now = Date.now();
+            const timeElapsed = now - lastCommentTime;
+            return timeElapsed >= cooldownPeriod;
+        }
 
-            function loadComments() {
-                fetch(`/anime/<%= anime.slug %>/episode/<%= episode.id %>/comments`)
-                    .then(response => response.json())
-                    .then(comments => {
-                        commentsList.innerHTML = comments.map(comment => `
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow fade-in">
-                                <div class="flex items-center mb-2">
-                                    <img src="${comment.profile_image_url || '/placeholder-user.jpg'}" alt="${comment.username}" class="w-10 h-10 rounded-full mr-3 cursor-pointer" onclick="showUserModal('${comment.username}')">
-                                    <div>
-                                        <a href="/profile/${comment.username}" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">${comment.username}</a>
-                                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(${comment.user_rank})</span>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">${formatDate(comment.created_at)}</p>
-                                    </div>
-                                </div>
-                                <p class="mt-2 text-gray-700 dark:text-gray-300">${comment.content}</p>
-                            </div>
-                        `).join('');
-                    });
-            }
+        function updateCooldownUI(remainingTime) {
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            commentError.textContent = `Por favor espera ${Math.ceil(remainingTime / 1000)} segundos antes de comentar de nuevo.`;
+            commentError.classList.remove('hidden');
+        }
 
-            function formatDate(dateString) {
-                const options = { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    hour12: true 
-                };
-                return new Date(dateString).toLocaleString('en-US', options);
-            }
+        function resetCooldownUI() {
+            submitButton.disabled = false;
+            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            commentError.classList.add('hidden');
+        }
 
-            function checkCooldown() {
-                const now = Date.now();
-                const timeElapsed = now - lastCommentTime;
-                return timeElapsed >= cooldownPeriod;
-            }
-
-            function updateCooldownUI(remainingTime) {
-                submitButton.disabled = true;
-                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-                commentError.textContent = `Por favor espera ${Math.ceil(remainingTime / 1000)} segundos antes de comentar de nuevo.`;
-                commentError.classList.remove('hidden');
-            }
-
-            function resetCooldownUI() {
-                submitButton.disabled = false;
-                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                commentError.classList.add('hidden');
-            }
-
+        if (commentForm) {
             commentForm.addEventListener("submit", function(event) {
                 event.preventDefault();
 
@@ -226,7 +293,7 @@
                     return;
                 }
 
-                fetch(`/anime/<%= anime.slug %>/episode/<%= episode.id %>/comment`, {
+                fetch(`/anime/<%= anime.slug %>/episode/<%= episode.episode_number %>/comment`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -247,25 +314,27 @@
                     }
                 });
             });
+        }
 
-            function showUserModal(username) {
-                fetch(`/api/user/${username}`)
-                    .then(response => response.json())
-                    .then(user => {
-                        document.getElementById('modalUserImage').src = user.profile_image_url || '/placeholder-user.jpg';
-                        document.getElementById('modalUsername').textContent = user.username;
-                        document.getElementById('modalUserEmail').textContent = user.email;
-                        document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
-                        document.getElementById('userModal').classList.remove('hidden');
-                    });
-            }
+        // Make showUserModal globally accessible
+        window.showUserModal = function(username) {
+            fetch(`/api/user/${username}`)
+                .then(response => response.json())
+                .then(user => {
+                    document.getElementById('modalUserImage').src = user.profile_image_url || '/placeholder-user.jpg';
+                    document.getElementById('modalUsername').textContent = user.username;
+                    document.getElementById('modalUserEmail').textContent = user.email;
+                    document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
+                    document.getElementById('userModal').classList.remove('hidden');
+                });
+        }
 
-            window.closeUserModal = function() {
-                document.getElementById('userModal').classList.add('hidden');
-            }
+        window.closeUserModal = function() {
+            document.getElementById('userModal').classList.add('hidden');
+        }
 
-            loadComments();
-        });
+        loadComments();
+    });
     </script>
 </body>
 </html>
