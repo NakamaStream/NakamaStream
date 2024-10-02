@@ -489,9 +489,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.getElementById('commentForm').addEventListener('submit', (e) => {
+        document.getElementById('commentForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const content = document.getElementById('commentContent').value.trim();
+        
+        // Lista de palabras prohibidas, incluyendo dominios y palabras relacionadas con páginas +18
+        const forbiddenWords = [
+            'https://', 
+            'http://', 
+            'porhub.com',
+            'xvideos.com',
+            'xnxx.com',
+            'porn.com',
+            'sex.com',
+            'nude.com',
+            'mature.com',
+            'rule34.xxx',
+            'porno',
+            'rule34',
+            'Cp',
+            'gay',
+            'pendejo',
+            'mierda',
+            'idiota',
+            'zorra',
+            'estupido',
+            'estupida',
+            'maricon',
+            'animeonegai',
+            'crunchyroll',
+            'animeflv',
+            'jkanime',
+            'MonosChinos'
+        ]; 
+
+        // Verificar si el contenido contiene palabras prohibidas
+        const containsForbiddenWords = forbiddenWords.some(word => {
+            const wordRegex = new RegExp(word, 'i'); // Ignorar mayúsculas
+            return wordRegex.test(content) || 
+                /[A-Z]/.test(word) || // Verificar si hay mayúsculas
+                /[áéíóúÁÉÍÓÚ]/.test(word) || // Verificar si hay tildes
+                /[,]/.test(word); // Verificar si hay comas
+        });
+
+        if (containsForbiddenWords) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Tu comentario contiene palabras no permitidas.'
+            });
+            return;
+        }
+
         if (content === '') {
             Swal.fire({
                 icon: 'error',
@@ -500,6 +549,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return;
         }
+
+        // Realizar la solicitud POST solo si el contenido es válido
         fetch(`/anime/<%= anime.slug %>/comment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
