@@ -4,17 +4,21 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Configura EJS como motor de plantillas
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Asegúrate de que tus archivos EJS estén en esta carpeta
+
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta principal
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.render('index'); // Renderiza index.ejs
 });
 
 // Nueva ruta para obtener la página de releases
 app.get('/releases', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'releases.html'));
+    res.render('releases'); // Renderiza releases.ejs
 });
 
 // Ruta de API para obtener información de los releases desde GitHub
