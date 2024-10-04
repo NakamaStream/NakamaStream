@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-gray-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime List - NakamaStream</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/src/public/css/extra/anime-list-mobile-animated.css">
+</head>
+<body class="font-roboto text-gray-800">
+
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-primary {
+            background-color: var(--primary-color);
+        }
+        .text-primary {
+            color: var(--primary-color);
+        }
+        .border-primary {
+            border-color: var(--primary-color);
+        }
+        .hover\:bg-primary:hover {
+            background-color: var(--primary-color);
+        }
+        .hover\:text-primary:hover {
+            color: var(--primary-color);
+        }
+    </style>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-full mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex flex-col items-center">
+                    <span class="text-2xl md:text-3xl font-bold text-primary">NakamaStream</span>
+                    <span class="text-primary text-xs mt-0.5">By NakamaGroup</span>
+                </a>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="hidden md:flex space-x-4">
+                    <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300">Inicio</a>
+                    <a href="/animes" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 text-sm font-medium transition duration-300">Animes</a>
+                    <a href="/peliculas" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 text-sm font-medium transition duration-300">Películas</a>
+                    <a href="/calendario" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 text-sm font-medium transition duration-300">Calendario</a>
+
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="user-menu-toggle" class="flex items-center text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                            <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2">
+                            <span class="text-sm font-medium"><%= username %></span>
+                            <i id="user-menu-arrow" class="fas fa-chevron-down ml-1 transition-transform duration-300"></i>
+                        </button>
+                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md transition duration-300 transform scale-95 origin-top-right">
+                            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Perfil</a>
+                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Guardados</a>
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Favoritos</a>
+                            <a href="/cerrar-sesion" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Cerrar Sesión</a>
+                            
+                            <% if (isAdmin) { %> <!-- Verificación de admin -->
+                                <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                                <a href="/admin/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Panel de Administración</a>
+                                <a href="/admin/usuarios" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Gestión de Usuarios</a>
+                                <a href="/admin/reportes" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Reportes</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition duration-300 transform scale-95 origin-top">
+                <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                    <i class="fas fa-home mr-2"></i> Inicio
+                </a>
+                <a href="/peliculas" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                    <i class="fa-solid fa-newspaper mr-2"></i> Noticias
+                </a>
+                <a href="/calendario" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i> Buscador
+                </a>
+
+                <!-- User Menu in Mobile -->
+                <div class="relative">
+                    <button id="user-menu-toggle-mobile" class="flex items-center w-full text-left px-4 py-2 text-gray-600 focus:outline-none hover:text-orange-500 transition duration-300">
+                        <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2">
+                        <span class="text-sm font-medium"><%= username %></span>
+                        <i id="user-menu-arrow-mobile" class="fas fa-chevron-down ml-1 transition-transform duration-300"></i>
+                    </button>
+                    <div id="user-menu-mobile" class="hidden bg-white shadow-lg rounded-md transition duration-300 transform scale-95 origin-top">
+                        <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                            <i class="fas fa-user mr-2"></i> Perfil
+                        </a>
+                        <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                            <i class="fa-solid fa-bookmark mr-2"></i> Guardados
+                        </a>
+                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                            <i class="fa-solid fa-star mr-2"></i> Favoritos
+                        </a>
+                        <!-- Opciones de Admin para móvil -->
+                        <% if (isAdmin) { %> <!-- Verificación de admin -->
+                        <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                            <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                        </a>
+                        <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition duration-300">
+                            <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                        </a>
+                        <% } %>
+                        <a href="/cerrar-sesion" class="block px-4 py-2 text-red-600 hover:bg-red-200 transition duration-300"> <!-- Cambiado a rojo -->
+                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Carousel -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="relative" id="featured-anime-carousel">
+            <div class="overflow-hidden">
+                <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
+                    <div class="flex-none w-full">
+                        <div class="relative h-40 md:h-60 lg:h-80 rounded-lg overflow-hidden group">
+                            <img src="https://animetv-jp.net/wp-content/uploads/2023/11/oomuro-ke-movie-announced-teaser-visual-v0-zIMBVvUugscQ76vCnA-ervpvScp6Q6eYTbJWNFG8prE.webp" alt="Oomuro-ke: Dear Sisters" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                <h3 class="text-white text-lg font-bold mb-2">Oomuro-ke: Dear Sisters</h3>
+                                <p class="text-gray-300 mb-4 line-clamp-2">Un spin-off de Yuru Yuri protagonizado por Sakurako y sus hermanas.</p>
+                                <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition duration-300 flex items-center group">
+                                    <i class="fas fa-play mr-1 group-hover:animate-pulse"></i> Ver ahora
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured Animes -->
+    <div class="container mx-auto px-4 py-4">
+        <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes Destacados</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <% animes.forEach(anime => { %>
+                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
+                        <div class="text-white">
+                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
+                            <p class="description-text text-xs line-clamp-3">
+                                <%= anime.description %>
+                            </p>
+                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
+                        </div>
+                    </div>
+                </a>
+            <% }); %>
+        </div>
+    </div>                                                             
+                                 
+    <!-- Announcement Modal -->
+    <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
+            <h2 class="text-xl font-bold mb-2 text-gray-800">Anuncio</h2>
+            <div id="announcement-message" class="mb-4 text-gray-700"></div>
+            <button id="close-announcement" class="w-full bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition duration-300 font-semibold">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="/src/public/js/anime/anime-list.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <Script>
+        document.getElementById('user-menu-toggle').addEventListener('click', function() {
+        const userMenu = document.getElementById('user-menu');
+        const arrow = document.getElementById('user-menu-arrow');
+        userMenu.classList.toggle('hidden');
+        userMenu.classList.toggle('scale-100');
+        arrow.classList.toggle('rotate-180'); // Rota la flecha al abrir/cerrar el menú
+    });
+
+    document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('scale-100');
+    });
+
+    document.getElementById('user-menu-toggle-mobile').addEventListener('click', function() {
+        const userMenuMobile = document.getElementById('user-menu-mobile');
+        const arrowMobile = document.getElementById('user-menu-arrow-mobile');
+        userMenuMobile.classList.toggle('hidden');
+        userMenuMobile.classList.toggle('scale-100');
+        arrowMobile.classList.toggle('rotate-180'); // Rota la flecha al abrir/cerrar el menú
+    });
+    </Script>
+</body>
+</html>
