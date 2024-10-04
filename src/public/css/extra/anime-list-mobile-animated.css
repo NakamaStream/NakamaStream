@@ -1,0 +1,4 @@
+/* Clase para rotar un elemento 180 grados */
+.rotate-180 {
+    transform: rotate(180deg); /* Rota el elemento 180 grados */
+}
