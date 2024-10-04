@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const useragent = require('express-useragent');
 const db = require("../services/db");
 const slugify = require("slugify");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+
+router.use(useragent.express());
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -91,6 +94,7 @@ router.get("/anime", isLoggedIn, (req, res) => {
     GROUP BY a.id
     ORDER BY a.created_at DESC
   `;
+  
   db.query(query, (err, rows) => {
     if (err) {
       console.error(err);
@@ -106,13 +110,25 @@ router.get("/anime", isLoggedIn, (req, res) => {
             res.status(500).send("Error al recuperar información del usuario");
           } else {
             const user = userResults[0] || {};
-            res.render("anime/anime-list", {
-              animes: rows,
-              isAdmin: req.session.isAdmin,
-              user: req.session.user,
-              username: user.username,
-              profile_image_url: user.profile_image_url,
-            });
+
+            // Verificar si el usuario está en un dispositivo móvil o tableta
+            if (req.useragent.isMobile || req.useragent.isTablet) {
+              res.render("anime/anime-list-mobile", {
+                animes: rows,
+                isAdmin: req.session.isAdmin,
+                user: req.session.user,
+                username: user.username,
+                profile_image_url: user.profile_image_url,
+              });
+            } else {
+              res.render("anime/anime-list", {
+                animes: rows,
+                isAdmin: req.session.isAdmin,
+                user: req.session.user,
+                username: user.username,
+                profile_image_url: user.profile_image_url,
+              });
+            }
           }
         }
       );
