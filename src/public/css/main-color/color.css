@@ -1,3 +1,22 @@
+:root {
+    --primary-color: #ff6b6b;
+}
+.bg-primary {
+    background-color: var(--primary-color);
+}
+.text-primary {
+    color: var(--primary-color);
+}
+.border-primary {
+    border-color: var(--primary-color);
+}
+.hover\:bg-primary:hover {
+    background-color: var(--primary-color);
+}
+.hover\:text-primary:hover {
+    color: var(--primary-color);
+}
+
 .bg-gray-ff6b6b {
     background-color: #ff6b6b;
 }
@@ -5,6 +24,7 @@
 .text-ff6b6b {
     color: #ff6b6b;
 }
+
 
 .bg-gray-e55b5b {
     background-color: #e55b5b;
