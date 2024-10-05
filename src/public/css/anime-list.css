@@ -21,9 +21,6 @@ body {
     @apply text-white hover:text-gray-400;
 }
 
-.relative.group:hover #explore-menu {
-    display: grid;
-}
 @keyframes search-animation {
     0% {
         transform: scale(1);
@@ -77,33 +74,12 @@ body {
     transform: translateY(-50%);
 }
 
-#explore-menu {
-    display: grid;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#explore-menu.active {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 .nav-link:hover {
     text-decoration: underline;
     color: #e55b5b;
 }
 
-.dropdown:hover #explore-menu,
-.dropdown:focus-within #explore-menu {
-    display: grid;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#explore-menu {
-    display: none;
-}
 
 .profile-menu:hover #profile-menu,
 .profile-menu:focus-within #profile-menu {
@@ -118,10 +94,6 @@ body {
     position: relative;
 }
 
-#explore-menu {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -133,23 +105,11 @@ body {
     }
 }
 
-#explore-menu, #profile-menu {
+#profile-menu {
     pointer-events: auto;
 }
 
-#explore-menu a {
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    padding: 10px 15px;
-    border-radius: 4px;
-}
 
-#explore-menu a:hover {
-    background-color: #e55b5b;
-    transform: scale(1.05);
-    cursor: pointer;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
 .no-drag {
     user-drag: none;
@@ -231,32 +191,39 @@ body {
     display: none;
 }
 
-/* Profile animated hover */
-
-.profile-menu a {
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    padding: 10px 15px;
-    border-radius: 4px;
+/* userMenu animated hover */
+.menu-enter {
+    transform: scale(0.95);
+    opacity: 0;
 }
 
-.profile-menu a:hover {
-    background-color: #ff6b6b;
+.menu-enter-active {
+    transform: scale(1);
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.menu-leave {
+    transform: scale(1);
+    opacity: 1;
+}
+
+  .menu-leave-active {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}  
+
+.user-menu-link {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.375rem;
+}
+
+.user-menu-link:hover {
+    background-color: #ffedd5;
+    color: #ff6b6b;
     transform: scale(1.05);
-    cursor: pointer;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#profile-menu-button {
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 50%;
-}
-
-#profile-menu-button:hover {
-    background-color: #ff6b6b;
-    transform: scale(1.1);
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* BTM */
