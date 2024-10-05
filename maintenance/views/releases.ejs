@@ -6,15 +6,24 @@
     <title>NakamaStream - Releases</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Bienvenido a NakamaStream, una plataforma dedicada a las últimas novedades del anime.">
+    <meta property="og:title" content="NakamaStream">
+    <meta property="og:description" content="Descubre los últimos lanzamientos de anime en NakamaStream.">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/168317328?s=200&v=4">
+    <meta property="og:url" content="https://nakamastream.lat/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NakamaStream">
+    <meta name="twitter:description" content="Descubre los últimos lanzamientos de anime en NakamaStream.">
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/168317328?s=200&v=4">
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
     <div class="container mx-auto p-6">
-        <h1 class="text-5xl font-bold text-center mb-8 text-[#ff6b6b]">Releases de NakamaStream</h1>
-        <div id="releases-container" class="space-y-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-[#ff6b6b]">Últimos Releases de NakamaStream Sorce</h1>
+        <div id="releases-container" class="space-y-6">
             <!-- Aquí se insertará la información de los releases -->
         </div>
-        <div id="pagination" class="flex justify-center mt-8 space-x-4">
+        <div id="pagination" class="flex justify-center mt-6 space-x-4">
             <!-- Aquí se insertarán los botones de paginación -->
         </div>
     </div>
@@ -28,19 +37,14 @@
 
         async function fetchReleases() {
             try {
-                // Realizar la solicitud a la API /api/releases
                 const response = await fetch('/api/releases');
-                
-                // Verificar si la respuesta fue exitosa
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-
-                releases = await response.json(); // Almacenar todos los releases
-                displayReleases(); // Mostrar la primera página
-                createPagination(); // Crear botones de paginación
+                releases = await response.json();
+                displayReleases();
+                createPagination();
             } catch (error) {
-                // En caso de error, mostrar un mensaje en el contenedor
                 console.error('Error al obtener los releases:', error);
                 const container = document.getElementById('releases-container');
                 container.innerHTML = `<div class="text-red-600 font-bold">Hubo un error al obtener la información de los releases: ${error.message}</div>`;
@@ -49,19 +53,19 @@
 
         function displayReleases() {
             const container = document.getElementById('releases-container');
-            container.innerHTML = ''; // Limpiar contenedor antes de agregar elementos
+            container.innerHTML = '';
 
             const startIndex = (currentPage - 1) * releasesPerPage;
             const endIndex = startIndex + releasesPerPage;
-            const currentReleases = releases.slice(startIndex, endIndex); // Obtener releases para la página actual
+            const currentReleases = releases.slice(startIndex, endIndex);
 
             currentReleases.forEach(release => {
                 const releaseDiv = document.createElement('div');
-                releaseDiv.className = 'bg-white border-2 border-[#ff6b6b] p-6 rounded-lg shadow-lg';
+                releaseDiv.className = 'bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow';
 
                 const releaseHtml = `
-                    <h2 class="text-3xl font-semibold mb-2 text-[#ff6b6b]">${release.name}</h2>
-                    <p class="text-gray-600 mb-4">Fecha de publicación: ${new Date(release.published_at).toLocaleDateString()}</p>
+                    <h2 class="text-2xl font-semibold text-[#ff6b6b]">${release.name}</h2>
+                    <p class="text-sm text-gray-600">Fecha de publicación: ${new Date(release.published_at).toLocaleDateString()}</p>
                     <div class="prose max-w-none whitespace-pre-wrap">${marked.parse(release.body)}</div>
                     <a href="${release.html_url}" target="_blank" class="mt-4 inline-block text-[#ff6b6b] hover:text-[#e55555] font-semibold">Ver en GitHub</a>
                 `;
@@ -73,24 +77,23 @@
 
         function createPagination() {
             const paginationDiv = document.getElementById('pagination');
-            paginationDiv.innerHTML = ''; // Limpiar los botones de paginación
+            paginationDiv.innerHTML = '';
 
-            const totalPages = Math.ceil(releases.length / releasesPerPage); // Calcular el número total de páginas
+            const totalPages = Math.ceil(releases.length / releasesPerPage);
 
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.className = `px-4 py-2 border rounded ${i === currentPage ? 'bg-[#ff6b6b] text-white' : 'bg-white text-[#ff6b6b] hover:bg-[#ff6b6b] hover:text-white'}`;
                 button.textContent = i;
                 button.onclick = () => {
-                    currentPage = i; // Actualizar la página actual
-                    displayReleases(); // Mostrar los releases de la nueva página
-                    createPagination(); // Actualizar los botones de paginación
+                    currentPage = i;
+                    displayReleases();
+                    createPagination();
                 };
-                paginationDiv.appendChild(button); // Agregar botón al contenedor de paginación
+                paginationDiv.appendChild(button);
             }
         }
 
-        // Llamar a la función para obtener los releases al cargar la página
         fetchReleases();
     </script>
 </body>
