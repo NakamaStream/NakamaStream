@@ -11,118 +11,88 @@
     <link rel="stylesheet" href="/src/public/css/main-color/color.css">
 </head>
 <body class="font-roboto text-gray-800">
-    <nav class="bg-gray-ff6b6b text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex flex-wrap justify-between items-center">
-                <!-- Logo and title -->
-                <div class="flex items-center space-x-4">
-                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-10 w-10 transition-transform duration-300 hover:scale-110">
-                    <a href="/anime" class="text-2xl font-bold text-orange-500 hover:text-orange-400 transition duration-300">NakamaStream</a>
-                </div>
-                
-                <!-- Main navigation -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <!-- Explore menu -->
-                    <div class="relative group">
-                        <button class="nav-link flex items-center space-x-1" id="explore-menu-button">
-                            <span>Explorar</span>
-                            <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
-                        </button>
-                        <div id="explore-menu" class="absolute left-0 mt-2 w-96 bg-white rounded-md shadow-lg py-2 z-20 hidden group-hover:block">
-                            <div class="grid grid-cols-3 gap-4 p-4">
-                                <div>
-                                    <h3 class="font-bold text-gray-700 mb-2">Géneros</h3>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Acción</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Aventura</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Comedia</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Drama</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Fantasía</a>
-                                </div>
-                                <div>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Musical</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Romance</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Ciencia Ficción</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Seinen</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Shoujo</a>
-                                </div>
-                                <div>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Shounen</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Recuentos de la Vida</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Deportes</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Sobrenatural</a>
-                                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-orange-500 transition duration-300">Thriller</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="/news" class="nav-link hover:text-yellow-300 transition duration-300">Noticias</a>
-                </div>
 
-                <!-- Search, bookmarks, and profile -->
-                <div class="flex items-center space-x-6">
-                    <div class="relative">
-                        <input type="text" id="anime-search" placeholder="Buscar anime..." class="hidden md:block bg-white bg-opacity-20 border border-transparent rounded-full px-4 py-2 w-64 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition duration-300">
-                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-300 transition duration-300">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-
-                    <a href="/animes/api/saved-animes" class="nav-link hover:text-yellow-300 transition duration-300">
-                        <i class="fa-regular fa-bookmark fa-lg"></i>
-                    </a>
-
-                    <!-- Profile menu -->
-                    <div class="relative profile-menu">
-                        <% if (username) { %>
-                        <button class="flex items-center space-x-2 focus:outline-none" id="profile-menu-button">
-                            <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="Profile Picture" class="h-8 w-8 rounded-full object-cover">
-                            <span class="hidden md:inline-block"><%= username %></span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div id="profile-menu" class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-20 hidden">
-                            <div class="px-4 py-3 border-b border-gray-200">
-                                <p class="text-sm font-semibold text-gray-700"><%= username %></p>
-                                <p class="text-xs text-yellow-500 flex items-center">
-                                    <i class="fa-solid fa-crown mr-1"></i>
-                                    Miembro Nakama
-                                </p>
-                            </div>
-                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100 hover:text-orange-500 transition duration-300">
-                                <i class="fas fa-user mr-2"></i>Perfil
-                            </a>
-                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100 hover:text-orange-500 transition duration-300">
-                                <i class="fas fa-bookmark mr-2"></i>Guardados
-                            </a>
-                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100 hover:text-orange-500 transition duration-300">
-                                <i class="fas fa-heart mr-2"></i>Favoritos
-                            </a>
-                            <% if (isAdmin) { %>
-                            <div class="border-t border-gray-200 my-2"></div>
-                            <a href="/admin/panel" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100 hover:text-orange-500 transition duration-300">
-                                <i class="fas fa-cog mr-2"></i>Panel de Admin
-                            </a>
-                            <a href="/anime/upload" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100 hover:text-orange-500 transition duration-300">
-                                <i class="fas fa-cloud-upload-alt mr-2"></i>Subir Anime
-                            </a>
-                            <% } %>
-                            <div class="border-t border-gray-200 my-2"></div>
-                            <a href="/logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 transition duration-300">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Desconectar
-                            </a>
-                        </div>
-                        <% } else { %>
-                        <a href="/login" class="nav-link bg-white text-orange-500 px-4 py-2 rounded-full hover:bg-yellow-300 hover:text-white transition duration-300">Iniciar sesión</a>
-                        <% } %>
-                    </div>
-                </div>
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <div class="flex-shrink-0 flex items-center">
+                <a href="/" class="flex flex-col items-center">
+                  <span class="text-4xl font-bold text-primary">NakamaStream</span>
+                  <span class="text-primary text-xs mt-0.5" style="line-height: 1;">By NakamaGroup</span>
+                </a>
+              </div>
+              <div class="md:flex ml-6 space-x-8">
+                <a href="/" class="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  Inicio
+                </a>
+                <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  Noticias
+                </a>
+                <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  Calendario
+                </a>
+              </div>
             </div>
+            <div class="flex items-center">
+              <div class="relative md:block">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <input type="text" name="search" id="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="Buscar anime...">
+              </div>
+              <a href="/animes/api/saved-animes" class="ml-3">
+                <button class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
+                  <span class="sr-only">Ver marcadores</span>
+                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>  
+                </button>
+              </a>                                    
+              <div class="ml-3 relative">
+                <button id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-haspopup="true" aria-expanded="true">
+                  <span class="sr-only">Abrir menú de usuario</span>
+                  <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
+                </button>
+              
+                <!-- Menú desplegable -->
+                <div id="user-menu" class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden transition-all duration-200 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                  <div class="py-1" role="none">
+                    <p class="block px-4 py-2 text-sm text-gray-700"><%= username %></p>
+                    <div class="border-b border-gray-200"></div>
+                    <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                      <i class="fas fa-user mr-2"></i> Perfil
+                    </a>
+                    <a href="/animes/api/saved-animes" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                      <i class="fa-solid fa-bookmark mr-2"></i> Guardados
+                    </a>
+                    <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                      <i class="fa-solid fa-star mr-2"></i> Favoritos
+                    </a>
+                    <% if (isAdmin) { %>
+                      <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                      <a href="/admin/panel" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                        <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                      </a>
+                      <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                        <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                      </a>
+                    <% } %>
+                    <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                      <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                    </a>                    
+                  </div>
+                </div>
+              </div>                          
+            </div>
+          </div>
         </div>
-    </nav>
+      </nav>
 
     <div class="container mx-auto px-4 py-8">
         <div class="relative" id="featured-anime-carousel">
-    
             <!-- Contenedor del carrusel -->
             <div class="overflow-hidden">
                 <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
@@ -139,9 +109,6 @@
                                     <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full transition duration-300 flex items-center group">
                                         <i class="fas fa-play mr-2 group-hover:animate-pulse"></i> Ver ahora
                                     </button>
-                                    <button class="text-white hover:text-orange-500 transition duration-300" aria-label="Guardar anime">
-                                        <i class="far fa-bookmark text-xl"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -150,8 +117,7 @@
             </div>
         </div>
     </div>
-    
-        
+
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Destacados</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 anime-list">
@@ -172,8 +138,8 @@
                 </a>
             <% }); %>
         </div>
-    </div>                                                             
-                                 
+    </div>
+
     <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
             <h2 class="text-2xl font-bold mb-4 text-gray-800">Anuncio</h2>
@@ -184,5 +150,37 @@
 
     <script src="/src/public/js/anime/anime-list.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script>
+      const userMenuButton = document.getElementById('user-menu-button');
+      const userMenu = document.getElementById('user-menu');
+    
+      userMenuButton.addEventListener('click', () => {
+        userMenu.classList.toggle('hidden');
+        
+        if (userMenu.classList.contains('hidden')) {
+          userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+          userMenu.classList.add('menu-leave');
+          setTimeout(() => {
+            userMenu.classList.add('hidden');
+            userMenu.classList.remove('menu-leave');
+          }, 200);
+        } else {
+          userMenu.classList.remove('menu-leave', 'hidden');
+          setTimeout(() => {
+            userMenu.classList.add('menu-enter-active');
+          }, 0);
+        }
+      });
+    
+      // Cerrar el menú si se hace clic fuera de él
+      window.addEventListener('click', (event) => {
+        if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+          userMenu.classList.add('hidden');
+          userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+        }
+      });
+    </script>
+    
 </body>
 </html>
