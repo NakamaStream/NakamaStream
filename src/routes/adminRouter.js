@@ -518,6 +518,7 @@ router.post("/admin/ban-user", isAdmin, (req, res) => {
   const userId = req.body.userId;
   const banType = req.body.banType;
   const banDuration = req.body.banDuration;
+  const adminUsername = req.session.username;
 
   db.query(
     "SELECT is_admin FROM usuarios WHERE id = ?",
@@ -537,7 +538,7 @@ router.post("/admin/ban-user", isAdmin, (req, res) => {
       if (banType === "temporary") {
         db.query(
           "UPDATE usuarios SET banned = ?, ban_expiration = DATE_ADD(NOW(), INTERVAL ? DAY) WHERE id = ?",
-          [true, banDuration, userId],
+          [true, banDuration, userId, adminUsername],
           (err, result) => {
             if (err) {
               console.error("Error al banear al usuario:", err);
@@ -550,7 +551,7 @@ router.post("/admin/ban-user", isAdmin, (req, res) => {
       } else {
         db.query(
           "UPDATE usuarios SET banned = ?, ban_expiration = NULL WHERE id = ?",
-          [true, userId],
+          [true, userId, adminUsername],
           (err, result) => {
             if (err) {
               console.error("Error al banear al usuario:", err);
