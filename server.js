@@ -75,14 +75,14 @@ app.use("/uploads", express.static(path.join(__dirname, "src/public/uploads")));
 
 // Ban check middleware
 app.use((req, res, next) => {
-  if (req.path !== "/login" && req.path !== "/check-ban") {
+  if (req.session.userId && req.path !== "/login" && req.path !== "/check-ban") {
     const now = new Date();
-    const checkBanInterval = 5 * 60 * 1000; // 5 minutes
+    const checkBanInterval = 5 * 60 * 1000; // 5 minutos
 
     if (!req.session.banStatus || now - req.session.lastBanCheck > checkBanInterval) {
       db.query(
-        "SELECT banned, ban_expiration FROM usuarios WHERE id = ?",
-        [req.session.userId || 0],
+        "SELECT banned, ban_expiration, banned_by FROM usuarios WHERE id = ?",
+        [req.session.userId],
         (err, results) => {
           if (err) {
             console.error("Error al obtener el estado de baneado:", err);
@@ -90,23 +90,22 @@ app.use((req, res, next) => {
           }
 
           if (results.length > 0) {
-            const { banned, ban_expiration } = results[0];
+            const { banned, ban_expiration, banned_by } = results[0];
             req.session.banStatus = { banned, ban_expiration };
             req.session.lastBanCheck = now;
 
             if (banned) {
-              if (ban_expiration > new Date()) {
-                const banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
-                return res.render("banned", {
-                  message: "Has sido baneado temporalmente.",
-                  banExpirationFormatted,
-                });
-              } else {
-                return res.render("banned", {
-                  message: "Has sido baneado permanentemente.",
-                  banExpirationFormatted: null,
-                });
-              }
+              const banExpirationFormatted = ban_expiration
+                ? moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss")
+                : null;
+
+              return res.render("banned", {
+                message: ban_expiration
+                  ? "Has sido baneado temporalmente."
+                  : "Has sido baneado permanentemente.",
+                banExpirationFormatted,
+                bannedBy: banned_by || "Desconocido" // Asegúrate de que bannedBy esté definido
+              });
             }
           }
 
@@ -115,22 +114,22 @@ app.use((req, res, next) => {
       );
     } else {
       const { banned, ban_expiration } = req.session.banStatus;
+
       if (banned) {
-        if (ban_expiration > new Date()) {
-          const banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
-          return res.render("banned", {
-            message: "Has sido baneado temporalmente.",
-            banExpirationFormatted,
-          });
-        } else {
-          return res.render("banned", {
-            message: "Has sido baneado permanentemente.",
-            banExpirationFormatted: null,
-          });
-        }
-      } else {
-        next();
+        const banExpirationFormatted = ban_expiration
+          ? moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss")
+          : null;
+
+        return res.render("banned", {
+          message: ban_expiration
+            ? "Has sido baneado temporalmente."
+            : "Has sido baneado permanentemente.",
+          banExpirationFormatted,
+          bannedBy: req.session.banStatus.banned_by || "Desconocido" // Asegúrate de que bannedBy esté definido
+        });
       }
+
+      next();
     }
   } else {
     next();
