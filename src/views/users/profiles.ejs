@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.css">
+    <link rel="stylesheet" href="/src/public/css/main-color/color.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
@@ -52,26 +54,131 @@
         .float-animation {
             animation: float 3s ease-in-out infinite;
         }
+
+        /* userMenu animated hover */
+        .menu-enter {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+
+        .menu-enter-active {
+            transform: scale(1);
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .menu-leave {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .menu-leave-active {
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.2s ease-in-out;
+        }  
+
+        .user-menu-link {
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0.375rem;
+        }
+
+        .user-menu-link:hover {
+            background-color: #ffedd5;
+            color: #ff6b6b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="h-8 w-8 mr-2">
-                    <a href="/anime" class="text-2xl font-bold">NakamaStream</a>
+    <nav class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Botón de menú para móviles -->
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Abrir menú</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="text-2xl font-bold text-primary">NakamaStream</a>
+                    </div>
+                    <div class="hidden sm:block sm:ml-6">
+                        <div class="flex space-x-4">
+                            <a href="/" class="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" aria-current="page">Inicio</a>
+                            <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Noticias</a>
+                            <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Calendario</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center">
-                    <img src="<%= profileImageUrl %>" alt="Profile" class="h-8 w-8 rounded-full mr-2">
-                    <a href="/search" class="mr-4 hover:text-indigo-200">
-                        <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <a href="/animes/api/saved-animes" class="ml-3 hidden md:inline-flex">
+                        <button class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
+                            <span class="sr-only">Ver marcadores</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                            </svg>
+                        </button>
                     </a>
-                    <a href="/logout" class="hover:text-indigo-200">Logout</a>
+                    <div class="ml-3 relative">
+                        <button id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-haspopup="true" aria-expanded="true">
+                            <span class="sr-only">Abrir menú de usuario</span>
+                            <img src="<%= profileImageUrl || '/default-profile-image.png' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
+                        </button>
+    
+                        <!-- Menú desplegable -->
+                        <div id="user-menu" class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden transition-all duration-200 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                            <div class="py-1" role="none">
+                                <p class="block px-4 py-2 text-sm text-gray-700"><%= username %></p>
+                                <div class="border-b border-gray-200"></div>
+                                <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <i class="fas fa-user mr-2"></i> Perfil
+                                </a>
+                                <a href="/animes/api/saved-animes" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <i class="fa-solid fa-bookmark mr-2"></i> Guardados
+                                </a>
+                                <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <i class="fa-solid fa-star mr-2"></i> Favoritos
+                                </a>
+                                <% if (isAdmin) { %>
+                                    <div class="border-t mt-2"></div>
+                                    <a href="/admin/panel" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                        <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                                    </a>
+                                    <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                        <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                                    </a>
+                                <% } %>
+                                <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
+    
+    <!-- Menú móvil -->
+    <div class="sm:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="/" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium" aria-current="page">
+                <i class="fas fa-home mr-2"></i> Inicio
+            </a>
+            <a href="/news" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fa-solid fa-newspaper mr-2"></i> Noticias
+            </a>
+            <a href="/animes/api/saved-animes" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-bookmark mr-2"></i> Guardados
+            </a>
+        </div>
+    </div>    
 
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white shadow-xl rounded-3xl overflow-hidden anime-card">
@@ -126,7 +233,7 @@
                     <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bio" name="bio" placeholder="Tu biografía"><%= bio %></textarea>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Actualizar información</button>
+                    <button class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Actualizar información</button>
                 </div>
             </form>
         </div>
@@ -148,10 +255,11 @@
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Confirmar nueva contraseña" required>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Cambiar contraseña</button>
+                    <button class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Cambiar contraseña</button>
                 </div>
             </form>
         </div>
+        
         <!-- Cambiar Imagen de Perfil -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
             <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Imagen de Perfil</h2>
@@ -180,5 +288,45 @@
             </form>
         </div>
     </div>
+
+    <script>
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+
+    userMenuButton.addEventListener('click', () => {
+    userMenu.classList.toggle('hidden');
+    
+    if (userMenu.classList.contains('hidden')) {
+        userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+        userMenu.classList.add('menu-leave');
+        setTimeout(() => {
+        userMenu.classList.add('hidden');
+        userMenu.classList.remove('menu-leave');
+        }, 200);
+    } else {
+        userMenu.classList.remove('menu-leave', 'hidden');
+        setTimeout(() => {
+        userMenu.classList.add('menu-enter-active');
+        }, 0);
+    }
+    });
+
+    // Cerrar el menú si se hace clic fuera de él
+    window.addEventListener('click', (event) => {
+    if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.add('hidden');
+        userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+    }
+    });
+
+    // Script para abrir/cerrar el menú en móvil
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('block');
+    });
+    </script>
 </body>
 </html>

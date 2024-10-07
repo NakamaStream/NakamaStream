@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error - Acción no permitida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nakama-red': '#ff6b6b',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fadeInUp {
+      animation: fadeInUp 1s ease;
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <section class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4 animate-fadeInUp">
+      <div class="text-center">
+        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="Error Image" class="h-64 md:h-80 mx-auto mb-8" style="mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0) 100%);">
+        <h1 class="text-4xl md:text-5xl font-bold text-nakama-red mb-4">
+          Acción no permitida
+        </h1>
+        <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          Lo sentimos, pero un administrador no puede realizar esta acción sobre otro administrador. Será redirigido al panel de administración en breve.
+        </p>
+        <div id="countdown" class="text-xl font-semibold text-nakama-red mt-4">Redirigiendo en 10 segundos...</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function startCountdown(duration, display) {
+      var timer = duration, seconds;
+      var interval = setInterval(function() {
+        seconds = parseInt(timer % 60, 10);
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        display.textContent = 'Redirigiendo en ' + seconds + ' segundos...';
+
+        if (--timer < 0) {
+          clearInterval(interval);
+          window.location.href = '/admin/panel';
+        }
+      }, 1000);
+    }
+
+    window.onload = function () {
+      var tenSeconds = 10;
+      var display = document.getElementById('countdown');
+      startCountdown(tenSeconds, display);
+    };
+  </script>
+</body>
+</html>

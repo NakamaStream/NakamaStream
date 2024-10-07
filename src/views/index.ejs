@@ -1,190 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Bienvenido</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/src/public/css/index.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="#">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
-            </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/about/jobs">Jobs</a>
-                <a class="navbar-item" href="#">Discord</a>
-                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
-                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
-            </div>
-            <div class="navbar-end" style="margin-right: 2rem; margin-top: 1rem;">
-                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
-            </div>
-            
-    </nav> 
-
-    <section class="hero is-fullheight">
-        <div class="hero-body">
-            <div class="container">
-                <div class="columns is-vcentered">
-                    <div class="column is-one-third">
-                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="waifu">
+<body class="bg-white text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto">
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/about/jobs" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Jobs</a>
+                        <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Discord</a>
+                        <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
+                        <a href="/donate" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
                     </div>
-                    <div class="column">
-                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Bienvenido a NakamaStream</h1>
-                        <br>
-                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">
-                            ¡Bienvenido a nuestra plataforma de anime, donde disfrutarás de contenido 100% gratuito y sin anuncios! Queremos brindarte la mejor experiencia, por eso también estamos disponibles en dispositivos móviles. <br><br>
-                            <strong>Para ver los animes, necesitarás una cuenta en NakamaStream.</strong> Esto nos permite personalizar tu experiencia, ofrecerte recomendaciones basadas en tus gustos y asegurar una experiencia libre de interrupciones. ¡Explora y disfruta de tus animes favoritos!
+                </div>
+                <div class="hidden md:block">
+                    <a href="/login" class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200">Iniciar sesión</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/about/jobs" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Jobs</a>
+                <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Discord</a>
+                <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
+                <a href="/donate" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
+                <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero bg-white py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="w-full md:w-1/3 mb-10 md:mb-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="mx-auto w-full max-w-xs">
+                    </div>
+                    <div class="w-full md:w-2/3 md:pl-10">
+                        <h1 class="text-4xl md:text-5xl text-primary font-bold mb-6">Bienvenido a NakamaStream</h1>
+                        <p class="text-lg text-gray-600 mb-6">
+                            ¡Bienvenido a nuestra plataforma de anime, donde disfrutarás de contenido 100% gratuito y sin anuncios! Queremos brindarte la mejor experiencia, por eso también estamos disponibles en dispositivos móviles.
                         </p>
-                        <br>
-                        <p class="control" style="display: flex; align-items: center;">
-                            <a href="/login" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                                Iniciar Sesión
-                            </a>
-                            <a href="/register" class="button is-light ml-3">¿No estás registrado?</a>
+                        <p class="text-lg text-gray-800 font-semibold mb-6">
+                            Para ver los animes, necesitarás una cuenta en NakamaStream.
                         </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                            <a href="/login" class="bg-primary text-white py-3 px-6 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200 text-center">Iniciar Sesión</a>
+                            <a href="/register" class="text-primary py-3 px-6 rounded-md border border-primary hover:bg-primary hover:text-white transition-colors duration-200 text-center">¿No estás registrado?</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
+        </section>
 
-    <section class="section has-background-light">
-        <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Características</h2>
-            <div class="columns is-multiline">
-                <div class="column is-4">
-                    <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">Amplia Selección</h3>
-                        <p class="featured-anime-description">Explora una vasta biblioteca de series y películas de anime en diferentes géneros.</p>
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12">Características</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Amplia Selección</h3>
+                        <p class="text-gray-600">Explora un vasto directorio de animes de diferentes géneros.</p>
                     </div>
-                </div>
-                <div class="column is-4">
-                    <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">Alta Calidad</h3>
-                        <p class="featured-anime-description">Disfruta de streaming en alta definición con calidad de audio premium.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Alta Calidad</h3>
+                        <p class="text-gray-600">Disfruta de streaming en alta definición con calidad de audio premium.</p>
                     </div>
-                </div>
-                <div class="column is-4">
-                    <div class="featured-anime-card">
-                        <h3 class="featured-anime-title">Experiencia Personalizada</h3>
-                        <p class="featured-anime-description">Recibe recomendaciones personalizadas basadas en tu historial de visualización.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Experiencia Personalizada</h3>
+                        <p class="text-gray-600">Recibe recomendaciones personalizadas basadas en tu historial de visualización.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Animes Recientes</h1>
-            <div id="recent-animes" class="anime-container">
-                <!-- Los animes se cargarán aquí -->
-            </div>
-        </div>
-    </section>
-    
-    <section class="section has-background-light">
-        <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Nuestros Fundadores</h2>
-            <div class="columns is-multiline">
-                <div class="column is-4">
-                    <div class="box has-background-white p-5 has-text-centered">
-                        <figure class="image is-128x128 mx-auto mb-4">
-                            <img src="https://avatars.githubusercontent.com/u/108166164?v=4" alt="Not_staff" class="is-rounded" style="border: 2px solid #ff6b6b; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                        </figure>
-                        <h3 class="title is-size-4" style="color: #4a4a4a;">Not_Staff</h3>
-                        <p class="subtitle is-size-6" style="color: #7a7a7a;">Líder en el desarrollo y mantenimiento continuo de la plataforma y el servidor de NakamaStream.</p>
-                    </div>
-                </div>
-                <div class="column is-4">
-                    <div class="box has-background-white p-5 has-text-centered">
-                        <figure class="image is-128x128 mx-auto mb-4">
-                            <img src="https://avatars.githubusercontent.com/u/152051773?v=4" alt="avidevs" class="is-rounded" style="border: 2px solid #ff6b6b; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                        </figure>
-                        <h3 class="title is-size-4" style="color: #4a4a4a;">avidevs</h3>
-                        <p class="subtitle is-size-6" style="color: #7a7a7a;">Especialista en el desarrollo interno y diseño de la infraestructura de la plataforma NakamaStream.</p>
-                    </div>
-                </div>
-                <div class="column is-4">
-                    <div class="box has-background-white p-5 has-text-centered">
-                        <figure class="image is-128x128 mx-auto mb-4">
-                            <img src="https://avatars.githubusercontent.com/u/149891004?v=4" alt="SantiagolxxGG" class="is-rounded" style="border: 2px solid #ff6b6b; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                        </figure>
-                        <h3 class="title is-size-4" style="color: #4a4a4a;">SantiagolxxGG</h3>
-                        <p class="subtitle is-size-6" style="color: #7a7a7a;">Encargado del desarrollo y diseño gráfico de la plataforma NakamaStream.</p>
-                    </div>
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-12 text-primary">Animes Recientes</h2>
+                <div id="recent-animes" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <!-- The anime cards will be dynamically loaded here -->
                 </div>
             </div>
-        </div>
-    </section>
-    
+        </section>
+        
 
-    <section class="section has-background-white-ter">
-        <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Preguntas Frecuentes</h2>
-            <br>
-            <div class="tabs">
-                <ul>
-                    <li class="tab-item is-active" data-tab="tab1">¿Qué es NakamaStream?</li>
-                    <li class="tab-item" data-tab="tab2">¿Cuánto cuesta?</li>
-                    <li class="tab-item" data-tab="tab3">¿Puedo verlo en mi televisor?</li>
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12">Nuestros Fundadores</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center transition-transform duration-300 hover:scale-105">
+                        <img src="https://avatars.githubusercontent.com/u/108166164?v=4" alt="Not_Staff" class="w-32 h-32 rounded-full border-4 border-primary shadow-md mx-auto mb-6">
+                        <h3 class="text-xl font-semibold text-primary mb-2">Not_Staff</h3>
+                        <p class="text-gray-600">Líder en el desarrollo y mantenimiento continuo de la plataforma y el servidor de NakamaStream.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center transition-transform duration-300 hover:scale-105">
+                        <img src="https://avatars.githubusercontent.com/u/152051773?v=4" alt="avidevs" class="w-32 h-32 rounded-full border-4 border-primary shadow-md mx-auto mb-6">
+                        <h3 class="text-xl font-semibold text-primary mb-2">avidevs</h3>
+                        <p class="text-gray-600">Especialista en el desarrollo interno y diseño de la infraestructura de la plataforma NakamaStream.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center transition-transform duration-300 hover:scale-105">
+                        <img src="https://avatars.githubusercontent.com/u/149891004?v=4" alt="SantiagolxxGG" class="w-32 h-32 rounded-full border-4 border-primary shadow-md mx-auto mb-6">
+                        <h3 class="text-xl font-semibold text-primary mb-2">SantiagolxxNya</h3>
+                        <p class="text-gray-600">Encargado del desarrollo y diseño gráfico de la plataforma NakamaStream.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12">Preguntas Frecuentes</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="space-y-4">
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                            <button class="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none" onclick="toggleFAQ(this)">
+                                <span class="font-semibold text-primary">¿Qué es NakamaStream?</span>
+                                <span class="transform transition-transform duration-200">▼</span>
+                            </button>
+                            <div class="hidden px-6 py-4 bg-gray-50">
+                                <p class="text-gray-600">NakamaStream es una plataforma en línea que ofrece una amplia selección de animes doblados y subtitulados para disfrutar en línea.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                            <button class="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none" onclick="toggleFAQ(this)">
+                                <span class="font-semibold text-primary">¿Cuánto cuesta?</span>
+                                <span class="transform transition-transform duration-200">▼</span>
+                            </button>
+                            <div class="hidden px-6 py-4 bg-gray-50">
+                                <p class="text-gray-600">NakamaStream es completamente gratuito, por lo que no necesitas realizar ningún pago. Únicamente es necesario que crees una cuenta, y eso es todo.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                            <button class="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none" onclick="toggleFAQ(this)">
+                                <span class="font-semibold text-primary">¿Puedo verlo en mi televisor?</span>
+                                <span class="transform transition-transform duration-200">▼</span>
+                            </button>
+                            <div class="hidden px-6 py-4 bg-gray-50">
+                                <p class="text-gray-600">Sí, NakamaStream ofrece una aplicación para dispositivos Android. Si tu televisión cuenta con Android 8 o superior, puedes disfrutar de nuestra experiencia de forma gratuita.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white shadow-md py-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo" class="h-12">
+                    <p class="text-gray-600">NakamaStream version: 1.0</p>
+                </div>
+                <ul class="flex flex-wrap justify-center space-x-4 mb-6">
+                    <li><a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">Inicio</a></li>
+                    <li><a href="/tos" class="text-gray-700 hover:text-primary transition-colors duration-200">Términos de Uso</a></li>
+                    <li><a href="/privacy" class="text-gray-700 hover:text-primary transition-colors duration-200">Política de Privacidad</a></li>
                 </ul>
+                <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador" class="h-8 mb-6">
+                <p class="text-gray-600 text-center">© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
             </div>
-            <div class="tab-content">
-                <div id="tab1" class="tab-panel is-active">
-                    <p>NakamaStream es una plataforma en línea que ofrece una amplia selección de series y películas de anime para disfrutar en línea.</p>
-                </div>
-                <div id="tab2" class="tab-panel">
-                    <p>NakamaStream es completamente gratuito, por lo que no necesitas realizar ningún pago. Únicamente es necesario que crees una cuenta, y eso es todo.</p>
-                </div>
-                <div id="tab3" class="tab-panel">
-                    <p>Sí, NakamaStream ofrece una aplicación para dispositivos Android. Si tu televisión cuenta con Android 8 o superior, puedes disfrutar de nuestra experiencia de forma gratuita.</p>
-                </div>
-            </div>
-        </div>
-    </section>    
-
-    <footer class="footer">
-        <div class="container__footer">
-            <div class="footer__logo">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo">
-                <div class="footer__version">
-                    <p>NakamaStream version: 1.0</p>
-                </div>
-            </div>
-            <div class="footer__links">
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/tos">Términos de Uso</a></li>
-                    <li><a href="/privacy">Política de Privacidad</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer__sponsor">
-            <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador">
-        </div>
-        <div class="footer__legal">
-            <p>© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
         </div>
     </footer>
-     
     <script src="/src/public/js/tabs.js"></script>
-    <script src="/src/public/js/navMobile.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        function loadRecentAnimes() {
+            $.ajax({
+                url: '/api/recent-animes',
+                method: 'GET',
+                success: function (data) {
+                    const animesContainer = $('#recent-animes');
+                    animesContainer.empty();
+
+                    data.forEach(anime => {
+                        const animeElement = `
+                        <div class="group bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl">
+                            <img src="${anime.imageUrl}" alt="${anime.name}" class="w-full h-64 object-cover transition-opacity duration-300 group-hover:opacity-90">
+                            <h3 class="text-center text-gray-800 font-semibold mt-4 mb-2 group-hover:text-gray-600">${anime.name}</h3>
+                        </div>`;
+                        animesContainer.append(animeElement);
+                    });
+                },
+                error: function (err) {
+                    console.error('Error loading recent animes:', err);
+                }
+            });
+        }
+
+        loadRecentAnimes();
+    });
+    </script>
 </body>
 
 </html>

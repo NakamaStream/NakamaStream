@@ -1,107 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Términos de Servicio</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/src/public/css/index.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>NakamaStream - Términos de Uso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
-            </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="#">Discord</a>
-                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
-                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
+<body class="bg-white text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto">
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Inicio</a>
+                        <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Discord</a>
+                        <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
+                        <a href="/donate" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="/login" class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200">Iniciar sesión</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="navbar-end" style="margin-right: 2rem;">
-                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Discord</a>
+                <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
+                <a href="/donate" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
+                <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar sesión</a>
             </div>
         </div>
     </nav>
 
-    <section class="section">
-        <div class="container">
-            <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Términos de Servicio</h1>
-            <br>
-            <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">
-                Bienvenido a NakamaStream. Al acceder a nuestro sitio web y utilizar nuestros servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones de uso, que junto con nuestra política de privacidad rigen la relación de NakamaStream contigo en relación con este sitio web.
-                Si no estás de acuerdo con alguna parte de estos términos y condiciones, por favor no utilices nuestro sitio web.
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">1. Uso del sitio web</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                El uso de este sitio web está sujeto a las siguientes condiciones de uso:
-                <ul>
-                    <li>Nuestro sitio web no contiene publicidad de terceros.</li>
-                    <li>No almacenamos información en tu navegador.</li>
-                    <li>No está permitido el uso del sitio para actividades ilegales o inapropiadas.</li>
-                    <li>No se permite el acceso no autorizado a áreas restringidas del sitio.</li>
-                    <li>No se permite la distribución no autorizada de contenido del sitio.</li>
-                </ul>
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">2. Alojamiento de videos</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                Nuestra plataforma no aloja ningún video que se encuentre en la web. Todo el contenido es proporcionado por hostings de terceros o se incrusta desde fuentes externas. Sin embargo, nos reservamos el derecho de eliminar cualquier contenido que viole nuestros términos de servicio o que sea considerado inapropiado.
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">3. Privacidad de datos</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                Nos comprometemos a no vender tus datos personales a terceros. Respetamos tu privacidad y tomamos medidas para proteger la información que nos proporcionas. Sin embargo, ten en cuenta que al utilizar nuestro sitio web, cierta información puede ser recopilada automáticamente, como tu dirección IP, para fines de análisis y mejora de nuestros servicios. Para obtener más información sobre cómo manejamos tus datos, consulta nuestra política de privacidad.
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">4. Modificaciones</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                Nos reservamos el derecho de actualizar o modificar estos términos de servicio en cualquier momento sin previo aviso. Se te notificará cualquier cambio mediante la publicación de los términos actualizados en esta página. Es tu responsabilidad revisar periódicamente estos términos para estar al tanto de las modificaciones. El uso continuado del sitio después de la publicación de cualquier cambio constituye la aceptación de dichos cambios.
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">5. Limitación de responsabilidad</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                En ningún caso seremos responsables ante ti o cualquier tercero por cualquier daño directo, indirecto, incidental, especial, emergente o punitivo que surja del uso de nuestro sitio web o de la imposibilidad de usarlo. Esto incluye, entre otros, daños por pérdida de beneficios, datos, uso o cualquier otra pérdida intangible, incluso si hemos sido advertidos de la posibilidad de tales daños.
-            </p>
-        </div>
-    </section>    
-    
-    <footer class="footer">
-        <div class="container__footer">
-            <div class="footer__logo">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo">
-                <div class="footer__version">
-                    <p>NakamaStream version: 1.0</p>
+    <main>
+        <section class="py-12 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-primary mb-6">Términos de Servicio</h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    Bienvenido a NakamaStream. Al acceder a nuestro sitio web y utilizar nuestros servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones de uso, que junto con nuestra política de privacidad rigen la relación de NakamaStream contigo en relación con este sitio web. Si no estás de acuerdo con alguna parte de estos términos y condiciones, por favor no utilices nuestro sitio web.
+                </p>
+                
+                <!-- Sección de Uso del sitio web -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-globe text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">1. Uso del sitio web</h2>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Nuestro sitio web no contiene publicidad de terceros.</li>
+                        <li>No almacenamos información en tu navegador.</li>
+                        <li>No está permitido el uso del sitio para actividades ilegales o inapropiadas.</li>
+                        <li>No se permite el acceso no autorizado a áreas restringidas del sitio.</li>
+                    </ul>
+                </div>
+        
+                <!-- Sección de Alojamiento de videos -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-video text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">2. Alojamiento de videos</h2>
+                    </div>
+                    <p class="text-gray-700">
+                        Nuestra plataforma no aloja ningún video que se encuentre en la web. Todo el contenido es proporcionado por hostings de terceros o se incrusta desde fuentes externas. Sin embargo, nos reservamos el derecho de eliminar cualquier contenido que viole nuestros términos de servicio o que sea considerado inapropiado.
+                    </p>
+                </div>
+        
+                <!-- Sección de Privacidad de datos -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-user-shield text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">3. Privacidad de datos</h2>
+                    </div>
+                    <p class="text-gray-700">
+                        Nos comprometemos a no vender tus datos personales a terceros. Respetamos tu privacidad y tomamos medidas para proteger la información que nos proporcionas. Para obtener más información sobre cómo manejamos tus datos, consulta nuestra política de privacidad.
+                    </p>
+                </div>
+        
+                <!-- Sección de Modificaciones -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-edit text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">4. Modificaciones</h2>
+                    </div>
+                    <p class="text-gray-700">
+                        Nos reservamos el derecho de actualizar o modificar estos términos de servicio en cualquier momento sin previo aviso. Se te notificará cualquier cambio mediante la publicación de los términos actualizados en esta página.
+                    </p>
+                </div>
+        
+                <!-- Sección de Limitación de responsabilidad -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-exclamation-circle text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">5. Limitación de responsabilidad</h2>
+                    </div>
+                    <p class="text-gray-700">
+                        En ningún caso seremos responsables ante ti o cualquier tercero por cualquier daño directo, indirecto, incidental, especial, emergente o punitivo que surja del uso de nuestro sitio web.
+                    </p>
                 </div>
             </div>
-            <div class="footer__links">
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/tos">Términos de Uso</a></li>
-                    <li><a href="/privacy">Política de Privacidad</a></li>
+        </section>        
+
+    </main>
+
+    <footer class="bg-white shadow-md py-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo" class="h-12">
+                    <p class="text-gray-600">NakamaStream version: 1.0</p>
+                </div>
+                <ul class="flex flex-wrap justify-center space-x-4 mb-6">
+                    <li><a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">Inicio</a></li>
+                    <li><a href="/tos" class="text-gray-700 hover:text-primary transition-colors duration-200">Términos de Uso</a></li>
+                    <li><a href="/privacy" class="text-gray-700 hover:text-primary transition-colors duration-200">Política de Privacidad</a></li>
                 </ul>
+                <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador" class="h-8 mb-6">
+                <p class="text-gray-600 text-center">© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
             </div>
         </div>
-        <div class="footer__sponsor">
-            <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador">
-        </div>
-        <div class="footer__legal">
-            <p>© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
-        </div>
     </footer>
-
-    <script src="/src/public/js/navMobile.js"></script>
+    <script src="/src/public/js/tabs.js"></script>
 </body>
 
 </html>

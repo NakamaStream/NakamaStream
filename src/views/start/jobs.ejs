@@ -1,165 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Empleos</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/src/public/css/index.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <title>NakamaStream - Trabaja con Nosotros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 
-
-<body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="#">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
-            </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/">Inicio</a>
-                <a class="navbar-item" href="/discord">Discord</a>
-                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
-                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
+<body class="bg-white text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto">
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Inicio</a>
+                        <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Discord</a>
+                        <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
+                        <a href="/donate" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="/login" class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200">Iniciar sesión</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="navbar-end" style="margin-right: 2rem; margin-top: 1rem;">
-                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Discord</a>
+                <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
+                <a href="/donate" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
+                <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar sesión</a>
             </div>
         </div>
     </nav>
 
-    <section class="hero is-fullheight">
-        <div class="hero-body">
-            <div class="container">
-                <div class="columns is-vcentered">
-                    <div class="column is-two-thirds">
-                        <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Únete a NakamaStream</h1>
-                        <br>
-                        <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">
-                            En NakamaStream, estamos buscando personas apasionadas y talentosas para que se unan a nuestro equipo. Si amas el anime y quieres ser parte de una plataforma en crecimiento, ¡nos encantaría conocerte!
-                        </p>
-                        <br>
-                        <a href="#positions" class="button is-primary" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                            Ver Posiciones Abiertas
-                        </a>
-                    </div>
-                    <div class="column">
-                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="waifu">
-                    </div>
-                </div>
-            </div>
+    <!-- Notificación -->
+    <div class="bg-primary shadow-lg rounded-lg p-6 text-center">
+        <div class="flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white mr-2" viewBox="0 0 512 512">
+                <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+            </svg>
+            <p class="text-lg font-bold text-white">Nota Importante:</p>
         </div>
-    </section>
-
-    <section class="section has-background-light">
-    <div class="container">
-      <h2 class="title is-size-2" style="color: #ff6b6b;">Nuestro Equipo Global</h2>
-      <div id="map" style="height: 500px;" class="box mb-6"></div>
-
-    <div class="box">
-    <h3 class="subtitle is-size-4">Países y trabajadores</h3>
-    <div class="content">
-     <ol id="country-list" class="is-size-5 pl-4"></ol>
+        <p class="text-md text-white mb-4">Todos los puestos son voluntarios. La única forma de obtener un poco de ingreso es a través de donaciones.</p>
+        <a href="/donate" class="inline-block">
+            <button class="bg-white text-primary font-bold py-2 px-4 rounded hover:bg-gray-200 transition duration-300">
+                Haz una Donación
+            </button>
+        </a>
     </div>
-    </div>
-    </div>
-    </section>
-    
-    <section class="section has-background-light" id="positions">
-        <div class="container">
-            <h2 class="title is-size-2" style="color: #ff6b6b;">Posiciones Abiertas</h2>
-            <div class="columns is-multiline">
-                <div class="column is-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <h3 class="title is-size-4">Desarrollador Front-End</h3>
-                            <p class="subtitle is-size-5">Remoto</p>
-                            <p>Buscamos un desarrollador front-end con experiencia en ejs y Bulma para ayudar a mejorar nuestra plataforma.</p> <br>
-                            <a href="/jobs/frontend" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                                Más Información
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <h3 class="title is-size-4">Desarrollador Back-End</h3>
-                            <p class="subtitle is-size-5">Remoto</p>
-                            <p>Buscamos un desarrollador back-end con experiencia en Node express y mysql para construir y mantener nuestros servicios backend.</p> <br>
-                            <a href="/jobs/backend" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                                Más Información
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <h3 class="title is-size-4">Moderadores</h3>
-                            <p class="subtitle is-size-5">Remoto</p>
-                            <p>Estamos en la búsqueda de moderadores comprometidos para garantizar la seguridad de nuestra plataforma y mejorar la experiencia del usuario.</p> <br>
-                            <a href="/jobs/moderador" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                                Más Información
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <h3 class="title is-size-4">Administradores</h3>
-                            <p class="subtitle is-size-5">Remoto</p>
-                            <p>Estamos en búsqueda de individuos confiables y dinámicos para desempeñarse como administradores de la plataforma. Tu rol incluirá la publicación de nuevos animes y la moderación de contenidos.</p> <br>
-                            <a href="/jobs/administrador" class="button is-link" style="background-color: #ff6b6b; border-color: #ff6b6b; color: white;">
-                                Más Información
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="notification is-warning" style="margin-top: 2em;">
-                <p><strong>Aviso:</strong> Queremos destacar que estos puestos son de carácter voluntario y no implican compensación económica. En el caso de recibir donaciones, estas serán distribuidas entre el equipo de manera equitativa. Los motivos son que, al ser una página sin anuncios, no hay forma de generar ingresos, y solo es posible obtener fondos a través de donaciones.</p>
-            </div>
-        </div>
-    </section>
     
 
-    <footer class="footer">
-        <div class="container__footer">
-            <div class="footer__logo">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo">
-                <div class="footer__version">
-                    <p>NakamaStream version: 1.0</p>
+
+    <main>
+        <!-- Nueva sección para Trabaja con Nosotros -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl text-primary font-bold text-center mb-12">Colabora con Nosotros</h2>
+                <div class="text-lg text-gray-600 max-w-4xl mx-auto mb-8">
+                    <p>En NakamaStream, somos un equipo apasionado por el anime y la tecnología. Estamos construyendo una comunidad para que los fans disfruten de su contenido favorito de manera gratuita y sin interrupciones. Para hacer esto posible, buscamos personas talentosas y comprometidas que quieran unirse a nuestro equipo.</p>
+                    <p class="mt-4">Si estás interesado en trabajar en una plataforma innovadora, donde cada idea cuenta y el ambiente de trabajo es creativo y desafiante, ¡te invitamos a ver nuestras ofertas laborales!</p>
+                </div>
+                <div class="flex justify-center mt-8">
+                    <a href="https://github.com/orgs/NakamaStream/discussions/categories/trabajos" class="bg-primary text-white py-3 px-6 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200 text-center">Ver requisitos de colaboracion</a>
                 </div>
             </div>
-            <div class="footer__links">
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/tos">Términos de Uso</a></li>
-                    <li><a href="/privacy">Política de Privacidad</a></li>
+        </section>
+        
+        <section class="py-20 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl text-primary font-bold text-center mb-12">Nuestros Colaboradores</h2>
+                <div class="flex justify-center">
+                    <img src="https://i.ibb.co/LrjX6Zm/Map-Chart-Map.png" alt="Mapa de nuestros trabajadores" class="rounded-lg shadow-md">
+                </div>                
+                
+                <!-- Sección de trabajadores -->
+                <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    <!-- Tarjeta de un trabajador -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <img src="https://cdn.discordapp.com/banners/962589013921918996/a_52310fd621d5f6f6ac6eea9c4b0c8075?size=4096" alt="Banner Not_Staff" class="rounded-t-lg h-24 w-full object-cover mb-4">
+                        <img src="https://cdn.discordapp.com/avatars/962589013921918996/d71b34d8e5832ec9b85bc920c659977d?size=1024" alt="Not_Staff" class="rounded-full h-24 w-24 mx-auto mb-4">
+                        <h3 class="text-xl font-semibold">Not_Staff</h3>
+                        <p class="text-gray-600">País: <span class="font-medium">Nicaragua</span></p>
+                        <p class="text-gray-600">Puesto: <span class="font-medium">Fundador / Developer</span></p>
+                    </div>
+                    
+                    <!-- Tarjetas duplicadas y modificadas -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <img src="https://cdn.discordapp.com/banners/984475795743453195/a_99a057c5885b2e6aba166112dd937487?size=4096" alt="Banner Avidevs" class="rounded-t-lg h-24 w-full object-cover mb-4">
+                        <img src="https://cdn.discordapp.com/avatars/984475795743453195/068452944bf3991f6af7d226a38b727c?size=1024" alt="Avidevs" class="rounded-full h-24 w-24 mx-auto mb-4">
+                        <h3 class="text-xl font-semibold">Avidevs</h3>
+                        <p class="text-gray-600">País: <span class="font-medium">República Dominicana</span></p>
+                        <p class="text-gray-600">Puesto: <span class="font-medium">Fundador / Developer</span></p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <img src="https://cdn.discordapp.com/banners/1224181541127717034/a_1e15ddb6314a79e4fea6a0eb6adcf989?size=4096" alt="Banner SantiagolxxNya" class="rounded-t-lg h-24 w-full object-cover mb-4">
+                        <img src="https://cdn.discordapp.com/avatars/1224181541127717034/4420e09067cef4d0bfd708064b0a5f28?size=1024" alt="SantiagolxxNya" class="rounded-full h-24 w-24 mx-auto mb-4">
+                        <h3 class="text-xl font-semibold">SantiagolxxNya</h3>
+                        <p class="text-gray-600">País: <span class="font-medium">Chile</span></p>
+                        <p class="text-gray-600">Puesto: <span class="font-medium">Fundador / Developer</span></p>
+                    </div>
+                
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <img src="https://cdn.discordapp.com/banners/852303643235450880/a_da384652678354c4f8ae355abc1d726d?size=4096" alt="Banner Matmtwt" class="rounded-t-lg h-24 w-full object-cover mb-4">
+                        <img src="https://cdn.discordapp.com/avatars/852303643235450880/a_31a59b3531a96c34c96dc612d03cd3b5?size=1024" alt="Matmtwt" class="rounded-full h-24 w-24 mx-auto mb-4">
+                        <h3 class="text-xl font-semibold">Matmtwt</h3>
+                        <p class="text-gray-600">País: <span class="font-medium">Ecuador</span></p>
+                        <p class="text-gray-600">Puesto: <span class="font-medium">Administrador</span></p>
+                    </div>
+                
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs3HAcuu_SqzkP2cyw1C27soFwm4PxHVw0eg&s" alt="Banner jc_0007" class="rounded-t-lg h-24 w-full object-cover mb-4">
+                        <img src="https://cdn.discordapp.com/avatars/1072164300636028979/709d5c5f1b5d915785349104de4fe751?size=1024" alt="jc_0007" class="rounded-full h-24 w-24 mx-auto mb-4">
+                        <h3 class="text-xl font-semibold">jc_0007</h3>
+                        <p class="text-gray-600">País: <span class="font-medium">República Dominicana</span></p>
+                        <p class="text-gray-600">Puesto: <span class="font-medium">Administrador / Beta tester</span></p>
+                    </div>
+                    
+                    <!-- Agrega más tarjetas según sea necesario -->
+                </div>                                               
+            </div>
+        </section>        
+    </main>
+
+    <footer class="bg-white shadow-md py-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo" class="h-12">
+                    <p class="text-gray-600">NakamaStream version: 1.0</p>
+                </div>
+                <ul class="flex flex-wrap justify-center space-x-4 mb-6">
+                    <li><a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">Inicio</a></li>
+                    <li><a href="/tos" class="text-gray-700 hover:text-primary transition-colors duration-200">Términos de Uso</a></li>
+                    <li><a href="/privacy" class="text-gray-700 hover:text-primary transition-colors duration-200">Política de Privacidad</a></li>
                 </ul>
+                <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador" class="h-8 mb-6">
+                <p class="text-gray-600 text-center">© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
             </div>
-        </div>
-        <div class="footer__sponsor">
-            <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador">
-        </div>
-        <div class="footer__legal">
-            <p>© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
         </div>
     </footer>
-    <script src="/src/public/js/start/map-jobs.js"></script>
-    <script src="/src/public/js/global/navMobile.js"></script>
+    <script src="/src/public/js/tabs.js"></script>
 </body>
 
 </html>

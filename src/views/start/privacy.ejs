@@ -1,96 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Política de Privacidad</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/src/public/css/index.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" style="max-height: 3rem;">
-            </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="#">Discord</a>
-                <a class="navbar-item" href="https://github.com/NakamaStream">Github</a>
-                <a class="navbar-item" href="https://www.patreon.com/sstudiosdevelopment/membership">Donaciones</a>
+<body class="bg-white text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto">
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Inicio</a>
+                        <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Discord</a>
+                        <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
+                        <a href="/donate" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="/login" class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200">Iniciar sesión</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="navbar-end" style="margin-right: 2rem;">
-                <a class="navbar-item button is-primary" href="/login" style="background-color: #ff6b6b; color: white; box-shadow: none;">Iniciar sesión</a>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Discord</a>
+                <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
+                <a href="/donate" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
+                <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar sesión</a>
             </div>
         </div>
     </nav>
 
-    <section class="section">
-        <div class="container">
-            <h1 class="title is-size-1-desktop is-size-2-mobile" style="color: #ff6b6b;">Política de Privacidad</h1>
-            <br>
-            <p class="subtitle is-size-4-desktop is-size-5-mobile" style="color: #4a4a4a;">
-                Esta Política de Privacidad describe cómo NakamaStream recopila, utiliza y protege la información que proporcionas cuando utilizas nuestro sitio web. Nos comprometemos a proteger tu privacidad. Si te pedimos que proporciones cierta información por la cual puedas ser identificado al usar este sitio web, puedes estar seguro de que se utilizará de acuerdo con esta declaración de privacidad.
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">Información que recopilamos</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                Al utilizar nuestro sitio web, podemos recopilar la siguiente información personal:
-                <ul>
-                    <li>Nombre de usuario que proporcionas al crear una cuenta</li>
-                    <li>Dirección de correo electrónico que proporcionas al crear una cuenta</li>
-                    <li>Utilizamos cookies para mantener tu sesión abierta y brindarte una mejor experiencia de usuario.</li>
-                </ul>
-            </p>
-            <br>
-            <h2 class="subtitle is-size-3-desktop is-size-4-mobile" style="color: #ff6b6b;">Uso de la información recopilada</h2>
-            <p class="is-size-5" style="color: #4a4a4a;">
-                Utilizamos esta información para comprender tus necesidades y proporcionarte un mejor servicio, y en particular por las siguientes razones:
-                <ul>
-                    <li>Para personalizar tu experiencia en nuestro sitio web.</li>
-                    <li>Para mejorar nuestros productos y servicios.</li>
-                    <li>Para enviar correos electrónicos promocionales sobre nuevos productos, ofertas especiales u otra información que creemos que puede resultarte interesante utilizando la dirección de correo electrónico que has proporcionado.</li>
-                    <li>Para contactarte con fines de investigación de mercado. Podemos contactarte por correo electrónico.</li>
-                </ul>
-            </p>
-            <!-- Agrega más secciones según sea necesario -->
-        </div>
-    </section>    
-    
-    <footer class="footer">
-        <div class="container__footer">
-            <div class="footer__logo">
-                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo">
-                <div class="footer__version">
-                    <p>NakamaStream version: 1.0</p>
+    <main>
+        <section class="py-12 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-primary mb-6">
+                    <i class="fas fa-user-secret text-primary mr-3"></i>Política de Privacidad
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    Esta Política de Privacidad describe cómo NakamaStream recopila, utiliza y protege la información que proporcionas cuando utilizas nuestro sitio web. Nos comprometemos a proteger tu privacidad. Si te pedimos que proporciones cierta información por la cual puedas ser identificado al usar este sitio web, puedes estar seguro de que se utilizará de acuerdo con esta declaración de privacidad.
+                </p>
+        
+                <!-- Sección de Información que recopilamos -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-info-circle text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">Información que recopilamos</h2>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Nombre de usuario que proporcionas al crear una cuenta.</li>
+                        <li>Dirección de correo electrónico que proporcionas al crear una cuenta.</li>
+                        <li>Utilizamos cookies para mantener tu sesión abierta y brindarte una mejor experiencia de usuario.</li>
+                    </ul>
+                </div>
+        
+                <!-- Sección de Uso de la información recopilada -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chart-line text-primary text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold text-primary">Uso de la información recopilada</h2>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Para personalizar su experiencia en nuestro sitio web.</li>
+                        <li>Para ofrecerle recomendaciones de animes basadas en su historial de preferencias.</li>
+                        <li>Para permitir la recuperación de la contraseña de su cuenta mediante correo electrónico en caso de que la olvide.</li>
+                    </ul>
                 </div>
             </div>
-            <div class="footer__links">
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/tos">Términos de Uso</a></li>
-                    <li><a href="/privacy">Política de Privacidad</a></li>
+        </section>
+        
+    </main>
+
+    <footer class="bg-white shadow-md py-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo" class="h-12">
+                    <p class="text-gray-600">NakamaStream version: 1.0</p>
+                </div>
+                <ul class="flex flex-wrap justify-center space-x-4 mb-6">
+                    <li><a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">Inicio</a></li>
+                    <li><a href="/tos" class="text-gray-700 hover:text-primary transition-colors duration-200">Términos de Uso</a></li>
+                    <li><a href="/privacy" class="text-gray-700 hover:text-primary transition-colors duration-200">Política de Privacidad</a></li>
                 </ul>
+                <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador" class="h-8 mb-6">
+                <p class="text-gray-600 text-center">© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
             </div>
         </div>
-        <div class="footer__sponsor">
-            <img src="https://github.com/NakamaStream/Resources/blob/main/Sstudiosdev-removebg%20(1).png?raw=true" alt="Logo del Patrocinador">
-        </div>
-        <div class="footer__legal">
-            <p>© 2024 NakamaStream - Ningún vídeo se encuentra alojado en nuestros servidores.</p>
-        </div>
     </footer>
-
-    <script src="/src/public/js/navMobile.js"></script>
+    <script src="/src/public/js/tabs.js"></script>
 </body>
 
 </html>

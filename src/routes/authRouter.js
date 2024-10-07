@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const db = require("../services/db");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
@@ -8,6 +7,8 @@ const yaml = require("js-yaml");
 const fs = require("fs");
 const crypto = require("crypto");
 const multer = require("multer");
+
+const router = express.Router();
 
 // Configuración de multer para almacenar archivos
 const storage = multer.diskStorage({
@@ -286,7 +287,7 @@ router.post("/profile/update-password", (req, res) => {
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
-});
+})
 
 // Ruta del perfil de usuario
 router.get("/profile/:username", (req, res) => {

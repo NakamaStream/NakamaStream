@@ -1,88 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Subir Anime</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                        'primary-dark': '#ff5252',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
         body {
             font-family: 'Nunito', sans-serif;
-            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
             background-color: #f3f4f6;
-        }
-        .custom-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .input-focus {
-            transition: all 0.3s ease-in-out;
-        }
-        .input-focus:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-        }
-        .anime-bg {
-            background-image: url('https://github.com/NakamaStream/Resources/blob/main/img/upload-anime.png?raw=true');
-            background-size: cover;
-            background-position: center;
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
     <div class="container mx-auto max-w-4xl">
-        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden custom-shadow">
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
             <div class="md:flex">
-                <div class="md:w-1/3 anime-bg p-8 text-black">
+                <div class="md:w-1/3 bg-primary p-8 text-white">
                     <h2 class="text-3xl font-bold mb-4">Subir Anime</h2>
                     <p class="mb-4">¡Comparte tu anime favorito con la comunidad!</p>
                     <ul class="space-y-2">
-                        <li><i class="fas fa-check-circle mr-2"></i> Fácil de usar</li>
-                        <li><i class="fas fa-check-circle mr-2"></i> Vista previa instantánea</li>
-                        <li><i class="fas fa-check-circle mr-2"></i> Cargas de alta calidad</li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            Fácil de usar
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            Vista previa instantánea
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            Cargas de alta calidad
+                        </li>
                     </ul>
-                </div>                
+                </div>
                 <div class="md:w-2/3 p-8">
                     <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Subir un nuevo Anime</h1>
                     <form action="/anime/upload" method="POST" class="space-y-6">
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="name">
-                                <i class="fas fa-film mr-2"></i>Nombre del anime
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                </svg>
+                                Nombre del anime
                             </label>
-                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="name" type="text" name="name" required placeholder="Introduzca el nombre del anime">
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="name" type="text" name="name" required placeholder="Introduzca el nombre del anime">
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="imageUrl">
-                                <i class="fas fa-image mr-2"></i>Image URL
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Image URL
                             </label>
-                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="imageUrl" type="url" name="imageUrl" required placeholder="Introduzca la URL de la imagen">
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="imageUrl" type="url" name="imageUrl" required placeholder="Introduzca la URL de la imagen">
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="description">
-                                <i class="fas fa-align-left mr-2"></i>Descripción
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                                </svg>
+                                Descripción
                             </label>
-                            <textarea class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="description" name="description" rows="4" required placeholder="Introduzca la descripción del anime"></textarea>
+                            <textarea class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="description" name="description" rows="4" required placeholder="Introduzca la descripción del anime"></textarea>
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="episodes">
-                                <i class="fas fa-list-ol mr-2"></i>Episodios
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                </svg>
+                                Episodios
                             </label>
-                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="episodes" type="text" name="episodes" required placeholder="Introduzca el episodio (solo ponga un 1)">
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="episodes" type="text" name="episodes" required placeholder="Introduzca el episodio (solo ponga un 1)">
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="videoUrl">
-                                <i class="fas fa-video mr-2"></i>Video URL
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                Video URL
                             </label>
-                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="videoUrl" type="url" name="videoUrl" placeholder="Introduzca la URL del vídeo">
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="videoUrl" type="url" name="videoUrl" placeholder="Introduzca la URL del vídeo">
                             <button type="button" id="previewButton" class="mt-3 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-                                <i class="fas fa-play mr-2"></i>Vista previa del vídeo
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Vista previa del vídeo
                             </button>
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="categoryId">
-                                <i class="fas fa-tags mr-2"></i>Categoría
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                Categoría
                             </label>
-                            <select class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="categoryId" name="categoryId" required>
+                            <select class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="categoryId" name="categoryId" required>
                                 <option value="">Seleccione una categoría</option>
                                 <% categories.forEach(function(category) { %>
                                     <option value="<%= category.id %>"><%= category.name %></option>
@@ -91,22 +124,31 @@
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-semibold mb-2" for="releaseDate">
-                                <i class="fas fa-calendar-alt mr-2"></i>Fecha de lanzamiento
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Fecha de lanzamiento
                             </label>
-                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 input-focus" id="releaseDate" type="date" name="releaseDate" required>
+                            <input class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary transition duration-300" id="releaseDate" type="date" name="releaseDate" required>
                         </div>
                         <div id="videoPreview" class="hidden mt-6">
                             <h3 class="text-xl font-semibold mb-3 text-gray-800">Vista previa del vídeo</h3>
-                            <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden custom-shadow">
+                            <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-lg">
                                 <iframe id="videoFrame" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="w-full h-full"></iframe>
                             </div>
                         </div>
                         <div class="flex items-center justify-between pt-6">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" type="submit">
-                                <i class="fas fa-upload mr-2"></i>Subir Anime
+                            <button class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                Subir Anime
                             </button>
-                            <a href="/anime" class="inline-block font-bold text-lg text-blue-500 hover:text-blue-700 transition duration-300 hover:underline">
-                                <i class="fas fa-arrow-left mr-2"></i>Volver a la lista de animes
+                            <a href="/anime" class="inline-block font-bold text-lg text-primary hover:text-primary-dark transition duration-300 hover:underline">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                Volver a la lista de animes
                             </a>
                         </div>
                     </form>
@@ -126,7 +168,7 @@
                 videoPreview.classList.remove('hidden');
                 videoPreview.scrollIntoView({behavior: 'smooth'});
             } else {
-                alert('Please enter a valid video URL');
+                alert('Por favor, introduce una URL de vídeo válida');
             }
         });
     </script>
