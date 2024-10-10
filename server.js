@@ -81,7 +81,7 @@ app.use((req, res, next) => {
 
     if (!req.session.banStatus || now - req.session.lastBanCheck > checkBanInterval) {
       db.query(
-        "SELECT banned, ban_expiration, banned_by FROM usuarios WHERE id = ?",
+        "SELECT banned, ban_expiration FROM usuarios WHERE id = ?",
         [req.session.userId],
         (err, results) => {
           if (err) {
@@ -90,7 +90,7 @@ app.use((req, res, next) => {
           }
 
           if (results.length > 0) {
-            const { banned, ban_expiration, banned_by } = results[0];
+            const { banned, ban_expiration } = results[0];
             req.session.banStatus = { banned, ban_expiration };
             req.session.lastBanCheck = now;
 
@@ -104,7 +104,6 @@ app.use((req, res, next) => {
                   ? "Has sido baneado temporalmente."
                   : "Has sido baneado permanentemente.",
                 banExpirationFormatted,
-                bannedBy: banned_by || "Desconocido" // Asegúrate de que bannedBy esté definido
               });
             }
           }
@@ -125,7 +124,6 @@ app.use((req, res, next) => {
             ? "Has sido baneado temporalmente."
             : "Has sido baneado permanentemente.",
           banExpirationFormatted,
-          bannedBy: req.session.banStatus.banned_by || "Desconocido" // Asegúrate de que bannedBy esté definido
         });
       }
 
