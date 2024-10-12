@@ -1,0 +1,83 @@
+/* 
+    ********************************************************************
+    * IMPORTANTE:                                                     *
+    * Este archivo CSS es crucial para el funcionamiento de la plataforma. *
+    * NO BORRAR este archivo. Si se elimina por error, revisar el      *
+    * repositorio para recuperarlo:                                    *
+    * https://github.com/NakamaStream/NakamaStream/tree/main/src/public/css *
+    ********************************************************************
+*/
+
+.admin-badge {
+    background: #ff4757;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    animation: pulse 1.2s infinite; /* Animación más rápida */
+}
+
+.admin-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    transform: translate(-20%, -20%) rotate(15deg);
+    z-index: 0;
+}
+
+.admin-badge span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Animación de pulso */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        background-color: #ff4757; /* Color original */
+    }
+    50% {
+        transform: scale(1.1); /* Aumentar más el tamaño */
+        background-color: #ff6b81; /* Color más claro */
+    }
+}
+
+/* Miembro badge */
+.member-badge {
+    background: #1e90ff;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.member-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    transform: translate(20%, 20%) rotate(-15deg);
+    z-index: 0;
+}
+
+.member-badge span {
+    position: relative;
+    z-index: 1;
+}
