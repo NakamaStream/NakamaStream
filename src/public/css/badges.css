@@ -11,9 +11,9 @@
 .admin-badge {
     background: #ff4757;
     color: #fff;
-    padding: 6px 12px;
-    border-radius: 30px;
-    font-size: 0.9rem;
+    padding: 4px 8px; /* Reducido */
+    border-radius: 20px; /* Reducido */
+    font-size: 0.8rem; /* Reducido */
     font-weight: bold;
     text-transform: uppercase;
     position: relative;
@@ -29,7 +29,7 @@
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
+    border-radius: 20px; /* Reducido */
     transform: translate(-20%, -20%) rotate(15deg);
     z-index: 0;
 }
@@ -55,9 +55,9 @@
 .member-badge {
     background: #1e90ff;
     color: #fff;
-    padding: 6px 12px;
-    border-radius: 30px;
-    font-size: 0.9rem;
+    padding: 4px 8px; /* Reducido */
+    border-radius: 20px; /* Reducido */
+    font-size: 0.8rem; /* Reducido */
     font-weight: bold;
     text-transform: uppercase;
     position: relative;
@@ -72,7 +72,7 @@
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
+    border-radius: 20px; /* Reducido */
     transform: translate(20%, 20%) rotate(-15deg);
     z-index: 0;
 }
