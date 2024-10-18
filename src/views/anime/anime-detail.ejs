@@ -289,185 +289,114 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const favoriteBtn = document.getElementById('favoriteBtn');
-    const favoriteText = document.getElementById('favoriteText');
-    const favoriteCount = document.getElementById('favoriteCount');
-    const averageRating = document.getElementById('averageRating');
-    const ratingCount = document.getElementById('ratingCount');
-    const stars = document.querySelectorAll('.star');
-    const saveAnimeBtn = document.getElementById('saveAnimeBtn');
-
-    function updateFavoriteButton(isFavorite) {
-        if (isFavorite) {
-            favoriteText.textContent = 'Quitar de favoritos';
-            gsap.to(favoriteBtn, {
-                backgroundColor: '#f56565',
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        } else {
-            favoriteText.textContent = 'Agregar a favoritos';
-            gsap.to(favoriteBtn, {
-                backgroundColor: '#4299e1',
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        }
-    }
-
-    function updateSaveButton(isSaved) {
-        if (isSaved) {
-            saveAnimeBtn.textContent = 'Quitar de guardados';
-            gsap.to(saveAnimeBtn, {
-                backgroundColor: '#f56565',
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        } else {
-            saveAnimeBtn.textContent = 'Guardar para más tarde';
-            gsap.to(saveAnimeBtn, {
-                backgroundColor: '#48bb78',
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        }
-    }
-
-    function updateStars(rating) {
-        stars.forEach((star, index) => {
-            if (index < rating) {
-                gsap.to(star, {
-                    color: '#ffd700',
-                    scale: 1.2,
-                    duration: 0.3,
-                    ease: 'back.out(1.7)'
-                });
-                star.textContent = '⭐';
-            } else {
-                gsap.to(star, {
-                    color: '#ccc',
-                    scale: 1,
+    document.addEventListener('DOMContentLoaded', function() {
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        const favoriteText = document.getElementById('favoriteText');
+        const favoriteCount = document.getElementById('favoriteCount');
+        const averageRating = document.getElementById('averageRating');
+        const ratingCount = document.getElementById('ratingCount');
+        const stars = document.querySelectorAll('.star');
+        const saveAnimeBtn = document.getElementById('saveAnimeBtn');
+    
+        function updateFavoriteButton(isFavorite) {
+            if (isFavorite) {
+                favoriteText.textContent = 'Quitar de favoritos';
+                gsap.to(favoriteBtn, {
+                    backgroundColor: '#f56565',
                     duration: 0.3,
                     ease: 'power2.out'
                 });
-                star.textContent = '☆';
+            } else {
+                favoriteText.textContent = 'Agregar a favoritos';
+                gsap.to(favoriteBtn, {
+                    backgroundColor: '#4299e1',
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
             }
-        });
-    }
-
-    function animateCountChange(element, newValue) {
-        gsap.to(element, {
-            innerHTML: newValue,
-            duration: 1,
-            ease: 'power2.out',
-            snap: { innerHTML: 1 }
-        });
-    }
-
-    function loadAnimeData() {
-        fetch(`/anime/<%= anime.slug %>/data`)
-            .then(response => response.json())
-            .then(data => {
-                animateCountChange(favoriteCount, data.favoriteCount);
-                animateCountChange(averageRating, data.averageRating ? data.averageRating.toFixed(1) : '0.0');
-                animateCountChange(ratingCount, data.ratingCount);
-                updateFavoriteButton(data.isFavorite);
-                updateSaveButton(data.isSaved);
-                if (data.userRating) {
-                    updateStars(data.userRating);
+        }
+    
+        function updateSaveButton(isSaved) {
+            if (isSaved) {
+                saveAnimeBtn.textContent = 'Quitar de guardados';
+                gsap.to(saveAnimeBtn, {
+                    backgroundColor: '#f56565',
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            } else {
+                saveAnimeBtn.textContent = 'Guardar para más tarde';
+                gsap.to(saveAnimeBtn, {
+                    backgroundColor: '#48bb78',
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            }
+        }
+    
+        function updateStars(rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    gsap.to(star, {
+                        color: '#ffd700',
+                        scale: 1.2,
+                        duration: 0.3,
+                        ease: 'back.out(1.7)'
+                    });
+                    star.textContent = '⭐';
+                } else {
+                    gsap.to(star, {
+                        color: '#ccc',
+                        scale: 1,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                    star.textContent = '☆';
                 }
-            })
-            .catch(error => console.error('Error loading data:', error));
-    }
-
-    favoriteBtn.addEventListener('click', () => {
-        const action = favoriteText.textContent === 'Agregar a favoritos' ? 'add' : 'remove';
-        fetch(`/anime/<%= anime.slug %>/favorite`, { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ animeId: <%= anime.id %>, action: action })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                loadAnimeData();
-                gsap.from(favoriteBtn, {
-                    scale: 0.5,
-                    opacity: 0,
-                    duration: 0.5,
-                    ease: 'back.out(1.7)'
-                });
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message
-                });
-            }
-        });
-    });
-
-    saveAnimeBtn.addEventListener('click', () => {
-        fetch(`/anime/<%= anime.slug %>/toggle-save`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ animeId: <%= anime.id %> })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                updateSaveButton(data.isSaved);
-                gsap.from(saveAnimeBtn, {
-                    y: -20,
-                    opacity: 0,
-                    duration: 0.5,
-                    ease: 'back.out(1.7)'
-                });
-                Swal.fire({
-                    icon: 'success',
-                    title: data.isSaved ? 'Guardado' : 'Eliminado',
-                    text: data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message
-                });
-            }
-        });
-    });
-
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const rating = star.dataset.rating;
-            fetch(`/anime/<%= anime.slug %>/rate`, {
+            });
+        }
+    
+        function animateCountChange(element, newValue) {
+            gsap.to(element, {
+                innerHTML: newValue,
+                duration: 1,
+                ease: 'power2.out',
+                snap: { innerHTML: 1 }
+            });
+        }
+    
+        function loadAnimeData() {
+            fetch(`/anime/<%= anime.slug %>/data`)
+                .then(response => response.json())
+                .then(data => {
+                    animateCountChange(favoriteCount, data.favoriteCount);
+                    animateCountChange(averageRating, data.averageRating ? data.averageRating.toFixed(1) : '0.0');
+                    animateCountChange(ratingCount, data.ratingCount);
+                    updateFavoriteButton(data.isFavorite);
+                    updateSaveButton(data.isSaved);
+                    if (data.userRating) {
+                        updateStars(data.userRating);
+                    }
+                })
+                .catch(error => console.error('Error loading data:', error));
+        }
+    
+        favoriteBtn.addEventListener('click', () => {
+            const action = favoriteText.textContent === 'Agregar a favoritos' ? 'add' : 'remove';
+            fetch(`/anime/<%= anime.slug %>/favorite`, { 
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ animeId: <%= anime.id %>, rating })
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ animeId: <%= anime.id %>, action: action })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    updateStars(rating);
                     loadAnimeData();
-                    gsap.from(star, {
-                        rotate: 360,
-                        scale: 1.5,
+                    gsap.from(favoriteBtn, {
+                        scale: 0.5,
+                        opacity: 0,
                         duration: 0.5,
                         ease: 'back.out(1.7)'
                     });
@@ -487,13 +416,84 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-    });
-
+    
+        saveAnimeBtn.addEventListener('click', () => {
+            fetch(`/anime/<%= anime.slug %>/toggle-save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ animeId: <%= anime.id %> })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateSaveButton(data.isSaved);
+                    gsap.from(saveAnimeBtn, {
+                        y: -20,
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: 'back.out(1.7)'
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.isSaved ? 'Guardado' : 'Eliminado',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            });
+        });
+    
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.dataset.rating;
+                fetch(`/anime/<%= anime.slug %>/rate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ animeId: <%= anime.id %>, rating })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateStars(rating);
+                        loadAnimeData();
+                        gsap.from(star, {
+                            rotate: 360,
+                            scale: 1.5,
+                            duration: 0.5,
+                            ease: 'back.out(1.7)'
+                        });
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                });
+            });
+        });
+        
         document.getElementById('commentForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const content = document.getElementById('commentContent').value.trim();
-        
-        // Lista de palabras prohibidas, incluyendo dominios y palabras relacionadas con páginas +18
+
+        // Lista de palabras prohibidas
         const forbiddenWords = [
             'https://', 
             'http://', 
@@ -526,10 +526,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verificar si el contenido contiene palabras prohibidas
         const containsForbiddenWords = forbiddenWords.some(word => {
             const wordRegex = new RegExp(word, 'i'); // Ignorar mayúsculas
-            return wordRegex.test(content) || 
-                /[A-Z]/.test(word) || // Verificar si hay mayúsculas
-                /[áéíóúÁÉÍÓÚ]/.test(word) || // Verificar si hay tildes
-                /[,]/.test(word); // Verificar si hay comas
+            return wordRegex.test(content);
         });
 
         if (containsForbiddenWords) {
@@ -576,85 +573,85 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    function loadComments() {
-        fetch(`/anime/<%= anime.slug %>/comments?animeId=<%= anime.id %>`)
-        .then(response => response.json())
-        .then(comments => {
-            const commentsList = document.getElementById('commentsList');
-            commentsList.innerHTML = '';
-            comments.forEach((comment, index) => {
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment-box mb-4 p-4 bg-gray-100 rounded opacity-0';
-                commentElement.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <img src="${comment.profile_image_url || '/default-profile-image.png'}" alt="${comment.username}" class="w-10 h-10 rounded-full mr-3 cursor-pointer">
-                        <div>
-                            <a href="/profile/${comment.username}" class="font-bold hover:text-indigo-600">${comment.username}</a>
-                            <span class="text-sm font-normal"></span>
-                            ${comment.is_admin ? '<span class="admin-badge">Admin</span>' : ''}
-                            <p class="text-sm text-gray-500">${new Date(comment.created_at).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    <p class="mt-2">${comment.content}</p>
-                `;
-                commentsList.appendChild(commentElement);
-                
-                commentElement.querySelector('img').addEventListener('click', () => {
-                    showUserModal(comment.username);
-                });
-
-                gsap.to(commentElement, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    ease: 'power2.out'
-                });
-            });
-        });
-    }
     
-    function showUserModal(username) {
-        fetch(`/api/user/${username}`)
+        function loadComments() {
+            fetch(`/anime/<%= anime.slug %>/comments?animeId=<%= anime.id %>`)
             .then(response => response.json())
-            .then(user => {
-                document.getElementById('modalUserImage').src = user.profile_image_url || '/default-profile-image.png';
-                document.getElementById('modalUsername').textContent = user.username;
-                document.getElementById('modalUserEmail').textContent = user.email;
-                document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
-                document.getElementById('userModal').classList.remove('hidden');
+            .then(comments => {
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = '';
+                comments.forEach((comment, index) => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment-box mb-4 p-4 bg-gray-100 rounded opacity-0';
+                    commentElement.innerHTML = `
+                        <div class="flex items-center mb-2">
+                            <img src="${comment.profile_image_url || '/default-profile-image.png'}" alt="${comment.username}" class="w-10 h-10 rounded-full mr-3 cursor-pointer">
+                            <div>
+                                <a href="/profile/${comment.username}" class="font-bold hover:text-indigo-600">${comment.username}</a>
+                                <span class="text-sm font-normal"></span>
+                                ${comment.is_admin ? '<span class="admin-badge">Admin</span>' : ''}
+                                <p class="text-sm text-gray-500">${new Date(comment.created_at).toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <p class="mt-2">${comment.content}</p>
+                    `;
+                    commentsList.appendChild(commentElement);
+                    
+                    commentElement.querySelector('img').addEventListener('click', () => {
+                        showUserModal(comment.username);
+                    });
+    
+                    gsap.to(commentElement, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        delay: index * 0.1,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+        }
+        
+        function showUserModal(username) {
+            fetch(`/api/user/${username}`)
+                .then(response => response.json())
+                .then(user => {
+                    document.getElementById('modalUserImage').src = user.profile_image_url || '/default-profile-image.png';
+                    document.getElementById('modalUsername').textContent = user.username;
+                    document.getElementById('modalUserEmail').textContent = user.email;
+                    document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
+                    document.getElementById('userModal').classList.remove('hidden');
+                });
+        }
+    
+        window.closeUserModal = function() {
+            document.getElementById('userModal').classList.add('hidden');
+        }
+        
+        loadAnimeData();
+        loadComments();
+    });
+    
+        // Añade esto al final de tu archivo anime-detail.js
+    function updateViewCounter() {
+        const animeId = document.getElementById('anime-id').value;
+        const viewCounter = document.querySelector('.view-counter');
+        const viewCountSpan = viewCounter.querySelector('.view-count');
+    
+        fetch(`/api/anime/${animeId}/views`)
+            .then(response => response.json())
+            .then(data => {
+                viewCountSpan.textContent = data.views;
+                viewCounter.classList.add('updating');
+                setTimeout(() => {
+                    viewCounter.classList.remove('updating');
+                }, 500);
             });
     }
-
-    window.closeUserModal = function() {
-        document.getElementById('userModal').classList.add('hidden');
-    }
     
-    loadAnimeData();
-    loadComments();
-});
-
-    // Añade esto al final de tu archivo anime-detail.js
-function updateViewCounter() {
-    const animeId = document.getElementById('anime-id').value;
-    const viewCounter = document.querySelector('.view-counter');
-    const viewCountSpan = viewCounter.querySelector('.view-count');
-
-    fetch(`/api/anime/${animeId}/views`)
-        .then(response => response.json())
-        .then(data => {
-            viewCountSpan.textContent = data.views;
-            viewCounter.classList.add('updating');
-            setTimeout(() => {
-                viewCounter.classList.remove('updating');
-            }, 500);
-        });
-}
-
-// Actualizar cada 30 segundos
-setInterval(updateViewCounter, 30000);
-    
-</script>
+    // Actualizar cada 30 segundos
+    setInterval(updateViewCounter, 30000);
+        
+    </script>
 </body>
 </html>
