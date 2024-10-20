@@ -9,6 +9,10 @@ router.get('/error', (req, res) => {
   res.render('error/error');
 })
 
+router.get('/soon', (req, res) => {
+  res.render('error/soon');
+})
+
 router.get('/tos', (req, res) => {
   res.render('start/tos');
 })
