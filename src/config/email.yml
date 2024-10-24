@@ -1,0 +1,12 @@
+nodemailer:
+  # Especifica el servicio de correo electrónico que se utilizará.
+  # En este caso, se utiliza Gmail para enviar correos.
+  service: "gmail"
+
+  # El nombre de usuario de la cuenta de correo electrónico que se utilizará para autenticar el envío de correos.
+  # Debe ser la dirección de correo electrónico completa.
+  user: "tugmail@gmail.com"
+
+  # La contraseña de la cuenta de correo electrónico.
+  # Se recomienda usar un "App Password" de Gmail en lugar de la contraseña de la cuenta para mayor seguridad.
+  pass: "Contraseña de app de gmail"
