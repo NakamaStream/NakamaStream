@@ -1,0 +1,13 @@
+discord:
+  webhookUrl: 'YOUR_DISCORD_WEBHOOK_URL'  # Reemplaza con tu URL de webhook
+  embed:
+    title: 'Nuevo Anime: {name}'
+    description: 'Descripción: {description}'
+    color: 3447003  # Color en hexadecimal (ejemplo: verde)
+    episodeField:
+      name: 'Episodios'
+      value: '{episodes}'
+    releaseField:
+      name: 'Fecha de lanzamiento'
+      value: '{releaseDate}'
+    imageUrl: '{imageUrl}'
