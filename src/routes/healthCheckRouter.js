@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../services/db");
-const axios = require('axios');
+const axios = require('axios'); // Importa Axios
 
 router.get('/api/health', async (req, res) => {
     let dbStatus, apiStatuses = [];
-    const apiUrls = ['http://localhost:3000/api/favorite-animes', 'http://localhost:3000/api/total-animes'];
+    const apiUrls = ['http://localhost:3000/api/favorite-animes', 'http://localhost:3000/api/total-animes']; // Agrega aquí todas las URLs de las APIs
 
+    // Verificar estado de la base de datos
     try {
         await db.query('SELECT 1');
         dbStatus = 'OK';
@@ -15,6 +16,7 @@ router.get('/api/health', async (req, res) => {
         dbStatus = 'Error';
     }
 
+    // Verificar estado de cada API usando Axios
     for (const url of apiUrls) {
         try {
             const response = await axios.get(url);

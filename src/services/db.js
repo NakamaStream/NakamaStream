@@ -24,6 +24,7 @@ function initializeDatabase(config) {
     user: config.user,
     password: config.password,
     database: config.name,
+    charset: "utf8mb4",
   });
 
   db.connect((err) => {

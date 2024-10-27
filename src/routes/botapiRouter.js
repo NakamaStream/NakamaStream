@@ -1,6 +1,6 @@
 // Nota: Este router es exclusivo para el bot oficial de Discord de NakamaStream. 
 // Si estás utilizando nuestro código fuente y planeas desplegar tu propia plataforma de Discord, 
-// puedes omitir este router comentándolo con // aquí y en el archivo server.js.
+// puedes omitir este router comentándolo con // aquí y en el archivo server.js
 
 const express = require("express");
 const router = express.Router();

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Login</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
@@ -28,34 +29,12 @@
                     <p class="mt-2 text-sm text-gray-600">Inicio de sesión</p>
                 </div>
 
-                <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                    <p class="text-sm">NakamaStream requiere que tengas una cuenta para ver anime.</p>
-                </div>
-
-                <!-- Error messages -->
-                <% if (typeof error !== 'undefined') { %>
+                <!-- Errores -->
+                <% if (errorMessage) { %>
                     <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                        <p class="text-sm"><%= error %></p>
+                        <p class="text-sm"><%= errorMessage %></p>
                     </div>
-                <% } %>
-
-                <% if (typeof errors !== 'undefined') { %>
-                    <% if (errors.username) { %>
-                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                            <p class="text-sm"><%= errors.username %></p>
-                        </div>
-                    <% } %>
-                    <% if (errors.email) { %>
-                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                            <p class="text-sm"><%= errors.email %></p>
-                        </div>
-                    <% } %>
-                    <% if (errors.password) { %>
-                        <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                            <p class="text-sm"><%= errors.password %></p>
-                        </div>
-                    <% } %>
-                <% } %>
+                <% } %>                
 
                 <form action="/login" method="post" class="space-y-6">
                     <div>
@@ -84,7 +63,12 @@
 
                     <div>
                         <label for="captcha" class="block text-sm font-medium text-gray-700">Captcha</label>
-                        <p class="mt-1 text-sm text-gray-500"><%= captchaPhrase %></p>
+                        <div class="flex items-center justify-between">
+                            <p class="mt-1 text-sm text-gray-500" id="captcha-phrase"><%= captchaPhrase %></p>
+                            <button type="button" id="reload-captcha" class="text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                                <i class="fas fa-redo"></i> Recargar Captcha
+                            </button>
+                        </div>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-comment text-custom"></i>
@@ -93,7 +77,7 @@
                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
                                    placeholder="Completa la frase">
                         </div>
-                    </div>
+                    </div>                    
 
                     <div>
                         <button type="submit"
@@ -111,12 +95,24 @@
                     </a>
                 </p>
                 <p class="text-xs leading-5 text-gray-500 text-center">
-                    <a href="#" class="font-medium text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                    <a href="/password/forgot" class="font-medium text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
                         ¿Olvidaste tu contraseña?
                     </a>
                 </p>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("reload-captcha").addEventListener("click", function() {
+            fetch("/api/auth/new-captcha")
+            .then(response => response.json())
+            .then(data => {
+                // Actualiza el captcha
+                document.getElementById("captcha-phrase").textContent = data.captchaPhrase;
+            })
+            .catch(error => console.error("Error al recargar el captcha:", error));
+        });
+    </script>    
 </body>
 </html>

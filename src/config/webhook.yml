@@ -1,5 +1,5 @@
 discord:
-  webhookUrl: 'YOUR_DISCORD_WEBHOOK_URL'  # Reemplaza con tu URL de webhook
+  webhookUrl: 'Tu webhook de discord/Your discord webhook'  # Reemplaza con tu URL de webhook
   embed:
     title: 'Nuevo Anime: {name}'
     description: 'Descripción: {description}'
@@ -11,3 +11,7 @@ discord:
       name: 'Fecha de lanzamiento'
       value: '{releaseDate}'
     imageUrl: '{imageUrl}'
+    viewAnimeField:
+      name: "Ver Anime"
+      url: "http://localhost:3000/anime/${slug}" # Ruta de visualización del anime
+    roleId: "Id de tu rol de discord/Id of your discord role" # Agrega aquí el ID del rol

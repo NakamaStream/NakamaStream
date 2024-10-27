@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime List - NakamaStream</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,6 +13,14 @@
 </head>
 <body class="font-roboto text-gray-800">
 
+  <!-- Aviso -->
+  <div class="bg-red-500 text-white text-center p-4 font-semibold rounded-lg shadow-lg flex items-center justify-center">
+    <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12s4.03-9 9-9 9 4.03 9 9z" />
+    </svg>
+    La plataforma ha alcanzado su primera versión estable. Por favor, notifique cualquier error o bug que encuentre.
+  </div>
+    
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between h-16">
@@ -29,20 +38,22 @@
                 <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Noticias
                 </a>
-                <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                <a href="/soon" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Calendario
                 </a>
               </div>
             </div>
             <div class="flex items-center">
               <div class="relative md:block">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <input type="text" name="search" id="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="Buscar anime...">
-              </div>
+                <a href="/animes/api/search">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <input type="text" name="search" id="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="Buscar anime...">
+                </a>
+              </div>              
               <a href="/animes/api/saved-animes" class="ml-3">
                 <button class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
                   <span class="sr-only">Ver marcadores</span>
@@ -54,7 +65,7 @@
               <div class="ml-3 relative">
                 <button id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-haspopup="true" aria-expanded="true">
                   <span class="sr-only">Abrir menú de usuario</span>
-                  <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
+                  <img src="<%= profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
                 </button>
               
                 <!-- Menú desplegable -->
@@ -79,6 +90,9 @@
                       <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
                         <i class="fa-solid fa-upload mr-2"></i> Subir Anime
                       </a>
+                      <a href="/admin/animes/featured" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                        <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
+                      </a>
                     <% } %>
                     <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
                       <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
@@ -90,36 +104,48 @@
           </div>
         </div>
       </nav>
-
-    <div class="container mx-auto px-4 py-8">
-        <div class="relative" id="featured-anime-carousel">
-            <!-- Contenedor del carrusel -->
-            <div class="overflow-hidden">
-                <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
-                    <!-- Elementos del carrusel -->
-                    <div class="flex-none w-full">
-                        <div class="relative h-96 md:h-[40rem] lg:h-[48rem] rounded-lg overflow-hidden group">
-                            <img src="https://animetv-jp.net/wp-content/uploads/2023/11/oomuro-ke-movie-announced-teaser-visual-v0-zIMBVvUugscQ76vCnA-ervpvScp6Q6eYTbJWNFG8prE.webp" alt="As a Reincarnated Aristocrat" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
-                                <h3 class="text-white text-2xl font-bold mb-2">Oomuro-ke: Dear Sisters</h3>
-                                <h2 class="absolute top-0 left-0 p-4 text-white text-xl font-semibold">Anime del día</h2>
-                                <p class="text-gray-300 mb-4 line-clamp-3">Un spin-off de Yuru Yuri protagonizado por Sakurako y sus hermanas.</p>
-                                <div class="flex items-center space-x-4">
-                                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm">Sub</span>
-                                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full transition duration-300 flex items-center group">
-                                        <i class="fas fa-play mr-2 group-hover:animate-pulse"></i> Ver ahora
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
+    <!-- Carousel -->
+    <div class="container mx-auto px-4 py-4">
+      <div class="relative" id="featured-anime-carousel">
+          <div class="overflow-hidden">
+              <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
+                  <div class="flex-none w-full lg:w-[80%] mx-auto"> <!-- Aumenta el ancho -->
+                      <div class="relative h-60 md:h-72 lg:h-[36rem] rounded-lg overflow-hidden group"> <!-- Ajustes de altura -->
+                        <% if (featuredAnime && featuredAnime.featured_image_url) { %>
+                          <img src="<%= featuredAnime.featured_image_url %>" alt="Imagen de <%= featuredAnime.name %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        <% } else { %>
+                          <p>No hay imagen destacada disponible.</p>
+                        <% } %>
+                          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
+                              <h3 class="text-white text-2xl font-bold mb-2"><%= featuredAnime.name %></h3>
+                              <h2 class="absolute top-0 left-0 p-4 text-white text-xl font-semibold">Anime del día</h2>
+                              <% if (featuredAnime.description) { %>
+                                <p class="text-gray-300 mb-4 line-clamp-3">
+                                  <%= featuredAnime.description.length > 120 ? featuredAnime.description.substring(0, 120) + '...' : featuredAnime.description %>
+                                </p>
+                              <% } else { %>
+                                <p class="text-gray-300 mb-4 line-clamp-3">Descripción no disponible.</p>
+                              <% } %>
+                              <div class="flex items-center space-x-4">
+                                  <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm">Sub</span>
+                                  <button 
+                                    class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full transition duration-300 flex items-center group"
+                                    onclick="window.location.href='/anime/<%= featuredAnime.slug %>'">
+                                    <i class="fas fa-play mr-2 group-hover:animate-pulse"></i> Ver ahora
+                                </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Aquí puedes añadir más divs para otros elementos del carrusel -->
+              </div>
+          </div>
+      </div>
     </div>
 
     <div class="container mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Destacados</h2>
+        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Recientes</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 anime-list">
             <% animes.forEach(anime => { %>
                 <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
@@ -148,39 +174,14 @@
         </div>
     </div>
 
+      <!-- Botón para volver arriba -->
+      <button id="back-to-top" class="fixed bottom-5 right-5 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-orange-600 transition duration-300 hidden" aria-label="Volver arriba">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+
     <script src="/src/public/js/anime/anime-list.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <script>
-      const userMenuButton = document.getElementById('user-menu-button');
-      const userMenu = document.getElementById('user-menu');
-    
-      userMenuButton.addEventListener('click', () => {
-        userMenu.classList.toggle('hidden');
-        
-        if (userMenu.classList.contains('hidden')) {
-          userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
-          userMenu.classList.add('menu-leave');
-          setTimeout(() => {
-            userMenu.classList.add('hidden');
-            userMenu.classList.remove('menu-leave');
-          }, 200);
-        } else {
-          userMenu.classList.remove('menu-leave', 'hidden');
-          setTimeout(() => {
-            userMenu.classList.add('menu-enter-active');
-          }, 0);
-        }
-      });
-    
-      // Cerrar el menú si se hace clic fuera de él
-      window.addEventListener('click', (event) => {
-        if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-          userMenu.classList.add('hidden');
-          userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
-        }
-      });
-    </script>
+    <script src="/src/public/js/anime/profile-anime-menu.js"></script>
     
 </body>
 </html>

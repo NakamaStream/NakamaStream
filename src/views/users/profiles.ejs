@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - NakamaStream</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.css">
@@ -13,10 +14,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="stylesheet" href="/src/public/css/badges.css">
     <script src="/src/public/js/users/myperfil.js"></script>
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
             background-color: #f0f2f5;
             transition: background-color 0.3s ease;
         }
@@ -153,6 +154,9 @@
                                     <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
                                         <i class="fa-solid fa-upload mr-2"></i> Subir Anime
                                     </a>
+                                    <a href="/admin/animes/featured" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                        <i class="fa-solid fa-upload mr-2"></i> Subir Anime Destacado
+                                    </a>
                                 <% } %>
                                 <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
@@ -193,9 +197,9 @@
                 <p class="text-sm text-gray-600 mt-2">Miembro desde: <%= createdAtFormatted %></p>
                 <p class="text-sm text-gray-600">Tiempo en la comunidad: <%= timeCreatedFormatted %></p>
                 <% if (isAdmin) { %>
-                    <p class="mt-4 inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs">Admin</p>
+                    <p class="mt-4 inline-block admin-badge">Admin</p>
                 <% } else { %>
-                    <p class="mt-4 inline-block bg-gradient-to-r from-blue-500 to-teal-500 text-white px-4 py-2 rounded-full text-xs">Usuario</p>
+                    <p class="mt-4 inline-block member-badge">Miembro</p>
                 <% } %>
             </div>
         </div>        

@@ -62,205 +62,210 @@
         }
     </style>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between h-16">
-            <div class="flex items-center">
-              <div class="flex-shrink-0 flex items-center">
-                <a href="/" class="flex flex-col items-center">
-                  <span class="text-4xl font-bold text-primary">NakamaStream</span>
-                  <span class="text-primary text-xs mt-0.5" style="line-height: 1;">By NakamaGroup</span>
-                </a>
-              </div>
-              <div class="md:flex ml-6 space-x-8">
-                <a href="/" class="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Inicio
-                </a>
-                <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Noticias
-                </a>
-                <a href="/soon" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Calendario
-                </a>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="relative md:block">
-              </div>
-              <a href="/animes/api/saved-animes" class="ml-3">
-                <button class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
-                  <span class="sr-only">Ver marcadores</span>
-                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                  </svg>  
-                </button>
-              </a>                                    
-              <div class="ml-3 relative">
-                <button id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-haspopup="true" aria-expanded="true">
-                  <span class="sr-only">Abrir menú de usuario</span>
-                  <img src="<%= user.profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
-                </button>
-              
-                <!-- Menú desplegable -->
-                <div id="user-menu" class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden transition-all duration-200 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                  <div class="py-1" role="none">
-                    <p class="block px-4 py-2 text-sm text-gray-700"><%= user.username %></p>
-                    <div class="border-b border-gray-200"></div>
-                    <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                      <i class="fas fa-user mr-2"></i> Perfil
-                    </a>
-                    <a href="/animes/api/saved-animes" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                      <i class="fa-solid fa-bookmark mr-2"></i> Guardados
-                    </a>
-                    <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                      <i class="fa-solid fa-star mr-2"></i> Favoritos
-                    </a>
-                    <% if (isAdmin) { %>
-                      <div class="border-t mt-2"></div> <!-- Separador opcional -->
-                      <a href="/admin/panel" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                        <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
-                      </a>
-                      <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                        <i class="fa-solid fa-upload mr-2"></i> Subir Anime
-                      </a>
-                      <a href="/admin/animes/featured" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                        <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
-                      </a>
-                    <% } %>
-                    <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                      <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
-                    </a>                    
-                  </div>
-                </div>
-              </div>                          
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-6 animate__animated animate__fadeIn">
-            <h1 class="text-4xl font-bold anime-titles"><%= anime.name %></h1>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-8 anime-card p-6 animate__animated animate__fadeInUp">
-            <div class="md:w-1/3">
-                <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-
-                <!-- Contador de vistas -->
-                <div class="view-counter flex justify-center items-center mt-6 p-4 bg-white rounded-lg shadow-lg border border-gray-200">
-                    <i class="fas fa-eye text-ff6b6b text-2xl mr-3"></i>
-                    <span class="view-count text-xl font-bold text-gray-800"><%= views %> vistas</span>
-                </div>
-
-                <div class="mt-4">
-                    <button id="favoriteBtn" class="button-anime bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full">
-                        <span id="favoriteText">Agregar a favoritos</span>
-                    </button>
-                    <span class="block mt-2 text-center font-semibold">Favoritos: <span id="favoriteCount" class="text-indigo-600">0</span></span>
-                </div>
-                    
-                <div class="mt-4">
-                    <button id="saveAnimeBtn" class="button-anime bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full w-full">
-                        Guardar para más tarde
-                    </button>
-                </div>
-    
-                <div class="mt-4">
-                    <div class="rating flex justify-center">
-                        <% for (let i = 1; i <= 5; i++) { %>
-                            <span class="star cursor-pointer text-3xl transition-all duration-300 hover:scale-125" data-rating="<%= i %>">☆</span>
-                        <% } %>
-                    </div>
-                    <span class="block mt-2 text-center font-semibold">
-                        Calificación promedio: <span id="averageRating" class="text-indigo-600">0.0</span> 
-                        (<span id="ratingCount" class="text-indigo-600">0</span> votos)
-                    </span>
-                </div>
-            </div>
-            
-            <div class="md:w-2/3">
-                <p id="animeDescription" class="text-lg mb-6 text-gray-700 leading-relaxed">
-                    <%= anime.description %>
-                </p>
-
-                <div class="flex justify-start items-center mb-6 animate-fade-in">
-                    <div class="flex items-center space-x-3 px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
-                        <span class="flex-shrink-0 w-3 h-3 rounded-full <%= anime.status === 'ongoing' ? 'bg-green-500 animate-pulse' : 'bg-blue-500' %>"></span>
-                        <span class="text-lg font-semibold text-gray-800">
-                            <%= anime.status === 'ongoing' ? 'En Emisión' : 'Completado' %>
+        <!-- Navbar -->
+        <nav class="bg-white shadow-md">
+            <div class="max-w-full mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <a href="/" class="flex flex-col items-center group">
+                        <span class="text-2xl md:text-3xl font-bold text-primary group-hover:text-orange-500 transition duration-300">
+                            NakamaStream
                         </span>
-                        <% if (anime.status === 'ongoing') { %>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        <% } else { %>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        <% } %>
-                    </div>
-                </div>                
-    
-                <h2 class="text-2xl font-semibold mb-4 anime-titles">Episodios</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
-                <% episodes.forEach((episode) => { %>
-                    <a href="/anime/<%= anime.slug %>/episode/<%= episode.episode_number %>" 
-                    class="btm-episode text-center font-bold">
-                    Episodio <%= episode.episode_number %>
+                        <span class="text-primary text-xs mt-0.5 group-hover:text-gray-600 transition duration-300">
+                            By: NakamaGroup
+                        </span>
                     </a>
-                <% }) %>
-                </div>
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                        <i id="mobile-menu-icon" class="fas fa-bars transition-transform duration-500"></i>
+                    </button>
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex space-x-4">
+                        <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
+                        <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
+                        <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
     
-                <% if (user && user.isAdmin) { %>
-                    <div class="mt-8">
-                        <a href="/anime/<%= anime.slug %>/upload-episode" class="button-anime bg-gray-ff6b6b hover:bg-gray-e55b5b text-white font-bold py-3 px-6 rounded-full transition duration-300">
-                            Subir Nuevo Episodio
-                        </a>
+                        <!-- User Menu -->
+                        <div class="relative group">
+                            <button id="user-menu-toggle" class="flex items-center text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                                <img src="<%= user.profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition-transform duration-300">
+                                <span class="text-sm font-medium group-hover:text-orange-500 transition duration-300"><%= user.username %></span>
+                                <i id="user-menu-arrow" class="fas fa-chevron-down ml-1 transition-transform duration-500 group-hover:rotate-180"></i>
+                            </button>
+                            <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top-right group-hover:scale-100 group-hover:opacity-100 opacity-0">
+                                <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Perfil</a>
+                                <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Guardados</a>
+                                <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Favoritos</a>
+                                <% if (isAdmin) { %> <!-- Verificación de admin -->
+                                    <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                                    <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Admin Panel</a>
+                                    <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime</a>
+                                    <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime Destacado</a>
+                                <% } %>
+                                <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 hover:pl-5 transition-all duration-300">Cerrar Sesión</a>
+                            </div>
+                        </div>
                     </div>
-                <% } %>
-            </div>
-        </div>   
-
-
-        <!-- Sección de comentarios -->
-        <div class="mt-8 anime-card p-6 animate__animated animate__fadeInUp">
-            <h3 class="text-2xl font-semibold mb-4 anime-titles">Comentarios</h3>
-            <% if (user) { %>
-            <form id="commentForm" class="mb-6">
-                <textarea id="commentContent" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Escribe tu comentario"></textarea>
-                <button type="submit" class="button-anime mt-2 btm-episode text-white font-bold py-3 px-6 rounded-full">
-                    Enviar comentario
-                </button>
-            </form>
-            <% } else { %>
-            <p class="mb-6 text-gray-600">Debes iniciar sesión para comentar.</p>
-            <% } %>
-            <div id="commentsList">
-                <!-- Los comentarios se cargarán aquí dinámicamente -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para la información del usuario -->
-    <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <div class="flex items-center mb-4">
-                <img id="modalUserImage" src="" alt="" class="w-16 h-16 rounded-full mr-4">
-                <div>
-                    <h2 id="modalUsername" class="text-2xl font-bold"></h2>
-                    <p id="modalUserEmail" class="text-gray-600"></p>
+                </div>
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-all duration-500 transform scale-95 origin-top">
+                    <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                        <i class="fas fa-home mr-2"></i> Inicio
+                    </a>
+                    <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                        <i class="fa-solid fa-newspaper mr-2"></i> Noticias
+                    </a>
+                    <a href="/soon" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                        <i class="fa-solid fa-calendar mr-2"></i> Calendario
+                    </a>  
+    
+                    <!-- User Menu in Mobile -->
+                    <div class="relative">
+                        <button id="user-menu-toggle-mobile" class="flex items-center w-full text-left px-4 py-2 text-gray-600 focus:outline-none hover:text-orange-500 transition duration-300">
+                            <img src="<%= user.profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition duration-300">
+                            <span class="text-sm font-medium"><%= user.username %></span>
+                            <i id="user-menu-arrow-mobile" class="fas fa-chevron-down ml-1 transition-transform duration-500 hover:rotate-180"></i>
+                        </button>
+                        <div id="user-menu-mobile" class="hidden bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top">
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fas fa-user mr-2"></i> Perfil
+                            </a>
+                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-bookmark mr-2"></i> Guardados
+                            </a>
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-star mr-2"></i> Favoritos
+                            </a>
+                            <% if (isAdmin) { %> <!-- Verificación de admin -->
+                            <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                            <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                            </a>
+                            <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                            </a>
+                            <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
+                            </a>
+                            <% } %>
+                            <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 transition duration-300 hover:pl-5">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p id="modalUserBio" class="mb-4"></p>
-            <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" onclick="closeUserModal()">Close</button>
+        </nav>
+
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 animate__animated animate__fadeIn">
+                <h1 class="text-3xl md:text-4xl font-bold anime-titles"><%= anime.name %></h1>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-8 anime-card p-4 md:p-6 animate__animated animate__fadeInUp">
+                <div class="md:w-1/3 mb-4 md:mb-0">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+    
+                    <!-- Contador de vistas -->
+                    <div class="view-counter flex justify-center items-center mt-4 p-3 bg-white rounded-lg shadow-lg border border-gray-200">
+                        <i class="fas fa-eye text-ff6b6b text-2xl mr-3"></i>
+                        <span class="view-count text-lg font-bold text-gray-800"><%= views %> vistas</span>
+                    </div>
+    
+                    <div class="mt-4">
+                        <button id="favoriteBtn" class="button-anime w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            <span id="favoriteText">Agregar a favoritos</span>
+                        </button>
+                        <span class="block mt-2 text-center font-semibold">Favoritos: <span id="favoriteCount" class="text-indigo-600">0</span></span>
+                    </div>
+    
+                    <div class="mt-4">
+                        <button id="saveAnimeBtn" class="button-anime w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+                            Guardar para más tarde
+                        </button>
+                    </div>
+    
+                    <div class="mt-4">
+                        <div class="rating flex justify-center">
+                            <% for (let i = 1; i <= 5; i++) { %>
+                                <span class="star cursor-pointer text-2xl transition-all duration-300 hover:scale-125" data-rating="<%= i %>">☆</span>
+                            <% } %>
+                        </div>
+                        <span class="block mt-2 text-center font-semibold">
+                            Calificación promedio: <span id="averageRating" class="text-indigo-600">0.0</span> 
+                            (<span id="ratingCount" class="text-indigo-600">0</span> votos)
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3">
+                    <div id="animeDescriptionContainer">
+                        <p id="animeDescription" class="text-base md:text-lg mb-4 text-gray-700 leading-relaxed">
+                            <%= anime.description %>
+                        </p>
+                    </div>
+                    
+                    <button id="readMoreBtn" class="btm-episode text-white font-bold py-1 px-2 rounded-full hidden">
+                        Seguir leyendo
+                    </button>
+    
+                    <h2 class="text-xl md:text-2xl font-semibold mb-4 anime-titles">Episodios</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4 mb-6">
+                        <% episodes.forEach((episode) => { %>
+                            <a href="/anime/<%= anime.slug %>/episode/<%= episode.episode_number %>" 
+                            class="btm-episode text-center font-bold">
+                                Episodio <%= episode.episode_number %>
+                            </a>
+                        <% }) %>
+                    </div>
+    
+                    <% if (user && user.isAdmin) { %>
+                        <div class="mt-4">
+                            <a href="/anime/<%= anime.slug %>/upload-episode" class="button-anime w-full bg-gray-ff6b6b hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded-full transition duration-300">
+                                Subir Nuevo Episodio
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>   
+    
+            <!-- Sección de comentarios -->
+            <div class="mt-8 anime-card p-4 md:p-6 animate__animated animate__fadeInUp">
+                <h3 class="text-xl md:text-2xl font-semibold mb-4 anime-titles">Comentarios</h3>
+                <% if (user) { %>
+                <form id="commentForm" class="mb-6">
+                    <textarea id="commentContent" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Escribe tu comentario"></textarea>
+                    <button type="submit" class="button-anime mt-2 w-full text-white font-bold py-2 px-4 rounded-full">
+                        Enviar comentario
+                    </button>
+                </form>
+                <% } else { %>
+                <p class="mb-6 text-gray-600">Debes iniciar sesión para comentar.</p>
+                <% } %>
+                <div id="commentsList">
+                    <!-- Los comentarios se cargarán aquí dinámicamente -->
+                </div>
+            </div>
         </div>
-    </div>
+    
+        <!-- Modal para la información del usuario -->
+        <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-xl max-w-md w-full">
+                <div class="flex items-center mb-4">
+                    <img id="modalUserImage" src="" alt="" class="w-16 h-16 rounded-full mr-4">
+                    <div>
+                        <h2 id="modalUsername" class="text-xl md:text-2xl font-bold"></h2>
+                        <p id="modalUserEmail" class="text-gray-600"></p>
+                    </div>
+                </div>
+                <p id="modalUserBio" class="mb-4"></p>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" onclick="closeUserModal()">Cerrar</button>
+            </div>
+        </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/src/public/js/anime/profile-anime-menu.js"></script>
+<script src="/src/public/js/anime/NavMobile-universal.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const favoriteBtn = document.getElementById('favoriteBtn');
@@ -270,6 +275,29 @@
         const ratingCount = document.getElementById('ratingCount');
         const stars = document.querySelectorAll('.star');
         const saveAnimeBtn = document.getElementById('saveAnimeBtn');
+
+        const descriptionElement = document.getElementById("animeDescription");
+        const readMoreButton = document.getElementById("readMoreBtn");
+
+        const maxChars = 200; // Ajusta el límite de caracteres según lo necesites
+
+        // Store the full text
+        const fullText = descriptionElement.textContent;
+        descriptionElement.dataset.fullText = fullText;
+
+        // Check if the description is longer than the limit
+        if (fullText.length > maxChars) {
+            // Truncate the description and show the button
+            const truncatedDescription = fullText.slice(0, maxChars) + "...";
+            descriptionElement.textContent = truncatedDescription;
+            readMoreButton.classList.remove("hidden");
+
+            readMoreButton.addEventListener("click", function () {
+                // Show the full description
+                descriptionElement.textContent = fullText;
+                readMoreButton.classList.add("hidden");
+            });
+        }
     
         function updateFavoriteButton(isFavorite) {
             if (isFavorite) {
@@ -624,41 +652,7 @@
     
     // Actualizar cada 30 segundos
     setInterval(updateViewCounter, 30000);
-            document.addEventListener('DOMContentLoaded', function() {
-        const statusElement = document.getElementById('animeStatus');
-        if (statusElement) {
-            const status = statusElement.textContent.trim();
-            if (status === 'En Emisión') {
-                statusElement.classList.add('bg-green-500');
-            } else if (status === 'Completado') {
-                statusElement.classList.add('bg-blue-500');
-            }
-        }
-    });
-document.addEventListener('DOMContentLoaded', function() {
-    const statusElement = document.getElementById('animeStatus');
-    if (statusElement) {
-        statusElement.addEventListener('mouseover', function() {
-            this.style.transform = 'translateY(-5px) scale(1.05)';
-        });
-
-        statusElement.addEventListener('mouseout', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-
-        // Animación inicial
-        setTimeout(() => {
-            statusElement.style.opacity = '0';
-            statusElement.style.transform = 'translateY(-20px)';
-            setTimeout(() => {
-                statusElement.style.transition = 'all 0.5s ease';
-                statusElement.style.opacity = '1';
-                statusElement.style.transform = 'translateY(0)';
-            }, 100);
-        }, 500);
-    }
-});
-    
+        
     </script>
 </body>
 </html>

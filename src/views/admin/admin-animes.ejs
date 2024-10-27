@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - NakamaStream</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -14,20 +15,20 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
                         primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
                         },
                     },
                 },
@@ -40,107 +41,174 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .animate-gradient {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        
+        .glass-nav {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .animate-gradient-bg {
+            background: linear-gradient(-45deg, #1f2937, #111827, #312e81, #1e3a8a);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
         }
     </style>
 </head>
-<body class="bg-gray-900 font-sans text-gray-100 min-h-screen flex flex-col">
-    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+<body class="animate-gradient-bg font-sans text-gray-100 min-h-screen flex flex-col custom-scrollbar">
+    <nav class="glass-nav sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <a href="#" class="flex-shrink-0">
-                        <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="NakamaStream">
+                <div class="flex items-center space-x-8">
+                    <a href="#" class="flex items-center space-x-2 group">
+                        <i class="fas fa-play-circle text-primary-500 text-2xl group-hover:text-primary-400 transition-colors"></i>
+                        <span class="font-bold text-lg group-hover:text-primary-400 transition-colors">NakamaStream</span>
                     </a>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-4">
-                            <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Animes</a>
-                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</a>
-                        </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary-500 hover:text-white transition-all duration-300 ease-in-out">
+                            <i class="fas fa-chart-line mr-2"></i>Dashboard
+                        </a>
+                        <a href="#" class="px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary-500 hover:text-white transition-all duration-300 ease-in-out">
+                            <i class="fas fa-tv mr-2"></i>Animes
+                        </a>
+                        <a href="#" class="px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary-500 hover:text-white transition-all duration-300 ease-in-out">
+                            <i class="fas fa-users mr-2"></i>Users
+                        </a>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-4 flex items-center md:ml-6">
-                        <button class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                        </button>
-                        <div class="ml-3 relative">
-                            <div>
-                                <button type="button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <button class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute top-3 right-3 h-2 w-2 rounded-full bg-red-500"></span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="bg-white dark:bg-gray-800 shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Gestión de Animes</h1>
+    <header class="glass-card py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-white">Gestión de Animes</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400">
+                        <i class="fas fa-clock mr-2"></i>
+                        Última actualización: <time datetime="2024-10-25">25 Oct 2024</time>
+                    </span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="flex-grow">
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="px-4 py-6 sm:px-0">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Lista de Animes</h2>
-                    <a href="/anime/upload" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                        <i class="fas fa-plus mr-2"></i> Subir Nuevo Anime
-                    </a>
-                </div>
+    <main class="flex-grow py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-semibold text-white flex items-center">
+                    <i class="fas fa-list-ul mr-3 text-primary-500"></i>
+                    Lista de Animes
+                </h2>
+                <a href="/anime/upload" class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300 shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40">
+                    <i class="fas fa-plus mr-2"></i>
+                    Nuevo Anime
+                </a>
+            </div>
 
-                <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
-                    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                        <% animes.forEach(anime => { %>
-                            <li class="transition duration-300 ease-in-out hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <div class="px-4 py-4 sm:px-6">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <img class="h-16 w-16 rounded-lg object-cover" src="<%= anime.imageUrl || anime.cover_image %>" alt="<%= anime.name %>">
-                                            <div class="ml-4">
-                                                <p class="text-sm font-medium text-primary-600 truncate"><%= anime.name %></p>
-                                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= anime.description ? anime.description.substring(0, 100) + '...' : 'Sin descripción' %></p>
-                                            </div>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            <a href="/admin/animes/edit/<%= anime.id %>" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:border-primary-700 focus:shadow-outline-primary active:bg-primary-700 transition ease-in-out duration-150">
-                                                <i class="fas fa-edit mr-1"></i> Editar
-                                            </a>
-                                            <button onclick="deleteAnime(<%= anime.id %>)" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition ease-in-out duration-150">
-                                                <i class="fas fa-trash-alt mr-1"></i> Eliminar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        <% }) %>
-                    </ul>
-                </div>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <% animes.forEach(anime => { %>
+                    <div class="glass-card rounded-xl overflow-hidden card-hover">
+                        <div class="relative h-48">
+                            <img class="h-full w-full object-cover" src="<%= anime.imageUrl || anime.cover_image %>" alt="<%= anime.name %>">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-primary-400 mb-2"><%= anime.name %></h3>
+                            <p class="text-sm text-gray-400 mb-4 line-clamp-2"><%= anime.description || 'Sin descripción' %></p>
+                            <div class="flex space-x-2">
+                                <a href="/admin/animes/edit/<%= anime.id %>" class="flex-1 inline-flex justify-center items-center px-3 py-2 rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300">
+                                    <i class="fas fa-edit mr-2"></i> Editar
+                                </a>
+                                <button onclick="deleteAnime(<%= anime.id %>)" class="flex-1 inline-flex justify-center items-center px-3 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-all duration-300">
+                                    <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div class="mt-12">
+                <form action="/anime/featured" method="POST" class="glass-card rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-6 flex items-center">
+                        <i class="fas fa-star text-yellow-500 mr-3"></i>
+                        Anime Destacado
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="animeId" class="block text-sm font-medium text-gray-300 mb-2">
+                                Selecciona el Anime del Día
+                            </label>
+                            <select id="animeId" name="animeId" 
+                                class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300">
+                                <% animes.forEach(anime => { %>
+                                    <option value="<%= anime.id %>" <%= anime.is_featured ? 'selected' : '' %>><%= anime.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="featuredImageUrl" class="block text-sm font-medium text-gray-300 mb-2">
+                                URL de la Imagen Destacada
+                            </label>
+                            <input type="url" id="featuredImageUrl" name="featuredImageUrl" required 
+                                placeholder="https://ejemplo.com/imagen.jpg"
+                                class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300">
+                        </div>
+                        <button type="submit" 
+                            class="w-full px-4 py-3 rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300 shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40">
+                            <i class="fas fa-save mr-2"></i>
+                            Actualizar Destacado
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-800">
+    <footer class="glass-nav mt-12">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <p class="text-center text-gray-400 text-sm">
-                &copy; 2023 NakamaStream. Todos los derechos reservados.
+                &copy; 2024 NakamaStream. Todos los derechos reservados.
             </p>
         </div>
     </footer>
@@ -149,15 +217,21 @@
         function deleteAnime(animeId) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "No podrás revertir esta acción!",
+                text: "Esta acción no se puede deshacer",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar!',
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#dc2626',
+                confirmButtonText: 'Sí, eliminar',
                 cancelButtonText: 'Cancelar',
-                background: '#1a202c',
-                color: '#ffffff'
+                background: '#1f2937',
+                color: '#ffffff',
+                toast: false,
+                customClass: {
+                    popup: 'glass-card',
+                    confirmButton: 'px-4 py-2 rounded-lg text-sm font-medium',
+                    cancelButton: 'px-4 py-2 rounded-lg text-sm font-medium'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(`/admin/animes/delete/${animeId}`, {
@@ -167,21 +241,27 @@
                     .then(data => {
                         if (data.success) {
                             Swal.fire({
-                                title: 'Eliminado!',
-                                text: 'El anime ha sido eliminado.',
+                                title: '¡Eliminado!',
+                                text: 'El anime ha sido eliminado exitosamente.',
                                 icon: 'success',
-                                background: '#1a202c',
-                                color: '#ffffff'
+                                background: '#1f2937',
+                                color: '#ffffff',
+                                customClass: {
+                                    popup: 'glass-card'
+                                }
                             }).then(() => {
                                 location.reload();
                             });
                         } else {
                             Swal.fire({
-                                title: 'Error!',
+                                title: 'Error',
                                 text: 'No se pudo eliminar el anime.',
                                 icon: 'error',
-                                background: '#1a202c',
-                                color: '#ffffff'
+                                background: '#1f2937',
+                                color: '#ffffff',
+                                customClass: {
+                                    popup: 'glass-card'
+                                }
                             });
                         }
                     });

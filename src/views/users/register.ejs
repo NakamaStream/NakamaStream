@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - Registrarse</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
@@ -28,11 +29,13 @@
                     <h1 class="text-3xl font-bold text-custom">Registrarse</h1>
                     <p class="mt-2 text-sm text-gray-600">Crea una cuenta para comenzar a ver anime.</p>
                 </div>
-
-                <!-- Alerta informativa -->
-                <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
-                    <p class="text-sm">NakamaStream requiere que tengas una cuenta para ver anime.</p>
-                </div>
+                
+                <!-- Errores -->
+                <% if (error) { %>
+                    <div class="bg-custom bg-opacity-10 border-l-4 border-custom text-custom p-4 rounded-r-md" role="alert">
+                        <p class="text-sm"><%= error %></p> 
+                    </div>
+                <% } %>
 
                 <form id="registerForm" action="/register" method="post" onsubmit="return validateForm()" class="space-y-6">
                     <div>
@@ -95,7 +98,7 @@
                         ¿Ya tienes una cuenta? Logeate aquí
                     </a>
                     <br>
-                    <a href="#" class="text-sm text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
+                    <a href="/password/forgot" class="text-sm text-custom hover:text-opacity-90 transition duration-150 ease-in-out">
                         ¿Olvidaste tu contraseña?
                     </a>
                 </div>

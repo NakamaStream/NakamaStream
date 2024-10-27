@@ -13,6 +13,10 @@ router.get('/soon', (req, res) => {
   res.render('error/soon');
 })
 
+router.get('/news', (req, res) => {
+  res.render('error/soon');
+})
+
 router.get('/tos', (req, res) => {
   res.render('start/tos');
 })

@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Bienvenido</title>
+    <title>Ver Anime Online — NakamaStream</title>
+    <meta name="description" content="Disfruta de tus animes favoritos en línea en NakamaStream. Ofrecemos una amplia selección de series anime con subtítulos en español, en la mejor calidad y sin anuncios molestos.">
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/node_modules/nakamaui/Ui/nakamaUi.mian.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         tailwind.config = {
@@ -210,10 +213,13 @@
 
                     data.forEach(anime => {
                         const animeElement = `
-                        <div class="group bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl">
-                            <img src="${anime.imageUrl}" alt="${anime.name}" class="w-full h-64 object-cover transition-opacity duration-300 group-hover:opacity-90">
-                            <h3 class="text-center text-gray-800 font-semibold mt-4 mb-2 group-hover:text-gray-600">${anime.name}</h3>
-                        </div>`;
+                        <div class="nakama-card">
+                            <img src="${anime.imageUrl}" alt="${anime.name}">
+                            <span class="nakama-tag">Nuevo</span>
+                            <div class="nakama-title">${anime.name}</div>
+                            <div class="nakama-description">${anime.description || 'Descripción no disponible'}</div>
+                        </div>
+                        `;
                         animesContainer.append(animeElement);
                     });
                 },

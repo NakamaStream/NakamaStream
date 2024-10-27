@@ -1,3 +1,5 @@
+// server.js
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -5,6 +7,7 @@ const path = require("path");
 const moment = require("moment");
 const multer = require("multer");
 const fs = require("fs");
+const http = require("http");
 
 const indexRouter = require("./src/routes/indexRouter");
 const authRouter = require("./src/routes/authRouter");
@@ -12,11 +15,11 @@ const adminRouter = require("./src/routes/adminRouter");
 const animeRouter = require("./src/routes/animeRouter");
 const healthCheckRouter = require("./src/routes/healthCheckRouter");
 const botapiRouter = require("./src/routes/botapiRouter");
-const newsRouter = require("./src/routes/newsRouter");
 
 const db = require("./src/services/db");
 
 const app = express();
+const server = http.createServer(app);
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -34,20 +37,32 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Session configuration
-app.use(
-  session({
-    secret: "tu_secreto",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
-  })
-);
+// Configuración de la sesión
+const sessionMiddleware = session({
+  secret: "Jdk@gl311adf",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días (ajusta según tus necesidades)
+  },
+});
 
-// Middleware to renew session on each request
+
+app.use(sessionMiddleware);
+
+// Middleware para renovar la sesión basado en la actividad
+const sessionRenewalTime = 15 * 60 * 1000; // 15 minutos
+
 app.use((req, res, next) => {
   if (req.session.userId) {
-    req.session.touch();
+    const now = Date.now();
+
+    // Renueva la sesión si la última actividad fue hace más de 15 minutos
+    if (!req.session.lastActivity || now - req.session.lastActivity > sessionRenewalTime) {
+      req.session.touch(); // Renueva la sesión
+    }
+    
+    req.session.lastActivity = now; // Actualiza el tiempo de última actividad
   }
   next();
 });
@@ -69,17 +84,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Static file serving
-app.use("/src/public/css", express.static("src/public/css", { "Content-Type": "text/css" }));
-app.use("/src/public/js", express.static("src/public/js", { "Content-Type": "text/javascript" }));
+app.use(
+  "/src/public/css",
+  express.static("src/public/css", { "Content-Type": "text/css" })
+);
+app.use(
+  "/src/public/js",
+  express.static("src/public/js", { "Content-Type": "text/javascript" })
+);
 app.use("/uploads", express.static(path.join(__dirname, "src/public/uploads")));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 // Ban check middleware
 app.use((req, res, next) => {
-  if (req.session.userId && req.path !== "/login" && req.path !== "/check-ban") {
+  if (
+    req.session.userId &&
+    req.path !== "/login" &&
+    req.path !== "/check-ban"
+  ) {
     const now = new Date();
     const checkBanInterval = 5 * 60 * 1000; // 5 minutos
 
-    if (!req.session.banStatus || now - req.session.lastBanCheck > checkBanInterval) {
+    if (
+      !req.session.banStatus ||
+      now - req.session.lastBanCheck > checkBanInterval
+    ) {
       db.query(
         "SELECT banned, ban_expiration FROM usuarios WHERE id = ?",
         [req.session.userId],
@@ -134,12 +163,12 @@ app.use((req, res, next) => {
   }
 });
 
-app.post('/logout', (req, res) => {
+app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
-      if(err) {
-          return console.log(err);
-      }
-      res.redirect('/login');
+    if (err) {
+      return console.log(err);
+    }
+    res.redirect("/login");
   });
 });
 
@@ -150,11 +179,10 @@ app.use("/", authRouter);
 app.use("/", adminRouter);
 app.use("/", healthCheckRouter);
 app.use("/", botapiRouter);
-app.use("/", newsRouter);
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto http://localhost:${PORT}/`);
 });
 

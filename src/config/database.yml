@@ -4,15 +4,15 @@
 #segura y exitosa con la base de datos.
 
 # Dirección del host donde se encuentra alojada la base de datos.
-host: 'Tu Host'
+host: 'Tu Host/Your Host'
 
 # El nombre de usuario utilizado para autenticarse y acceder a la base de datos.
-user: 'Tu usuario'
+user: 'Tu usuario/Your Username'
 
 # La contraseña asociada al usuario de la base de datos. Se recomienda encarecidamente 
 # mantener esta información segura y confidencial.
-password: 'Tu contraseña'
+password: 'Tu contraseña/Your password'
 
 # El nombre de la base de datos a la que se desea conectar. Este nombre debe coincidir exactamente con el nombre 
 # de la base de datos que se desea utilizar.
-name: 'Nombre de la base de datos'
+name: 'Nombre de la base de datos/Database name'

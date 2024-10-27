@@ -87,48 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
         handleMouseEnterLeave(exploreButton, exploreMenu);
     }
 
-    searchIcon.addEventListener('click', function () {
-        searchInput.classList.toggle('hidden');
-        searchInput.focus();  // Foco automático en el campo de búsqueda
-
-        // Cambiar ícono de lupa a X y viceversa
-        if (searchInput.classList.contains('hidden')) {
-            searchSvg.innerHTML = `
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            `;
-        } else {
-            searchSvg.innerHTML = `
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            `;
-        }
-    });
-
-    // Función de búsqueda de anime
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value.toLowerCase();
-        let hasResults = false;
-        
-        animeCards.forEach(card => {
-            const animeName = card.querySelector('h2').textContent.toLowerCase();
-            if (animeName.includes(query)) {
-                card.style.display = 'block';
-                hasResults = true;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        // Manejo de la visibilidad del mensaje de "No hay resultados"
-        if (noResults) {
-            noResults.classList.toggle('hidden', hasResults);
-        }
-
-        // Ocultar el carousel-container siempre que se realice una búsqueda
-        if (carouselContainer) {
-            carouselContainer.classList.add('hidden');
-        }
-    });
-
     // Cerrar menús al hacer clic fuera de ellos
     document.addEventListener('click', function(event) {
         if (profileMenu && !profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
@@ -139,13 +97,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Accesibilidad: cerrar menús con la tecla Esc
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            if (profileMenu) profileMenu.classList.add('hidden');
-            if (exploreMenu) exploreMenu.classList.remove('active');
-            if (searchContainer) searchContainer.classList.remove('active');
-        }
-    });
-
 });
+
+ // Mostrar el botón cuando se desplaza hacia abajo
+ window.onscroll = function() {
+    const button = document.getElementById('back-to-top');
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        button.classList.remove('hidden');
+    } else {
+        button.classList.add('hidden');
+    }
+};
+
+// Función para volver al inicio
+document.getElementById('back-to-top').onclick = function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+};

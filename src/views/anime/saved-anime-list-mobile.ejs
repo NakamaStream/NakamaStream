@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime List - NakamaStream</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/public/css/extra/anime-list-mobile-animated.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-primary {
+            background-color: var(--primary-color);
+        }
+        .text-primary {
+            color: var(--primary-color);
+        }
+        .border-primary {
+            border-color: var(--primary-color);
+        }
+        .hover\:bg-primary:hover {
+            background-color: var(--primary-color);
+        }
+        .hover\:text-primary:hover {
+            color: var(--primary-color);
+        }
+    </style>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-full mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="/" class="flex flex-col items-center group">
+                    <span class="text-2xl md:text-3xl font-bold text-primary group-hover:text-orange-500 transition duration-300">
+                        NakamaStream
+                    </span>
+                    <span class="text-primary text-xs mt-0.5 group-hover:text-gray-600 transition duration-300">
+                        By: NakamaGroup
+                    </span>
+                </a>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                    <i id="mobile-menu-icon" class="fas fa-bars transition-transform duration-500"></i>
+                </button>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-4">
+                    <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
+                    <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
+                    <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
+
+                    <!-- User Menu -->
+                    <div class="relative group">
+                        <button id="user-menu-toggle" class="flex items-center text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                            <img src="<%= profileImageUrl || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition-transform duration-300">
+                            <span class="text-sm font-medium group-hover:text-orange-500 transition duration-300"><%= username %></span>
+                            <i id="user-menu-arrow" class="fas fa-chevron-down ml-1 transition-transform duration-500 group-hover:rotate-180"></i>
+                        </button>
+                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top-right group-hover:scale-100 group-hover:opacity-100 opacity-0">
+                            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Perfil</a>
+                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Guardados</a>
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Favoritos</a>
+                            <% if (isAdmin) { %> <!-- Verificación de admin -->
+                                <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                                <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Admin Panel</a>
+                                <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime</a>
+                                <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime Destacado</a>
+                            <% } %>
+                            <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 hover:pl-5 transition-all duration-300">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-all duration-500 transform scale-95 origin-top">
+                <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <i class="fas fa-home mr-2"></i> Inicio
+                </a>
+                <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <i class="fa-solid fa-newspaper mr-2"></i> Noticias
+                </a>
+                <a href="/soon" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <i class="fa-solid fa-calendar mr-2"></i> Calendario
+                </a>
+                <a href="/animes/api/search" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i> Buscador
+                </a>              
+
+                <!-- User Menu in Mobile -->
+                <div class="relative">
+                    <button id="user-menu-toggle-mobile" class="flex items-center w-full text-left px-4 py-2 text-gray-600 focus:outline-none hover:text-orange-500 transition duration-300">
+                        <img src="<%= profileImageUrl || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition duration-300">
+                        <span class="text-sm font-medium"><%= username %></span>
+                        <i id="user-menu-arrow-mobile" class="fas fa-chevron-down ml-1 transition-transform duration-500 hover:rotate-180"></i>
+                    </button>
+                    <div id="user-menu-mobile" class="hidden bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top">
+                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fas fa-user mr-2"></i> Perfil
+                        </a>
+                        <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fa-solid fa-bookmark mr-2"></i> Guardados
+                        </a>
+                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fa-solid fa-star mr-2"></i> Favoritos
+                        </a>
+                        <% if (isAdmin) { %> <!-- Verificación de admin -->
+                        <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                        <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                        </a>
+                        <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                        </a>
+                        <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                            <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
+                        </a>
+                        <% } %>
+                        <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 transition duration-300 hover:pl-5">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Guardados</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 anime-list">
+            <% animes.forEach(anime => { %>
+                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:scale-105 group">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                        <div class="text-white text-center mx-auto">
+                            <h2 class="text-lg font-semibold mb-2 truncate"><%= anime.name %></h2>
+                            <div class="description-container">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent text-white">
+                        <h2 class="text-sm font-semibold truncate"><%= anime.name %></h2>
+                    </div>
+                </a>
+            <% }); %>
+        </div>
+    </div>                                                            
+
+    <script src="/src/public/js/anime-list.js"></script>
+    <script src="/src/public/js/anime/NavMobile-universal.js"></script>
+</body>
+</html>

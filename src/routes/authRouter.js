@@ -7,8 +7,11 @@ const yaml = require("js-yaml");
 const fs = require("fs");
 const crypto = require("crypto");
 const multer = require("multer");
-
+const nodemailer = require("nodemailer");
 const router = express.Router();
+
+require("moment/locale/es")
+moment.locale('es');
 
 // Configuración de multer para almacenar archivos
 const storage = multer.diskStorage({
@@ -28,7 +31,7 @@ const upload = multer({ storage: storage });
 
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
-  res.render("users/register");
+  res.render("users/register", { error: null }); // Set error to null
 });
 
 // Ruta de registro (POST)
@@ -65,17 +68,18 @@ router.post("/register", (req, res) => {
         });
       }
 
+      // Manejar errores de nombre de usuario y correo electrónico
       if (userResults.length > 0) {
-        let errors = {};
-        userResults.forEach(user => {
-          if (user.username === username) {
-            errors.username = "El nombre de usuario ya está en uso.";
-          }
-          if (user.email === email) {
-            errors.email = "El correo electrónico ya está registrado.";
-          }
-        });
-        return res.render("users/register", { errors });
+        if (userResults.some(user => user.username === username)) {
+          return res.render("users/register", {
+            error: "El nombre de usuario ya está en uso."
+          });
+        }
+        if (userResults.some(user => user.email === email)) {
+          return res.render("users/register", {
+            error: "El correo electrónico ya está registrado."
+          });
+        }
       }
 
       // Encriptar la contraseña
@@ -96,7 +100,7 @@ router.post("/register", (req, res) => {
               console.error("Error al registrar el usuario:", err.message);
               if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
                 return res.render("users/register", {
-                  errors: { password: "Por favor, proporciona una contraseña." }
+                  error: "Por favor, proporciona una contraseña."
                 });
               } else {
                 return res.render("users/register", {
@@ -113,6 +117,24 @@ router.post("/register", (req, res) => {
   });
 });
 
+
+router.get("/api/auth/new-captcha", (req, res) => {
+  try {
+      const captchaPath = path.join(__dirname, "..", "config", "captcha.yml");
+      const captchaData = yaml.load(fs.readFileSync(captchaPath, "utf8"));
+      const words = captchaData.words;
+      const randomIndex = Math.floor(Math.random() * words.length);
+      const captchaPhrase = words[randomIndex];
+      req.session.captchaPhrase = captchaPhrase;
+
+      res.json({ captchaPhrase });
+  } catch (e) {
+      console.log(e);
+      res.status(500).json({ error: "Error al generar el captcha" });
+  }
+});
+
+
 // Ruta de inicio de sesión (GET)
 router.get("/login", (req, res) => {
   try {
@@ -123,10 +145,14 @@ router.get("/login", (req, res) => {
     const captchaPhrase = words[randomIndex];
     req.session.captchaPhrase = captchaPhrase;
 
-    res.render("users/login", { captchaPhrase: captchaPhrase });
+    // Asegúrate de pasar errorMessage aquí, si no hay, se define como null
+    res.render("users/login", { captchaPhrase: captchaPhrase, errorMessage: null });
   } catch (e) {
     console.log(e);
-    res.status(500).send("Error al cargar el captcha.");
+    res.render("users/login", {
+      errorMessage: "Error al cargar el captcha.",
+      captchaPhrase: null, // O puedes definirlo como vacío
+    });
   }
 });
 
@@ -160,8 +186,7 @@ router.post("/login", (req, res) => {
         if (err) {
           console.error("Error al verificar la contraseña:", err);
           return res.render("users/login", {
-            errorMessage:
-              "Error al verificar la contraseña. Inténtalo de nuevo.",
+            errorMessage: "Error al verificar la contraseña. Inténtalo de nuevo.",
             captchaPhrase: req.session.captchaPhrase,
           });
         }
@@ -171,9 +196,7 @@ router.post("/login", (req, res) => {
           if (banned) {
             if (ban_expiration > new Date()) {
               // Usuario baneado temporalmente
-              const banExpirationFormatted = moment(ban_expiration).format(
-                "DD/MM/YYYY HH:mm:ss"
-              );
+              const banExpirationFormatted = moment(ban_expiration).format("DD/MM/YYYY HH:mm:ss");
               return res.render("users/banned", {
                 message: "Has sido baneado temporalmente.",
                 banExpirationFormatted,
@@ -212,6 +235,161 @@ router.post("/login", (req, res) => {
     }
   });
 });
+
+
+// Cargar la configuración desde el archivo YAML
+const emailConfig = (() => {
+  try {
+    const filePath = path.join(__dirname, "..", "config", "email.yml"); // Ruta actualizada
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    return yaml.load(fileContents);
+  } catch (e) {
+    console.error('Error al cargar la configuración:', e);
+    return {}; // Retorna un objeto vacío en caso de error
+  }
+})();
+
+// Configuración de Nodemailer
+const transporter = nodemailer.createTransport({
+  service: emailConfig.nodemailer.service,
+  auth: {
+    user: emailConfig.nodemailer.user,
+    pass: emailConfig.nodemailer.pass,
+  },
+});
+
+
+// Ruta para solicitar el restablecimiento de contraseña
+router.post("/password/forgot", (req, res) => {
+  const { email } = req.body;
+
+  // Verificar si el email existe en la base de datos
+  db.query("SELECT id FROM usuarios WHERE email = ?", [email], (err, results) => {
+    if (err) {
+      console.error("Error al buscar el usuario:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "El correo electrónico no está registrado" });
+    }
+
+    const userId = results[0].id;
+    
+    // Generar un token aleatorio
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiration = Date.now() + 3600000; // El token expira en 1 hora
+
+    // Guardar el token y su fecha de expiración en la base de datos
+    db.query(
+      "INSERT INTO password_reset_tokens (user_id, token, expiration) VALUES (?, ?, ?)",
+      [userId, token, expiration],
+      (err) => {
+        if (err) {
+          console.error("Error al guardar el token:", err);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
+
+        // Construir el enlace de restablecimiento de contraseña
+        const resetLink = `${emailConfig.resetPasswordBaseURL}/reset-password?token=${token}&id=${userId}`;
+        const message = emailConfig.resetPasswordMessage.replace('{link}', resetLink);
+        const mailOptions = {
+          from: emailConfig.nodemailer.user,
+          to: email,
+          subject: emailConfig.resetPasswordSubject,
+          text: message,
+        };
+
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error("Error al enviar el correo:", err);
+            return res.status(500).json({ error: "No se pudo enviar el correo electrónico" });
+          }
+
+          res.json({ success: true, message: "Correo de recuperación enviado" });
+        });
+      }
+    );
+  });
+});
+
+// Renderizar la página para solicitar la recuperación de contraseña
+router.get("/password/forgot", (req, res) => {
+  res.render("users/forgot-password", {
+    title: "NakamaStream",
+  });
+});
+
+// Renderizar la página para restablecer la contraseña
+router.get("/reset-password", (req, res) => {
+  const { token, id } = req.query;
+
+  if (!token || !id) {
+    return res.status(400).json({ error: "Token inválido o faltante" });
+  }
+
+  res.render("users/reset-password", {
+    title: "NakamaStream",
+    token,
+    userId: id,
+  });
+});
+
+
+
+// Ruta para restablecer la contraseña
+router.post("/password/reset", (req, res) => {
+  const { token, userId, newPassword } = req.body;
+
+  // Verificar si el token es válido y no ha expirado
+  db.query(
+    "SELECT * FROM password_reset_tokens WHERE token = ? AND user_id = ? AND expiration > ?",
+    [token, userId, Date.now()],
+    (err, results) => {
+      if (err) {
+        console.error("Error al buscar el token:", err);
+        return res.status(500).json({ error: "Error interno del servidor" });
+      }
+
+      if (results.length === 0) {
+        return res.status(400).json({ error: "Token inválido o expirado" });
+      }
+
+      // Si el token es válido, hashear la nueva contraseña
+      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        if (err) {
+          console.error("Error al encriptar la nueva contraseña:", err);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
+
+        // Actualizar la contraseña en la base de datos
+        db.query(
+          "UPDATE usuarios SET password = ? WHERE id = ?",
+          [hashedPassword, userId],
+          (err) => {
+            if (err) {
+              console.error("Error al actualizar la contraseña:", err);
+              return res.status(500).json({ error: "Error al actualizar la contraseña" });
+            }
+
+            // Eliminar el token usado
+            db.query(
+              "DELETE FROM password_reset_tokens WHERE user_id = ?",
+              [userId],
+              (err) => {
+                if (err) {
+                  console.error("Error al eliminar el token:", err);
+                }
+                res.json({ success: true, message: "Contraseña actualizada correctamente" });
+              }
+            );
+          }
+        );
+      });
+    }
+  );
+});
+
 
 router.post("/profile/update-password", (req, res) => {
   if (!req.session.loggedin) {
@@ -298,6 +476,13 @@ router.get("/profile/:username", (req, res) => {
   const username = req.params.username;
   const isOwnProfile = req.session.username === username;
 
+  // Función para censurar el email
+  function censorEmail(email) {
+    const [localPart, domain] = email.split('@');
+    const censoredLocal = localPart.slice(0, 2) + '****'; // Muestra los primeros 2 caracteres y oculta el resto
+    return `${censoredLocal}@${domain}`;
+  }
+
   db.query(
     `SELECT u.id, u.username, u.email, u.created_at, u.is_admin, u.banned, u.ban_expiration, 
             u.profile_image, u.banner_image, IFNULL(u.bio, '') as bio,
@@ -321,8 +506,8 @@ router.get("/profile/:username", (req, res) => {
         "DD/MM/YYYY HH:mm:ss"
       );
       const timeCreatedFormatted = moment
-        .utc(user.time_created * 1000)
-        .format("HH:mm:ss");
+      .utc(user.time_created * 1000)
+      .fromNow(); // Esto mostrará el tiempo en formato "hace X minutos"
 
       // Obtener el hash MD5 del correo electrónico para Gravatar
       const emailHash = crypto
@@ -337,7 +522,7 @@ router.get("/profile/:username", (req, res) => {
           "DD/MM/YYYY HH:mm:ss"
         );
       }
-
+      
       // Obtener los animes favoritos del usuario
       db.query(
         `SELECT a.id, a.name, a.imageUrl, a.slug
@@ -352,10 +537,13 @@ router.get("/profile/:username", (req, res) => {
             return res.status(500).send("Error al obtener animes favoritos");
           }
 
+          // Aplicar la censura del correo si no es el propio perfil del usuario
+          const emailToShow = isOwnProfile ? user.email : censorEmail(user.email);
+
           res.render("users/profiles", {
             user: user,
             username: user.username,
-            email: user.email,
+            email: emailToShow, // Mostramos el email censurado si no es su perfil
             createdAtFormatted,
             timeCreatedFormatted,
             isAdmin: user.is_admin,

@@ -265,11 +265,3 @@ body {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al hacer hover */
 }
-
-/* Miembro nakama */
-
-.miembro-nakama {
-    font-size: 12px; /* Tamaño del texto */
-    color: #F2A922; /* Color sólido */
-    font-weight: bold;
-}
