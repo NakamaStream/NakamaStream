@@ -56,7 +56,6 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 
 - **Animes Subtitulados al Español**: Disfruta de una amplia selección de animes con subtítulos en español.
 - **Sistemas de Creación de Cuentas y Iniciar Sesión**: Crea una cuenta y accede a tu perfil fácilmente.
-- **Sistema de Niveles y Roles**: Gestiona diferentes niveles y roles dentro de la plataforma.
 - **Sistema de Perfiles Personalizados**: Personaliza tu perfil con información y preferencias.
 - **Interfaz Amigable**: Navega por la plataforma con una interfaz intuitiva y fácil de usar.
 - **Página Rápida**: Disfruta de una navegación ágil y eficiente.
@@ -85,11 +84,27 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
   <summary>Click para ver más imágenes</summary>
   
 <div style="text-align: left;">
-  <img src="https://github.com/user-attachments/assets/35460199-488c-457c-8bbf-f16b5c1ae63d" alt="Inicio" style="max-width: 70%;" >
+  <img src="https://github.com/user-attachments/assets/4a5398b0-4549-4b00-a114-52b47fe8b67e" alt="Inicio" style="max-width: 70%;" >
 </div>
 
 <div style="text-align: left;">
-  <img src="https://github.com/user-attachments/assets/64703005-17a6-4c15-9354-d7f55a25bebe" alt="Inicio2" style="max-width: 70%;" >
+  <img src="https://github.com/user-attachments/assets/067518a0-75c3-4e95-8302-935c8b642e67" alt="Inicio2" style="max-width: 70%;" >
+</div>
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/36881187-b476-49b7-9e2d-44b771855b66" alt="Inicio3" style="max-width: 70%;" >
+</div>
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/045e1197-3976-4d76-8f51-203872a9e251" alt="Inicio4" style="max-width: 70%;" >
+</div>
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/6b762468-a93c-4ec7-9969-06ff664fe6d9" alt="Inicio5" style="max-width: 70%;" >
+</div>
+
+<div style="text-align: left;">
+  <img src="https://github.com/user-attachments/assets/a0c9d894-bf21-4ae2-83c3-c7e0f5a4f23b" alt="Inicio5" style="max-width: 70%;" >
 </div>
 
 </details>
