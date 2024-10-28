@@ -179,6 +179,31 @@
             </div>
         </div>
       </div>
+
+    <!-- Recientes Animes -->
+    <div class="container mx-auto px-4 py-4">
+        <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes En emisión</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <% animes.filter(anime => anime.status === 'ongoing').slice(0, 6).forEach(anime => { %>
+                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
+                        <div class="text-white text-center drop-shadow-lg">
+                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
+                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                <%= anime.description %>
+                            </p>
+                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
+                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
+                                <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
+                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Completa' %>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            <% }); %>
+        </div>
+    </div>
     
     <!-- Featured Animes -->
     <div class="container mx-auto px-4 py-4">
@@ -194,6 +219,10 @@
                                 <%= anime.description %>
                             </p>
                             <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
+                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
+                            <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
+                            <%= anime.status === 'ongoing' ? 'En emisión' : 'Completa' %>
+                            </span>
                         </div>
                     </div>
                 </a>
