@@ -94,6 +94,7 @@ app.use(
 );
 app.use("/uploads", express.static(path.join(__dirname, "src/public/uploads")));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+app.use("/favicons", express.static(path.join(__dirname, "src/public/favicons")));
 
 // Ban check middleware
 app.use((req, res, next) => {
