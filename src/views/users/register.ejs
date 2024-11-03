@@ -19,6 +19,21 @@
         }
     </script>
     <script src="/src/public/js/start/SecurePassword.js"></script>
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePasswordIcon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </head>
 <body class="h-full flex items-center justify-center p-4 bg-gray-50">
     <div class="w-full max-w-md">
@@ -61,22 +76,30 @@
                                    placeholder="Correo electrónico">
                         </div>
                     </div>
-
+                    
                     <div>
-                      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                      <div class="mt-1 relative rounded-md shadow-sm">
-                          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-lock text-custom"></i>
-                          </div>
-                          <input type="password" id="password" name="password" required oninput="updateProgressBar()"
-                                 class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
-                                 placeholder="Contraseña">
-                      </div>
-                      <div class="mt-2">
-                          <progress id="strengthBar" class="progress h-2 w-full" max="100" value="0"></progress>
-                          <p id="passwordStrength" class="text-sm mt-1"></p>
-                      </div>
-                    </div>                  
+                        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-custom"></i>
+                            </div>
+                            <input type="password" id="password" name="password" required oninput="updateProgressBar()"
+                                   class="block w-full pl-10 pr-20 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom sm:text-sm transition duration-150 ease-in-out"
+                                   placeholder="Contraseña">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center space-x-2">
+                                <button type="button" onclick="generatePassword()" class="text-gray-500 focus:outline-none px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded-md">
+                                    <i class="fas fa-random"></i> Generar
+                                </button>
+                                <button type="button" onclick="togglePassword()" class="text-gray-500 focus:outline-none">
+                                    <i id="togglePasswordIcon" class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <progress id="strengthBar" class="progress h-2 w-full" max="100" value="0"></progress>
+                            <p id="passwordStrength" class="text-sm mt-1"></p>
+                        </div>
+                    </div>                    
 
                     <div>
                         <label class="inline-flex items-center">
