@@ -67,6 +67,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// Redirect logged-in users from /login and /register to anime page
+app.use((req, res, next) => {
+  if (req.session.loggedin && (req.path === "/login" || req.path === "/register")) {
+    return res.redirect("/anime");
+  }
+  next();
+});
+
 // Redirect logged-in users from home to anime page
 app.use((req, res, next) => {
   if (req.session.loggedin && req.path === "/") {
