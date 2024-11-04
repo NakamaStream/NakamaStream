@@ -16,7 +16,7 @@ jobs:
     steps:
       # Verificar el repositorio
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Configura Node.js (reemplaza por otra configuración si tu proyecto no usa Node)
       - name: Set up Node.js
