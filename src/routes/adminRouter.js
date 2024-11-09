@@ -319,10 +319,11 @@ router.post("/login", (req, res) => {
   });
 });
 
+// Ruta de cierre de sesión
 router.get("/logout", (req, res) => {
-  req.session.destroy();
+  req.session = null;
   res.redirect("/");
-});
+})
 
 // Profile routes
 router.get("/profile", isLoggedIn, (req, res) => {
