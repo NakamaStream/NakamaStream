@@ -99,65 +99,69 @@ router.get("/anime", isLoggedIn, (req, res) => {
   // Consulta para obtener el anime destacado
   const featuredQuery = `SELECT * FROM animes WHERE is_featured = 1 LIMIT 1`;
 
-  // First, fetch the list of animes
   db.query(query, (err, rows) => {
     if (err) {
       console.error(err);
       return res.status(500).send("Error al recuperar animes");
     }
-    
-    // Now fetch the featured anime
+
+    // Agrupar animes por categorías
+    const groupedAnimes = rows.reduce((acc, anime) => {
+      if (!acc[anime.category_name]) {
+        acc[anime.category_name] = [];
+      }
+      acc[anime.category_name].push(anime);
+      return acc;
+    }, {});
+
+    // Consulta para obtener el anime destacado
     db.query(featuredQuery, (featuredErr, featuredResults) => {
       if (featuredErr) {
         console.error(featuredErr);
         return res.status(500).send("Error al recuperar anime destacado");
       }
-      
-      // Provide default values if there's no featured anime
+
       const featuredAnime = featuredResults[0] || {
         name: "No hay anime destacado",
-        featured_image_url: null, // Or you could set a placeholder image URL here
+        featured_image_url: null,
       };
 
-
-
       // Fetch user information
-      db.query(
-        "SELECT username, profile_image_url FROM usuarios WHERE id = ?",
-        [req.session.userId],
-        (userErr, userResults) => {
-          if (userErr) {
-            console.error(userErr);
-            return res.status(500).send("Error al recuperar información del usuario");
-          }
-
-          const user = userResults[0] || {};
-
-          // Check if the user is on a mobile or tablet device
-          if (req.useragent.isMobile || req.useragent.isTablet) {
-            res.render("anime/anime-list-mobile", {
-              animes: rows,
-              isAdmin: req.session.isAdmin,
-              featuredAnime: featuredAnime,
-              user: req.session.user,
-              username: user.username,
-              profile_image_url: user.profile_image_url,
-            });
-          } else {
-            res.render("anime/anime-list", {
-              animes: rows,
-              isAdmin: req.session.isAdmin,
-              featuredAnime: featuredAnime,
-              user: req.session.user,
-              username: user.username,
-              profile_image_url: user.profile_image_url,
-            });
-          }
+      db.query("SELECT username, profile_image_url FROM usuarios WHERE id = ?", [req.session.userId], (userErr, userResults) => {
+        if (userErr) {
+          console.error(userErr);
+          return res.status(500).send("Error al recuperar información del usuario");
         }
-      );
+
+        const user = userResults[0] || {};
+
+        // Check if the user is on a mobile or tablet device
+        if (req.useragent.isMobile || req.useragent.isTablet) {
+          res.render("anime/anime-list-mobile", {
+            groupedAnimes: groupedAnimes,
+            featuredAnime: featuredAnime,
+            animes: rows,
+            user: req.session.user,
+            isAdmin: req.session.isAdmin,
+            username: user.username,
+            profile_image_url: user.profile_image_url,
+          });
+        } else {
+          res.render("anime/anime-list", {
+            groupedAnimes: groupedAnimes,
+            featuredAnime: featuredAnime,
+            animes: rows,
+            user: req.session.user,
+            isAdmin: req.session.isAdmin,
+            username: user.username,
+            profile_image_url: user.profile_image_url,
+          });
+        }
+      });
     });
   });
 });
+
 
 router.get("/animes/api/search", isLoggedIn, (req, res) => {
   const query = `
