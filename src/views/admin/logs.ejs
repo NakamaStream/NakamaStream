@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Logs</title>
+    <title>NakamaStream - Logs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -37,14 +37,19 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-white to-custom-red/10">
     <div class="container mx-auto px-4 py-8 relative">
-        <h1 id="top" class="text-4xl font-bold text-custom-red mb-6 text-center">Registro de Logs</h1>
-        
-        <!-- Botón de Salir -->
-        <button onclick="window.history.back()" class="absolute top-0 right-0 mt-4 mr-4 bg-white text-custom-red font-bold px-6 py-3 rounded-full shadow-lg hover:bg-custom-red hover:text-white focus:outline-none focus:ring-4 focus:ring-custom-red transition duration-300 transform hover:scale-105">
-            Salir
-        </button>
+        <div class="flex justify-between items-center mb-6">
+            <h1 id="top" class="text-4xl font-bold text-custom-red">Registro de Logs</h1>
+            <!-- Botón para ocultar/mostrar los logs -->
+            <button id="toggleLogsBtn" class="bg-white text-custom-red font-bold px-6 py-3 rounded-full shadow-lg hover:bg-custom-red hover:text-white focus:outline-none focus:ring-4 focus:ring-custom-red transition duration-300 transform hover:scale-105">
+                Ocultar Logs
+            </button>
+            <!-- Botón de Salir -->
+            <button onclick="window.history.back()" class="bg-white text-custom-red font-bold px-6 py-3 rounded-full shadow-lg hover:bg-custom-red hover:text-white focus:outline-none focus:ring-4 focus:ring-custom-red transition duration-300 transform hover:scale-105">
+                Salir
+            </button>
+        </div>
 
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden mt-4">
+        <div id="logContainer" class="bg-white shadow-lg rounded-lg overflow-hidden mt-4">
             <div class="bg-custom-red text-white px-4 py-2 font-semibold">
                 Logs
             </div>
@@ -60,6 +65,8 @@
 
     <script>
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const toggleLogsBtn = document.getElementById('toggleLogsBtn');
+        const logContainer = document.getElementById('logContainer');
 
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 100) {
@@ -76,6 +83,17 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+
+        // Función para alternar la visibilidad de los logs
+        toggleLogsBtn.addEventListener('click', () => {
+            if (logContainer.style.display === 'none') {
+                logContainer.style.display = 'block';
+                toggleLogsBtn.textContent = 'Ocultar Logs';
+            } else {
+                logContainer.style.display = 'none';
+                toggleLogsBtn.textContent = 'Mostrar Logs';
+            }
         });
     </script>
 </body>
