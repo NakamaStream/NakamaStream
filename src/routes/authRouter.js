@@ -192,7 +192,7 @@ router.post("/login", (req, res) => {
         }
 
         if (match) {
-          // El usuario está baneado
+          // Verificar si el usuario está baneado
           if (banned) {
             if (ban_expiration > new Date()) {
               // Usuario baneado temporalmente
@@ -210,7 +210,7 @@ router.post("/login", (req, res) => {
             }
           }
 
-          // El usuario está autorizado
+          // Usuario autorizado: almacenar datos en la cookie de sesión
           req.session.loggedin = true;
           req.session.userId = results[0].id;
           req.session.username = username;
@@ -218,8 +218,8 @@ router.post("/login", (req, res) => {
           req.session.createdAt = results[0].created_at;
           req.session.timeCreated = results[0].time_created;
           req.session.isAdmin = results[0].is_admin;
+
           res.redirect("/anime");
-          
         } else {
           res.render("users/login", {
             errorMessage: "Credenciales incorrectas.",
@@ -463,7 +463,7 @@ router.post("/profile/update-password", (req, res) => {
 
 // Ruta de cierre de sesión
 router.get("/logout", (req, res) => {
-  req.session.destroy();
+  req.session = null;
   res.redirect("/");
 })
 
