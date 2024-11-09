@@ -205,37 +205,92 @@
         </div>
     </div>
     
-    <!-- Featured Animes -->
     <div class="container mx-auto px-4 py-4">
         <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes Recientes</h2>
-        <div class="grid grid-cols-2 gap-4">
-            <% animes.forEach(anime => { %>
-                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
-                        <div class="text-white text-center drop-shadow-lg">
-                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
-                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
-                                <%= anime.description %>
-                            </p>
-                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
-                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
-                            <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
-                            <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
-                            </span>
+        <div class="relative" data-carousel-container>
+            <div class="carousel-container overflow-x-auto flex gap-4" data-carousel>
+                <div id="recent-anime-carousel" class="flex transition-transform duration-300 ease-in-out">
+                    <% animes.slice(0, 10).forEach((anime, index) => { %>
+                        <div class="flex-none w-56 px-2" data-anime-card> <!-- w-56 para hacer coincidir el tamaño -->
+                            <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                                <div class="aspect-w-2 aspect-h-3 bg-gray-200">
+                                    <img 
+                                        src="<%= index < 6 ? anime.imageUrl : '' %>" 
+                                        data-src="<%= anime.imageUrl %>" 
+                                        alt="<%= anime.name %>" 
+                                        class="w-full h-full object-cover rounded-t-lg <%= index >= 5 ? 'lazy-load' : '' %>"
+                                        loading="<%= index < 6 ? 'eager' : 'lazy' %>"
+                                    >
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                                    <div class="text-white">
+                                        <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2> <!-- Ajuste del tamaño de texto -->
+                                        <div class="description-container">
+                                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                                <%= anime.description %>
+                                            </p>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-2">
+                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
+                                            <span class="text-xs <%= anime.status === 'ongoing' ? 'bg-blue-500' : 'bg-green-500' %> text-white px-2 py-1 rounded-full">
+                                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+
+            <!-- Animes por Categoría -->
+            <div class="container mx-auto px-4 py-4">
+                <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes por Categoría</h2>
+                
+                <% Object.keys(groupedAnimes).forEach(category => { %>
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3"><%= category %></h3>
+                        <div class="flex gap-4 overflow-x-auto">
+                            <% groupedAnimes[category].slice(0, 10).forEach(anime => { %>
+                                <a href="/anime/<%= anime.slug %>" class="flex-none w-56 relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover" loading="lazy">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
+                                        <div class="text-white text-center drop-shadow-lg">
+                                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
+                                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                                <%= anime.description %>
+                                            </p>
+                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
+                                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
+                                                <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
+                                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            <% }); %>
                         </div>
                     </div>
-                </a>
-            <% }); %>
+                <% }); %>
+            </div>
+    
+            <!-- Botones de navegación -->
+            <button id="prevBtnRecent" class="hidden sm:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Diapositiva anterior">
+                <i class="fas fa-chevron-left text-2xl"></i>
+            </button>
+            <button id="nextBtnRecent" class="hidden sm:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Siguiente diapositiva">
+                <i class="fas fa-chevron-right text-2xl"></i>
+            </button>
         </div>
-    </div>
+    </div>    
                                  
     <!-- Announcement Modal -->
     <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
             <h2 class="text-xl font-bold mb-2 text-gray-800">Anuncio</h2>
             <div id="announcement-message" class="mb-4 text-gray-700"></div>
-            <button id="close-announcement" class="w-full bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition duration-300 font-semibold">Cerrar</button>
+            <button id="close-announcement" class="w-full bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 font-semibold">Cerrar</button>
         </div>
     </div>
 
@@ -245,6 +300,7 @@
     </button>
 
     <script src="/src/public/js/anime/anime-list.js"></script>
+    <script src="/src/public/js/global/lazy-load.js"></script>
     <script src="/src/public/js/anime/NavMobile-universal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
