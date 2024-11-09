@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Episodio - NakamaStream</title>
+    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            light: '#fce7f3',
+                            DEFAULT: '#ec4899',
+                            dark: '#be185d'
+                        }
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    },
+                    animation: {
+                        float: 'float 6s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-pink-100 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- BotÃ³n de modo oscuro -->
+    <div class="fixed top-4 left-4 z-50">
+        <button id="darkModeToggle" class="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 hover:scale-110">
+            <!-- Icono para modo claro -->
+            <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden dark:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Icono para modo oscuro -->
+            <svg id="moonIcon" class="w-6 h-6 text-gray-700 inline dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="container max-w-4xl mx-auto">
+        <div class="bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 backdrop-blur-lg p-8 rounded-2xl shadow-xl animate__animated animate__fadeIn">
+            <h2 class="text-3xl font-bold mb-6 text-center text-pink-500 dark:text-pink-400">Editar Episodio</h2>
+            <div class="animate-float mb-8 text-center">
+                <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamStream-logo-HD-removebg.png" class="w-32 h-32 mx-auto">
+            </div>
+            <form id="editEpisodeForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="input-group">
+                        <label for="anime_id" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Seleccionar Anime</label>
+                        <select id="anime_id" name="anime_id" required class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            <option value="">Seleccione un anime</option>
+                            <% animes.forEach(function(anime) { %>
+                                <option value="<%= anime.id %>"><%= anime.name %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="episode_id" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Seleccionar Episodio</label>
+                        <select id="episode_id" name="episode_id" required class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            <option value="">Primero seleccione un anime</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="title" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">TÃ­tulo del Episodio</label>
+                    <input type="text" id="title" name="title" required class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="input-group">
+                        <label for="episode_number" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">NÃºmero de Episodio</label>
+                        <input type="number" id="episode_number" name="episode_number" required class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="video_url" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">URL del Video</label>
+                        <input type="url" id="video_url" name="video_url" required class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="description" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">DescripciÃ³n</label>
+                    <textarea id="description" name="description" class="w-full p-3 border border-pink-200 dark:border-pink-900 rounded-lg focus:ring-2 focus:ring-pink-300 dark:focus:ring-pink-600 focus:border-pink-300 dark:focus:border-pink-600 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" rows="4"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 mt-6">
+                    <a href="/admin/episodes" class="px-6 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="px-6 py-3 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar los iconos de Feather
+        feather.replace();
+
+        // ConfiguraciÃ³n del modo oscuro
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Verificar preferencia guardada
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            
+            // Guardar preferencia
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+
+        // Resto del cÃ³digo JavaScript original
+        document.addEventListener('DOMContentLoaded', function() {
+            const animeSelect = document.getElementById('anime_id');
+            const episodeSelect = document.getElementById('episode_id');
+            const titleInput = document.getElementById('title');
+            const episodeNumberInput = document.getElementById('episode_number');
+            const videoUrlInput = document.getElementById('video_url');
+            const descriptionTextarea = document.getElementById('description');
+
+            animeSelect.addEventListener('change', function() {
+                const animeId = this.value;
+                episodeSelect.innerHTML = '<option value="">Seleccione un episodio</option>';
+                if (animeId) {
+                    fetch(`/api/animes/${animeId}/episodes`)
+                        .then(response => response.json())
+                        .then(episodes => {
+                            episodes.forEach(episode => {
+                                const option = document.createElement('option');
+                                option.value = episode.id;
+                                option.textContent = `Episodio ${episode.episode_number}: ${episode.title}`;
+                                episodeSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching episodes:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudieron cargar los episodios.',
+                                icon: 'error',
+                                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                                color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151',
+                                confirmButtonColor: '#ec4899'
+                            });
+                        });
+                }
+            });
+
+            episodeSelect.addEventListener('change', function() {
+                const episodeId = this.value;
+                if (episodeId) {
+                    fetch(`/api/episodes/${episodeId}`)
+                        .then(response => response.json())
+                        .then(episode => {
+                            titleInput.value = episode.title;
+                            episodeNumberInput.value = episode.episode_number;
+                            videoUrlInput.value = episode.video_url;
+                            descriptionTextarea.value = episode.description || '';
+                        })
+                        .catch(error => {
+                            console.error('Error fetching episode details:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudieron cargar los detalles del episodio.',
+                                icon: 'error',
+                                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                                color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151',
+                                confirmButtonColor: '#ec4899'
+                            });
+                        });
+                }
+            });
+
+            document.getElementById('editEpisodeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!animeSelect.value || !episodeSelect.value || !titleInput.value || !episodeNumberInput.value || !videoUrlInput.value) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor, complete todos los campos requeridos.',
+                        icon: 'error',
+                        background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                        color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151',
+                        confirmButtonColor: '#ec4899'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Â¿Guardar cambios?',
+                    text: "Â¿EstÃ¡s seguro de que quieres actualizar este episodio?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ec4899',
+                    cancelButtonColor: '#9ca3af',
+                    confirmButtonText: 'SÃ­, guardar',
+                    cancelButtonText: 'Cancelar',
+                    background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                    color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = {
+                            episodeId: episodeSelect.value,
+                            animeId: animeSelect.value,
+                            title: titleInput.value,
+                            episodeNumber: episodeNumberInput.value,
+                            videoUrl: videoUrlInput.value,
+                            description: descriptionTextarea.value
+                        };
+
+                        fetch('/admin/edit-episode', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Â¡Ã‰xito!',
+                                    text: 'El episodio ha sido actualizado correctamente.',
+                                    icon: 'success',
+                                    background: '#fff',
+                                    confirmButtonColor: '#ec4899'
+                                }).then(() => {
+                                    window.location.href = '/admin/episodes';
+                                });
+                            } else {
+                                throw new Error(data.message || 'No se pudo actualizar el episodio.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: error.message || 'OcurriÃ³ un error al actualizar el episodio.',
+                                icon: 'error',
+                                background: '#fff',
+                                confirmButtonColor: '#ec4899'
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
