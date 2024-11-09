@@ -144,76 +144,155 @@
       </div>
     </div>
 
-      <div class="container mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes En emisión</h2>
-        <div class="relative">
-            <div class="carousel-container overflow-hidden">
-                <div id="anime-carousel" class="flex transition-transform duration-300 ease-in-out">
-                    <% animes.filter(anime => anime.status === 'ongoing').slice(0, 10).forEach(anime => { %>
-                        <div class="flex-none w-64 px-2">
-                            <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                                <div class="aspect-w-2 aspect-h-3 bg-gray-200">
-                                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover rounded-t-lg" loading="lazy">
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
-                                    <div class="text-white">
-                                        <h2 class="text-lg font-semibold mb-1 truncate"><%= anime.name %></h2>
-                                        <div class="description-container">
-                                            <p class="description-text text-sm line-clamp-3">
-                                                <%= anime.description %>
-                                            </p>
-                                        </div>
-                                        <div class="flex flex-wrap gap-2 mt-2">
-                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
-                                            <span class="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">En emisión</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <% }); %>
-                </div>
-            </div>
-            <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10">
-                &#10094;
-            </button>
-            <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10">
-                &#10095;
-            </button>
+    <div class="container mx-auto px-4 py-8">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes En emisión</h2>
+      <div class="relative">
+          <div class="carousel-container overflow-hidden">
+              <div id="anime-carousel" class="flex transition-transform duration-300 ease-in-out">
+                  <% animes.filter(anime => anime.status === 'ongoing').slice(0, 10).forEach(anime => { %>
+                      <div class="flex-none w-64 px-2">
+                          <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                              <div class="aspect-w-2 aspect-h-3 bg-gray-200">
+                                  <img 
+                                      src="<%= anime.imageUrl %>" 
+                                      alt="<%= anime.name %>" 
+                                      class="w-full h-full object-cover rounded-t-lg lazy-load"
+                                      data-src="<%= anime.imageUrl %>" 
+                                      loading="lazy"
+                                  >
+                              </div>
+                              <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                                  <div class="text-white">
+                                      <h2 class="text-lg font-semibold mb-1 truncate"><%= anime.name %></h2>
+                                      <div class="description-container">
+                                          <p class="description-text text-sm line-clamp-3">
+                                              <%= anime.description %>
+                                          </p>
+                                      </div>
+                                      <div class="flex flex-wrap gap-2 mt-2">
+                                          <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
+                                          <span class="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">En emisión</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </a>
+                      </div>
+                  <% }); %>
+              </div>
+          </div>
+        <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Diapositiva anterior">
+            <i class="fas fa-chevron-left text-2xl"></i>
+        </button>
+        <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Siguiente diapositiva">
+            <i class="fas fa-chevron-right text-2xl"></i>
+        </button>
+      </div>
+  </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Recientes</h2>
+      <div class="relative" data-carousel-container>
+        <div class="carousel-container overflow-hidden">
+          <div id="recent-anime-carousel" class="flex transition-transform duration-300 ease-in-out">
+            <% animes.slice(0, 10).forEach((anime, index) => { %>
+              <div class="flex-none w-64 px-2" data-anime-card>
+                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                  <div class="aspect-w-2 aspect-h-3 bg-gray-200">
+                    <img 
+                      src="<%= index < 6 ? anime.imageUrl : '' %>" 
+                      data-src="<%= anime.imageUrl %>" 
+                      alt="<%= anime.name %>" 
+                      class="w-full h-full object-cover rounded-t-lg <%= index >= 5 ? 'lazy-load' : '' %>"
+                      loading="<%= index < 6 ? 'eager' : 'lazy' %>"
+                    >
+                  </div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                    <div class="text-white">
+                      <h2 class="text-lg font-semibold mb-1 truncate"><%= anime.name %></h2>
+                      <div class="description-container">
+                        <p class="description-text text-sm line-clamp-3">
+                          <%= anime.description %>
+                        </p>
+                      </div>
+                      <div class="flex flex-wrap gap-2 mt-2">
+                        <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
+                        <span class="text-xs <%= anime.status === 'ongoing' ? 'bg-blue-500' : 'bg-green-500' %> text-white px-2 py-1 rounded-full">
+                          <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
         </div>
+        <button id="prevBtnRecent" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Diapositiva anterior">
+          <i class="fas fa-chevron-left text-2xl"></i>
+      </button>
+      <button id="nextBtnRecent" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Siguiente diapositiva">
+          <i class="fas fa-chevron-right text-2xl"></i>
+      </button>
+      </div>
+    </div>
+
+
+    <div class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold mb-12 text-center text-gray-800">categorías</h2>
+    
+      <% Object.keys(groupedAnimes).forEach(category => { %>
+        <div class="mb-16">
+          <!-- Título de la categoría -->
+          <h3 class="text-3xl font-semibold mb-8 text-gray-800 uppercase tracking-wider">
+            <%= category %>
+          </h3>
+    
+          <!-- Carrusel Container -->
+          <div class="relative">
+            <!-- Carrusel de ítems (flex horizontal) -->
+            <div class="carousel flex overflow-x-auto space-x-6 py-4 scroll-smooth">
+              <% groupedAnimes[category].forEach(anime => { %>
+                <div class="flex-none w-64 px-2">
+                  <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    <div class="aspect-w-2 aspect-h-3 bg-gray-200">
+                      <img 
+                        src="<%= anime.imageUrl %>" 
+                        alt="<%= anime.name %>" 
+                        class="w-full h-full object-cover rounded-t-lg lazy-load"
+                        data-src="<%= anime.imageUrl %>" 
+                        loading="lazy"
+                      >
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6">
+                      <div class="text-white">
+                        <h2 class="text-lg font-semibold mb-1 truncate"><%= anime.name %></h2>
+                        <div class="description-container">
+                          <p class="description-text text-sm line-clamp-3">
+                            <%= anime.description %>
+                          </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                          <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
+                          <span class="text-xs <%= anime.status === 'ongoing' ? 'bg-blue-500' : 'bg-green-500' %> text-white px-2 py-1 rounded-full">
+                            <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      <% }); %>
     </div>
   
-    <div class="container mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Animes Recientes</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 anime-list">
-            <% animes.forEach(anime => { %>
-                <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
-                        <div class="text-white">
-                            <h2 class="text-lg font-semibold mb-1 truncate"><%= anime.name %></h2>
-                            <div class="description-container">
-                                <p class="description-text text-sm line-clamp-3">
-                                    <%= anime.description %>
-                                </p>
-                            </div>
-                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
-                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out
-                                <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
-                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-            <% }); %>
-        </div>
-    </div> 
-
     <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
             <h2 class="text-2xl font-bold mb-4 text-gray-800">Anuncio</h2>
             <div id="announcement-message" class="mb-6 text-gray-700"></div>
-            <button id="close-announcement" class="w-full bg-orange-500 text-white px-6 py-3 rounded-full hover:bg-orange-600 transition duration-300 font-semibold">Cerrar</button>
+            <button id="close-announcement" class="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 font-semibold">Cerrar</button>
         </div>
     </div>
 
@@ -223,54 +302,10 @@
       </button>
 
     <script src="/src/public/js/anime/anime-list.js"></script>
+    <script src="/src/public/js/anime/anime-carousel.js"></script>
+    <script src="/src/public/js/global/lazy-load.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/src/public/js/anime/profile-anime-menu.js"></script>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-          const carousel = document.getElementById('anime-carousel');
-          const prevBtn = document.getElementById('prevBtn');
-          const nextBtn = document.getElementById('nextBtn');
-          const itemWidth = 256; // 256px (w-64)
-          let currentPosition = 0;
-
-          function updateCarouselPosition() {
-              carousel.style.transform = `translateX(${currentPosition}px)`;
-              updateButtonVisibility();
-          }
-
-          function updateButtonVisibility() {
-              prevBtn.style.display = currentPosition < 0 ? 'flex' : 'none';
-              nextBtn.style.display = Math.abs(currentPosition) < (carousel.scrollWidth - carousel.clientWidth) ? 'flex' : 'none';
-          }
-
-          function moveCarousel(direction) {
-              const containerWidth = carousel.parentElement.clientWidth;
-              const scrollAmount = Math.floor(containerWidth / itemWidth) * itemWidth;
-              const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-
-              if (direction === 'next') {
-                  currentPosition = Math.max(currentPosition - scrollAmount, -maxScroll);
-              } else {
-                  currentPosition = Math.min(currentPosition + scrollAmount, 0);
-              }
-
-              updateCarouselPosition();
-          }
-
-          prevBtn.addEventListener('click', () => moveCarousel('prev'));
-          nextBtn.addEventListener('click', () => moveCarousel('next'));
-
-          // Inicializar la visibilidad de los botones
-          updateButtonVisibility();
-
-          // Manejar cambios de tamaño de ventana
-          window.addEventListener('resize', () => {
-              currentPosition = 0;
-              updateCarouselPosition();
-          });
-      });
-  </script>
     
 </body>
 </html>
