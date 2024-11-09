@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-white scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-red': '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados para el scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 12px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #ff6b6b;
+            border-radius: 6px;
+            border: 3px solid #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #ff5252;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-white to-custom-red/10">
+    <div class="container mx-auto px-4 py-8 relative">
+        <h1 id="top" class="text-4xl font-bold text-custom-red mb-6 text-center">Registro de Logs</h1>
+        
+        <!-- Botón de Salir -->
+        <button onclick="window.history.back()" class="absolute top-0 right-0 mt-4 mr-4 bg-white text-custom-red font-bold px-6 py-3 rounded-full shadow-lg hover:bg-custom-red hover:text-white focus:outline-none focus:ring-4 focus:ring-custom-red transition duration-300 transform hover:scale-105">
+            Salir
+        </button>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden mt-4">
+            <div class="bg-custom-red text-white px-4 py-2 font-semibold">
+                Logs
+            </div>
+            <pre id="logContent" class="text-sm p-4 max-h-[70vh] overflow-y-auto bg-gray-50 custom-scrollbar"><%= logs.join("\n") %></pre>
+        </div>
+    </div>
+
+    <button id="scrollToTopBtn" class="fixed bottom-4 right-4 bg-custom-red text-white p-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-custom-red/80 focus:outline-none focus:ring-2 focus:ring-custom-red focus:ring-opacity-50" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+
+    <script>
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                scrollToTopBtn.classList.remove('opacity-0');
+                scrollToTopBtn.classList.add('opacity-100');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100');
+                scrollToTopBtn.classList.add('opacity-0');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
