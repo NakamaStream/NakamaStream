@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Términos de Uso</title>
+    <title>NakamaStream - Donaciones</title>
     <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -18,10 +19,31 @@
                     }
                 }
             }
+        };
+
+        // Función para abrir el modal de donación
+        function openModal() {
+            document.getElementById('donation-modal').classList.remove('hidden');
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById('donation-modal').classList.add('hidden');
+        }
+
+        // Función para abrir el modal de cómo se utiliza la donación
+        function openUsageModal() {
+            document.getElementById('usage-modal').classList.remove('hidden');
+        }
+
+        // Función para cerrar el modal de cómo se utiliza la donación
+        function closeUsageModal() {
+            document.getElementById('usage-modal').classList.add('hidden');
         }
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         body {
             font-family: 'Poppins', sans-serif;
         }
@@ -34,13 +56,13 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <a href="/" class="flex-shrink-0">
-                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="h-10 w-auto ">
                     </a>
                     <div class="hidden md:block ml-10">
                         <a href="/" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Inicio</a>
+                        <a href="/about/jobs" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Jobs</a>
                         <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Discord</a>
                         <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
-                        <a href="/donate" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -58,90 +80,103 @@
         <div id="mobile-menu" class="hidden md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="/" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="/about/jobs" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Jobs</a>
                 <a href="https://discord.gg/Rdz4yQneMK" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Discord</a>
                 <a href="https://github.com/NakamaStream" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
-                <a href="/donate" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
                 <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar sesión</a>
             </div>
         </div>
     </nav>
 
     <main>
-        <section class="py-12 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-primary mb-6">Términos de Servicio</h1>
-                <p class="text-lg text-gray-600 mb-8">
-                    Bienvenido a NakamaStream. Al acceder a nuestro sitio web y utilizar nuestros servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones de uso, que junto con nuestra política de privacidad rigen la relación de NakamaStream contigo en relación con este sitio web. Si no estás de acuerdo con alguna parte de estos términos y condiciones, por favor no utilices nuestro sitio web.
-                </p>
-                
-                <!-- Sección de Uso del sitio web -->
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-globe text-primary text-2xl mr-3"></i>
-                        <h2 class="text-2xl font-semibold text-primary">1. Uso del sitio web</h2>
+        <section class="hero bg-white py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="w-full md:w-1/3 mb-10 md:mb-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream" class="mx-auto w-full max-w-xs">
                     </div>
-                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                        <li>Nuestro sitio web no contiene publicidad de terceros.</li>
-                        <li>No almacenamos información en tu navegador.</li>
-                        <li>No está permitido el uso del sitio para actividades ilegales o inapropiadas.</li>
-                        <li>No se permite el acceso no autorizado a áreas restringidas del sitio.</li>
-                    </ul>
-                </div>
-        
-                <!-- Sección de Alojamiento de videos -->
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-video text-primary text-2xl mr-3"></i>
-                        <h2 class="text-2xl font-semibold text-primary">2. Alojamiento de videos</h2>
+                    <div class="w-full md:w-2/3 md:pl-10">
+                        <h1 class="text-4xl md:text-5xl text-primary font-bold mb-6">Apoya a NakamaStream</h1>
+                        <p class="text-lg text-gray-600 mb-6">
+                            ¡Bienvenido a nuestra página de donaciones! Tu apoyo es fundamental para mantener nuestra plataforma y seguir ofreciendo contenido de anime gratuito y de calidad.
+                        </p>
+                        <p class="text-lg text-gray-800 font-semibold mb-6">
+                            Con tu donación, ayudarás a cubrir los costos de desarrollo, alojamiento y mejoras constantes.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button onclick="openModal()" class="bg-primary text-white py-3 px-6 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200 text-center">Hacer una Donación</button>
+                            <a href="#" onclick="openUsageModal()" class="text-primary py-3 px-6 rounded-md border border-primary hover:bg-primary hover:text-white transition-colors duration-200 text-center">¿Cómo se Utiliza mi Donación?</a>
+                        </div>
                     </div>
-                    <p class="text-gray-700">
-                        Nuestra plataforma no aloja ningún video que se encuentre en la web. Todo el contenido es proporcionado por hostings de terceros o se incrusta desde fuentes externas. Sin embargo, nos reservamos el derecho de eliminar cualquier contenido que viole nuestros términos de servicio o que sea considerado inapropiado.
-                    </p>
-                </div>
-        
-                <!-- Sección de Privacidad de datos -->
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-user-shield text-primary text-2xl mr-3"></i>
-                        <h2 class="text-2xl font-semibold text-primary">3. Privacidad de datos</h2>
-                    </div>
-                    <p class="text-gray-700">
-                        Nos comprometemos a no vender tus datos personales a terceros. Respetamos tu privacidad y tomamos medidas para proteger la información que nos proporcionas. Para obtener más información sobre cómo manejamos tus datos, consulta nuestra política de privacidad.
-                    </p>
-                </div>
-        
-                <!-- Sección de Modificaciones -->
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-edit text-primary text-2xl mr-3"></i>
-                        <h2 class="text-2xl font-semibold text-primary">4. Modificaciones</h2>
-                    </div>
-                    <p class="text-gray-700">
-                        Nos reservamos el derecho de actualizar o modificar estos términos de servicio en cualquier momento sin previo aviso. Se te notificará cualquier cambio mediante la publicación de los términos actualizados en esta página.
-                    </p>
-                </div>
-        
-                <!-- Sección de Limitación de responsabilidad -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-exclamation-circle text-primary text-2xl mr-3"></i>
-                        <h2 class="text-2xl font-semibold text-primary">5. Limitación de responsabilidad</h2>
-                    </div>
-                    <p class="text-gray-700">
-                        En ningún caso seremos responsables ante ti o cualquier tercero por cualquier daño directo, indirecto, incidental, especial, emergente o punitivo que surja del uso de nuestro sitio web.
-                    </p>
                 </div>
             </div>
-        </section>        
+        </section>
 
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12">Beneficios de Donar</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Ayuda a la Comunidad</h3>
+                        <p class="text-gray-600">Tus contribuciones permiten que más personas accedan a contenido de anime sin costo.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Mejores Recursos</h3>
+                        <p class="text-gray-600">Aumentamos nuestros recursos para mejorar la experiencia de streaming y la calidad del contenido.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Reconocimiento Especial</h3>
+                        <p class="text-gray-600">Los donantes recibirán menciones especiales y reconocimiento en nuestra plataforma.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Modal para Donaciones -->
+    <div id="donation-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-900 bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+            <h2 class="text-2xl font-bold text-primary mb-4">Elige tu opción de donación</h2>
+            <div class="space-y-4">
+                <a href="https://www.patreon.com/GrupoNakama/membership" target="_blank" class="flex items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-opacity-90 transition-colors duration-200">
+                    <i class="fa-brands fa-patreon mr-2"></i> Donar a Patreon
+                </a>
+                <a href="https://ko-fi.com/nakamastream" target="_blank" class="flex items-center justify-center bg-green-500 text-white py-3 rounded-md hover:bg-opacity-90 transition-colors duration-200">
+                    <i class="fa-solid fa-mug-hot mr-2"></i> Donar a Ko-fi
+                </a>
+                <a href="https://paypal.me/sstudiosDev" target="_blank" class="flex items-center justify-center bg-blue-500 text-white py-3 rounded-md hover:bg-opacity-90 transition-colors duration-200">
+                    <i class="fa-brands fa-paypal mr-2"></i> Donar a PayPal
+                </a>
+            </div>
+            <button onclick="closeModal()" class="mt-4 text-gray-500 hover:text-gray-800">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal para Cómo se Utiliza mi Donación -->
+    <div id="usage-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-900 bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+            <h2 class="text-2xl font-bold text-primary mb-4">¿Cómo se Utiliza mi Donación?</h2>
+            <p class="text-gray-600 mb-4">
+                Agradecemos profundamente tu generosidad. Tu donación se destinará a las siguientes áreas clave para asegurar el éxito de nuestra misión:
+            </p>
+            <ul class="list-disc list-inside text-gray-600 mb-4">
+                <li><strong>Compensación de nuestro equipo:</strong> Apoyamos a nuestros talentosos desarrolladores y personal, quienes trabajan arduamente para brindar el mejor servicio.</li>
+                <li><strong>Costos de mantenimiento:</strong> Tu contribución ayuda a cubrir los gastos de alojamiento y servicios esenciales para mantener nuestra web en funcionamiento.</li>
+                <li><strong>Proyectos y mejoras:</strong> Parte de tu donación se utilizará para implementar nuevas funcionalidades y mejoras que beneficien a nuestra comunidad.</li>
+            </ul>
+            <p class="text-gray-600 mb-4">
+                Cada donación marca una diferencia significativa. Juntos, podemos lograr grandes cosas.
+            </p>
+            <button onclick="closeUsageModal()" class="mt-4 text-gray-600 hover:text-primary">Cerrar</button>
+        </div>
+    </div>
 
     <footer class="bg-white shadow-md py-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center">
                 <div class="flex items-center space-x-4 mb-6">
                     <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream_Logo" class="h-12">
-                    <p class="text-gray-600">NakamaStream version: 1.0.2</p>
+                    <p class="text-gray-600">NakamaStream version: 1.0.3</p>
                 </div>
                 <ul class="flex flex-wrap justify-center space-x-4 mb-6">
                     <li><a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">Inicio</a></li>
@@ -153,6 +188,7 @@
             </div>
         </div>
     </footer>
+
     <script src="/src/public/js/tabs.js"></script>
 </body>
 
