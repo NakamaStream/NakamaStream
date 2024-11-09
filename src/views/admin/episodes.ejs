@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Episodios - NakamaStream</title>
+    <link rel="shortcut icon" href="/favicons/favicon-16x16.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            light: '#fce7f3',
+                            DEFAULT: '#ec4899',
+                            dark: '#be185d'
+                        }
+                    },
+                    animation: {
+                        float: 'float 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen p-8 bg-gradient-to-br from-pink-100 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- BotÃ³n de modo oscuro -->
+    <div class="fixed top-4 left-4 z-50">
+        <button id="darkModeToggle" class="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 hover:scale-110">
+            <!-- Icono para modo claro -->
+            <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden dark:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Icono para modo oscuro -->
+            <svg id="moonIcon" class="w-6 h-6 text-gray-700 inline dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="container mx-auto">
+        <div class="bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 backdrop-blur-lg p-8 rounded-2xl shadow-xl animate__animated animate__fadeIn">
+            <h1 class="text-4xl font-bold mb-8 text-center text-pink-500 dark:text-pink-400">Administrar Episodios</h1>
+            
+            <div class="mb-8 text-center">
+                <a href="/admin/edit-episode" class="inline-flex items-center px-6 py-3 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                    <i data-feather="plus-circle" class="mr-2"></i>
+                    Agregar Nuevo Episodio
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% if (typeof episodes !== 'undefined' && episodes.length > 0) { %>
+                    <% episodes.forEach(function(episode) { %>
+                        <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-pink-100 dark:border-pink-900">
+                            <h3 class="text-xl font-semibold mb-2 text-pink-500 dark:text-pink-400"><%= episode.anime_name %></h3>
+                            <p class="text-lg mb-2 text-gray-700 dark:text-gray-200">Episodio <%= episode.episode_number %>: <%= episode.title %></p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4"><%= episode.description ? episode.description.substring(0, 100) + '...' : 'Sin descripciÃ³n' %></p>
+                            <div class="flex justify-between items-center">
+                                <a href="/admin/edit-episode?id=<%= episode.id %>" class="inline-flex items-center px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md">
+                                    <i data-feather="edit" class="mr-2"></i>
+                                    Editar
+                                </a>
+                                <button onclick="deleteEpisode(<%= episode.id %>)" class="inline-flex items-center px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md">
+                                    <i data-feather="trash-2" class="mr-2"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-span-3 text-center">
+                        <div class="p-8 bg-pink-50 dark:bg-gray-700 rounded-lg">
+                            <p class="text-lg text-gray-600 dark:text-gray-300">No hay episodios disponibles.</p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+
+        // ConfiguraciÃ³n del modo oscuro
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Verificar preferencia guardada
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            
+            // Guardar preferencia
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+
+        function deleteEpisode(episodeId) {
+            Swal.fire({
+                title: 'Â¿EstÃ¡s seguro?',
+                text: "No podrÃ¡s revertir esta acciÃ³n!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ec4899',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'SÃ­, eliminar!',
+                cancelButtonText: 'Cancelar',
+                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/delete-episode/${episodeId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Â¡Eliminado!',
+                                text: 'El episodio ha sido eliminado.',
+                                icon: 'success',
+                                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                                color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151',
+                                confirmButtonColor: '#ec4899'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            throw new Error(data.message || 'No se pudo eliminar el episodio.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: error.message || 'OcurriÃ³ un error al eliminar el episodio.',
+                            icon: 'error',
+                            background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+                            color: document.documentElement.classList.contains('dark') ? '#fff' : '#374151',
+                            confirmButtonColor: '#ec4899'
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
