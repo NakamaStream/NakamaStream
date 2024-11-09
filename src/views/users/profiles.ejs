@@ -185,24 +185,33 @@
     </div>    
 
     <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-xl rounded-3xl overflow-hidden anime-card">
-            <div class="bg-cover bg-center h-64 relative" style="background-image: url('<%= bannerImageUrl %>');">
+        <div class="bg-white shadow-xl rounded-3xl overflow-hidden">
+            <div class="relative h-80">
+                <img src="<%= bannerImageUrl %>" alt="Banner de perfil" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                    <img class="rounded-full border-4 border-white w-32 h-32 profile-image float-animation" src="<%= profileImageUrl %>" alt="Profile picture">
+                    <img src="<%= profileImageUrl %>" alt="Foto de perfil de <%= username %>" class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
                 </div>
             </div>
             <div class="px-4 py-16 text-center">
-                <h1 class="text-4xl font-bold text-gray-800"><%= username %></h1>
-                <p class="text-gray-600"><%= email %></p>
-                <p class="text-sm text-gray-600 mt-2">Miembro desde: <%= createdAtFormatted %></p>
-                <p class="text-sm text-gray-600">Tiempo en la comunidad: <%= timeCreatedFormatted %></p>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2"><%= username %></h1>
+                <p class="text-gray-600 mb-4"><%= email %></p>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+                    <p class="text-sm text-gray-600">
+                        <span class="font-semibold">Miembro desde:</span> <%= createdAtFormatted %>
+                    </p>
+                    <p class="hidden sm:block text-gray-400">•</p>
+                    <p class="text-sm text-gray-600">
+                        <span class="font-semibold">Tiempo en la comunidad:</span> <%= timeCreatedFormatted %>
+                    </p>
+                </div>
                 <% if (isAdmin) { %>
-                    <p class="mt-4 inline-block admin-badge">Admin</p>
+                    <span class="mt-4 inline-block admin-badge">Admin</span>
                 <% } else { %>
-                    <p class="mt-4 inline-block member-badge">Miembro</p>
+                    <span class="mt-4 inline-block member-badge">Miembro</span>
                 <% } %>
             </div>
-        </div>        
+        </div>         
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
@@ -226,7 +235,7 @@
             <form id="updateInfoForm">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">Nuevo nombre de usuario</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario" required>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Correo electrónico</label>
@@ -241,6 +250,7 @@
                 </div>
             </form>
         </div>
+        
 
         <!-- Cambiar Contraseña -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
