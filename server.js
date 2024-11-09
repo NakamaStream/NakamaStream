@@ -2,12 +2,12 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const session = require("express-session");
 const path = require("path");
 const moment = require("moment");
 const multer = require("multer");
 const fs = require("fs");
 const http = require("http");
+const cookieSession = require("cookie-session");
 
 const indexRouter = require("./src/routes/indexRouter");
 const authRouter = require("./src/routes/authRouter");
@@ -37,18 +37,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Configuración de la sesión
-const sessionMiddleware = session({
-  secret: "Jdk@gl311adf",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días (ajusta según tus necesidades)
-  },
-});
-
-
-app.use(sessionMiddleware);
+// Configuración de la sesión con cookies
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["Jdk@gl311adf"], // Claves para encriptar la cookie
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
+  })
+);
 
 // Middleware para renovar la sesión basado en la actividad
 const sessionRenewalTime = 15 * 60 * 1000; // 15 minutos
@@ -59,10 +55,8 @@ app.use((req, res, next) => {
 
     // Renueva la sesión si la última actividad fue hace más de 15 minutos
     if (!req.session.lastActivity || now - req.session.lastActivity > sessionRenewalTime) {
-      req.session.touch(); // Renueva la sesión
+      req.session.lastActivity = now; // Actualiza el tiempo de última actividad
     }
-    
-    req.session.lastActivity = now; // Actualiza el tiempo de última actividad
   }
   next();
 });
@@ -173,12 +167,8 @@ app.use((req, res, next) => {
 });
 
 app.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return console.log(err);
-    }
-    res.redirect("/login");
-  });
+  req.session = null; // Destruye la sesión al hacer logout
+  res.redirect("/login");
 });
 
 // Routes
