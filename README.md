@@ -43,11 +43,11 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 | Plataforma       | Disponibilidad |
 |------------------|----------------|
 | **Web**          | ✅             |
-| **Android**      | ✅             |
+| **Android**      | ⏳             |
 | **iOS**          | ❌             |
-| **Windows**      | ✅             |
-| **macOS**        | ✅             |
-| **Linux**        | ✅             |
+| **Windows**      | ⏳             |
+| **macOS**        | ⏳             |
+| **Linux**        | ⏳             |
 
 <details>
 <summary>Características [Ver Más]</summary>
