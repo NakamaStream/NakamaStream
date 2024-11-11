@@ -38,12 +38,13 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   const createdAt = new Date();
+
+  // Obtener la IP real del cliente desde el encabezado de Cloudflare
   const ipAddress =
-    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
   // Verificar si ya existen 3 o más cuentas desde la misma IP
-  const checkIpSql =
-    "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
+  const checkIpSql = "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
   db.query(checkIpSql, [ipAddress], (err, results) => {
     if (err) {
       console.error("Error al verificar la IP:", err);
@@ -116,7 +117,6 @@ router.post("/register", (req, res) => {
     });
   });
 });
-
 
 router.get("/api/auth/new-captcha", (req, res) => {
   try {
