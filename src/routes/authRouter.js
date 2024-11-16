@@ -118,6 +118,7 @@ router.post("/register", (req, res) => {
   });
 });
 
+
 router.get("/api/auth/new-captcha", (req, res) => {
   try {
       const captchaPath = path.join(__dirname, "..", "config", "captcha.yml");
