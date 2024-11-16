@@ -1,0 +1,46 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f0f4f8;
+    background-repeat: repeat;
+}
+.anime-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+.star {
+    font-size: 28px;
+    color: #ffd700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.star:hover {
+    transform: scale(1.2);
+}
+.star.active {
+    color: #ffaa00;
+}
+.button-anime {
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.button-anime:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.comment-box {
+    background-color: #f1f2f6;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+.comment-box:hover {
+    background-color: #e2e5e9;
+}
