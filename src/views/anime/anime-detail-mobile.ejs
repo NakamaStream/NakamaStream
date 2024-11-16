@@ -4,63 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= anime.name %> - NakamaStream</title>
-    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/src/public/css/anime-list.css">
+    <link rel="stylesheet" href="/src/public/css/anime-detail.css">
     <link rel="stylesheet" href="/src/public/css/main-color/color.css">
     <link rel="stylesheet" href="/src/public/css/badges.css">
 </head>
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #f0f4f8;
-            background-repeat: repeat;
-        }
-        .anime-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        .anime-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        .star {
-            font-size: 28px;
-            color: #ffd700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .star:hover {
-            transform: scale(1.2);
-        }
-        .star.active {
-            color: #ffaa00;
-        }
-        .button-anime {
-            transition: all 0.3s ease;
-            border-radius: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        .button-anime:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        .comment-box {
-            background-color: #f1f2f6;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-        .comment-box:hover {
-            background-color: #e2e5e9;
-        }
-    </style>
 <body class="bg-gray-100">
         <!-- Navbar -->
         <nav class="bg-white shadow-md">
@@ -83,6 +36,7 @@
                     <div class="hidden md:flex space-x-4">
                         <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
                         <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
+                        <a href="/calendario" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Calendario</a>
                         <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
     
                         <!-- User Menu -->
@@ -115,7 +69,7 @@
                     <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                         <i class="fa-solid fa-newspaper mr-2"></i> Noticias
                     </a>
-                    <a href="/soon" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <a href="/calendario" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                         <i class="fa-solid fa-calendar mr-2"></i> Calendario
                     </a>  
     
@@ -227,25 +181,26 @@
                     <% } %>
                 </div>
             </div>   
-    
+
             <!-- Sección de comentarios -->
             <div class="mt-8 anime-card p-4 md:p-6 animate__animated animate__fadeInUp">
                 <h3 class="text-xl md:text-2xl font-semibold mb-4 anime-titles">Comentarios</h3>
                 <% if (user) { %>
                 <form id="commentForm" class="mb-6">
+                    <div id="imagePreviewContainer"></div>
                     <textarea id="commentContent" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Escribe tu comentario"></textarea>
-                    <button type="submit" class="button-anime mt-2 w-full text-white font-bold py-2 px-4 rounded-full">
+                    <button type="submit" class="button-anime mt-2 btm-episode w-full text-white font-bold py-2 px-4 rounded-full">
                         Enviar comentario
                     </button>
                 </form>
                 <% } else { %>
                 <p class="mb-6 text-gray-600">Debes iniciar sesión para comentar.</p>
                 <% } %>
+
                 <div id="commentsList">
                     <!-- Los comentarios se cargarán aquí dinámicamente -->
                 </div>
             </div>
-        </div>
     
         <!-- Modal para la información del usuario -->
         <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -489,92 +444,119 @@
                 });
             });
         });
-        
-        document.getElementById('commentForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const content = document.getElementById('commentContent').value.trim();
 
-        // Lista de palabras prohibidas
-        const forbiddenWords = [
-            'https://', 
-            'http://', 
-            'porhub.com',
-            'xvideos.com',
-            'xnxx.com',
-            'porn.com',
-            'sex.com',
-            'nude.com',
-            'mature.com',
-            'rule34.xxx',
-            'porno',
-            'rule34',
-            'Cp',
-            'gay',
-            'pendejo',
-            'mierda',
-            'idiota',
-            'zorra',
-            'estupido',
-            'estupida',
-            'maricon',
-            'animeonegai',
-            'crunchyroll',
-            'animeflv',
-            'jkanime',
-            'MonosChinos'
-        ]; 
+        document.getElementById('commentContent').addEventListener('input', (e) => {
+            const content = e.target.value.trim();
 
-        // Verificar si el contenido contiene palabras prohibidas
-        const containsForbiddenWords = forbiddenWords.some(word => {
-            const wordRegex = new RegExp(word, 'i'); // Ignorar mayúsculas
-            return wordRegex.test(content);
+            // Regex para detectar URLs de imágenes
+            const imageUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
+            const match = content.match(imageUrlRegex);
+
+            // Elemento de vista previa
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            
+            if (match) {
+                // Si se encuentra una URL de imagen
+                const imageUrl = match[0];
+                previewContainer.innerHTML = `<img src="${imageUrl}" alt="Vista previa de la imagen" style="max-width: 100%; margin-top: 10px;"/>`;
+            } else {
+                // Si no hay URL de imagen, limpiar el contenedor de vista previa
+                previewContainer.innerHTML = '';
+            }
         });
 
-        if (containsForbiddenWords) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Tu comentario contiene palabras no permitidas.'
-            });
-            return;
-        }
+        document.getElementById('commentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const content = document.getElementById('commentContent').value.trim();
 
-        if (content === '') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Por favor, introduce un comentario válido.'
-            });
-            return;
-        }
+            // Lista de palabras prohibidas
+            const forbiddenWords = [
+                'porhub.com', 'xvideos.com', 'xnxx.com', 'porn.com', 'sex.com', 
+                'nude.com', 'mature.com', 'rule34.xxx', 'porno', 'rule34', 
+                'Cp', 'gay', 'pendejo', 'mierda', 'idiota', 'zorra', 'estupido', 
+                'estupida', 'maricon', 'animeonegai', 'crunchyroll', 'animeflv', 
+                'jkanime', 'MonosChinos'
+            ]; 
 
-        // Realizar la solicitud POST solo si el contenido es válido
-        fetch(`/anime/<%= anime.slug %>/comment`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ animeId: <%= anime.id %>, content })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Comentario agregado',
-                    showConfirmButton: false,
-                    timer: 1400
-                });
-                document.getElementById('commentContent').value = '';
-                loadComments();
-            } else {
+            // Detectar URLs de imágenes en el contenido
+            const imageUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/ig; // 'g' para buscar todas las coincidencias
+            const imageUrls = content.match(imageUrlRegex);
+
+            // Validar si hay más de una imagen
+            if (imageUrls && imageUrls.length > 1) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: data.message
+                    text: 'Solo puedes incluir una imagen por comentario.'
                 });
+                return;
             }
+
+            // Verificar si el contenido contiene palabras prohibidas
+            const containsForbiddenWords = forbiddenWords.some(word => {
+                const wordRegex = new RegExp(word, 'i'); 
+                return wordRegex.test(content);
+            });
+
+            if (containsForbiddenWords) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Tu comentario contiene palabras no permitidas.'
+                });
+                return;
+            }
+
+            if (content === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Por favor, introduce un comentario válido.'
+                });
+                return;
+            }
+
+            // Convertir URLs de imágenes en etiquetas <img>
+            const contentWithImages = content.replace(imageUrlRegex, (match, url) => {
+                if (url.toLowerCase().endsWith('.gif')) {
+                    return `<div class="gif-container" style="display: inline-block; position: relative;">
+                                <img src="${url}" alt="GIF" style="max-width:100%;" class="gif-image" data-gif-src="${url}">
+                                <canvas class="gif-canvas" style="display:none;"></canvas>
+                                <div class="gif-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); color: white; display: flex; align-items: center; justify-content: center;">GIF</div>
+                            </div>`;
+                } else {
+                    return `<img src="${url}" alt="Imagen del comentario" style="max-width:100%;">`;
+                }
+            });
+
+            // Enviar comentario al servidor
+            fetch(`/anime/<%= anime.slug %>/comment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ animeId: <%= anime.id %>, content: contentWithImages })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Comentario agregado',
+                        showConfirmButton: false,
+                        timer: 1400
+                    });
+                    document.getElementById('commentContent').value = '';
+                    loadComments();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            });
         });
-    });
-    
+
+        // Función para cargar y mostrar comentarios
         function loadComments() {
             fetch(`/anime/<%= anime.slug %>/comments?animeId=<%= anime.id %>`)
             .then(response => response.json())
@@ -601,7 +583,7 @@
                     commentElement.querySelector('img').addEventListener('click', () => {
                         showUserModal(comment.username);
                     });
-    
+
                     gsap.to(commentElement, {
                         opacity: 1,
                         y: 0,
@@ -610,7 +592,47 @@
                         ease: 'power2.out'
                     });
                 });
+
+                // Activar función de hover en los GIFs
+                document.querySelectorAll('.gif-container').forEach(container => {
+                    const overlay = container.querySelector('.gif-overlay');
+                    const img = container.querySelector('.gif-image');
+                    const canvas = container.querySelector('.gif-canvas');
+                    
+                    // Pausar el GIF inicialmente
+                    pauseGif(img, canvas);
+                    
+                    container.addEventListener('mouseenter', () => {
+                        overlay.style.display = 'none';
+                        playGif(img, canvas);
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        overlay.style.display = 'flex';
+                        pauseGif(img, canvas);
+                    });
+                });
             });
+        }
+
+        // Función para pausar un GIF
+        function pauseGif(img, canvas) {
+            if (!img.complete) {
+                img.addEventListener('load', () => pauseGif(img, canvas));
+                return;
+            }
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+            img.style.display = 'none';
+            canvas.style.display = 'inline-block';
+        }
+
+        // Función para reproducir un GIF
+        function playGif(img, canvas) {
+            img.style.display = 'inline-block';
+            canvas.style.display = 'none';
         }
         
         function showUserModal(username) {
