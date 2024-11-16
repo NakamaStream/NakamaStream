@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime List - NakamaStream</title>
-    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,14 +12,6 @@
     <link rel="stylesheet" href="/src/public/css/main-color/color.css">
 </head>
 <body class="font-roboto text-gray-800">
-  
-  <!-- Aviso -->
-  <div class="bg-red-500 text-white text-center p-4 font-semibold rounded-lg shadow-lg flex items-center justify-center">
-    <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12s4.03-9 9-9 9 4.03 9 9z" />
-    </svg>
-    La plataforma ha alcanzado su primera versión estable. Por favor, notifique cualquier error o bug que encuentre.
-  </div>
     
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,7 +30,7 @@
                 <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Noticias
                 </a>
-                <a href="/soon" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Calendario
                 </a>
               </div>
@@ -300,6 +292,8 @@
       <button id="back-to-top" class="fixed bottom-5 right-5 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-orange-600 transition duration-300 hidden" aria-label="Volver arriba">
         <i class="fas fa-chevron-up"></i>
       </button>
+
+      <%- include('../components/footer') %>
 
     <script src="/src/public/js/anime/anime-list.js"></script>
     <script src="/src/public/js/anime/anime-carousel.js"></script>
