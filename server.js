@@ -8,7 +8,6 @@ const multer = require("multer");
 const fs = require("fs");
 const http = require("http");
 const cookieSession = require("cookie-session");
-const morgan = require("morgan"); // Importamos morgan para el sistema de logs
 
 const indexRouter = require("./src/routes/indexRouter");
 const authRouter = require("./src/routes/authRouter");
@@ -21,51 +20,6 @@ const db = require("./src/services/db");
 
 const app = express();
 const server = http.createServer(app);
-
-// Array para almacenar los logs en memoria
-let logData = [];
-
-// Tiempo de inactividad para limpiar los logs (en milisegundos)
-const logClearTimeout = 5 * 60 * 1000; // 5 minutos de inactividad
-let clearLogsTimer = null;
-
-// Middleware de Morgan para registrar todas las solicitudes HTTP
-app.use(
-  morgan("combined", {
-    stream: {
-      write: (message) => {
-        logData.push(`[${new Date().toISOString()}] ${message.trim()}`);
-        if (logData.length > 1000) logData.shift();
-      },
-    },
-  })
-);
-
-// Redefine `console.log` para también almacenar mensajes en `logData`
-const originalConsoleLog = console.log;
-console.log = (message, ...optionalParams) => {
-  const logMessage = `[${new Date().toISOString()}] ${message} ${optionalParams.join(" ")}`;
-  logData.push(logMessage);
-  if (logData.length > 1000) logData.shift();
-  originalConsoleLog(message, ...optionalParams);
-};
-
-// Función para limpiar logs después de inactividad
-function resetLogClearTimer() {
-  if (clearLogsTimer) clearTimeout(clearLogsTimer);
-  clearLogsTimer = setTimeout(() => {
-    logData = [];
-  }, logClearTimeout);
-}
-
-// Middleware de verificación de administrador
-function isAdmin(req, res, next) {
-  if (req.session && req.session.isAdmin) {
-    next(); // Permitir el acceso si el usuario es administrador
-  } else {
-    res.render("error/accessDenied", { username: req.session.username });
-  }
-}
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -215,12 +169,6 @@ app.use((req, res, next) => {
 app.post("/logout", (req, res) => {
   req.session = null; // Destruye la sesión al hacer logout
   res.redirect("/login");
-});
-
-// Ruta para ver los logs en memoria, protegida con el middleware de verificación de administrador
-app.get("/admin/logs", isAdmin, (req, res) => {
-  res.render("admin/logs", { logs: logData.slice().reverse() });
-  resetLogClearTimer(); // Resetea el temporizador cuando alguien accede a /logs
 });
 
 // Routes
