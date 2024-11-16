@@ -53,12 +53,10 @@ router.get("/admin/animes", isAdmin, (req, res) => {
   db.query("SELECT * FROM animes ORDER BY created_at DESC", (err, animes) => {
     if (err) {
       console.error("Error fetching animes:", err);
-      return res
-        .status(500)
-        .render("error/error", {
-          error: "Internal server error",
-          username: req.session.username,
-        });
+      return res.status(500).render("error/error", {
+        error: "Internal server error",
+        username: req.session.username,
+      });
     }
     res.render("admin/admin-animes", {
       animes: animes || [],
@@ -67,30 +65,29 @@ router.get("/admin/animes", isAdmin, (req, res) => {
   });
 });
 
-// Ruta para eliminar un anime
-router.post("/admin/animes/delete/:animeId", async (req, res) => {
+// Route to delete an anime
+router.post("/admin/animes/delete/:animeId", isAdmin, async (req, res) => {
   const animeId = req.params.animeId;
 
   try {
-    // Eliminar registros en saved_animes asociados al anime
+    // Delete associated records in saved_animes
     await db.query("DELETE FROM saved_animes WHERE anime_id = ?", [animeId]);
 
-    // Eliminar calificaciones (ratings) asociadas al anime
+    // Delete associated ratings
     await db.query("DELETE FROM ratings WHERE anime_id = ?", [animeId]);
 
-    // Eliminar favoritos asociados al anime
+    // Delete associated favorites
     await db.query("DELETE FROM favorites WHERE anime_id = ?", [animeId]);
 
-    // Eliminar episodios asociados al anime
+    // Delete associated episodes
     await db.query("DELETE FROM episodes WHERE anime_id = ?", [animeId]);
 
-    // Eliminar comentarios asociados al anime
+    // Delete associated comments
     await db.query("DELETE FROM comments WHERE anime_id = ?", [animeId]);
 
-    // Finalmente, eliminar el anime
+    // Finally, delete the anime
     await db.query("DELETE FROM animes WHERE id = ?", [animeId]);
 
-    // Si todo va bien, responder con éxito
     res.json({ success: true });
   } catch (error) {
     console.error("Error deleting anime:", error);
@@ -104,20 +101,16 @@ router.get("/admin/animes/edit/:id", isAdmin, (req, res) => {
   db.query("SELECT * FROM animes WHERE id = ?", [animeId], (err, results) => {
     if (err) {
       console.error("Error fetching anime:", err);
-      return res
-        .status(500)
-        .render("error/error", {
-          error: "Internal server error",
-          username: req.session.username,
-        });
+      return res.status(500).render("error/error", {
+        error: "Internal server error",
+        username: req.session.username,
+      });
     }
     if (results.length === 0) {
-      return res
-        .status(404)
-        .render("error/error", {
-          error: "Anime not found",
-          username: req.session.username,
-        });
+      return res.status(404).render("error/error", {
+        error: "Anime not found",
+        username: req.session.username,
+      });
     }
     res.render("anime/edit-anime", {
       anime: results[0],
@@ -146,12 +139,10 @@ router.post(
       (err, result) => {
         if (err) {
           console.error("Error updating anime:", err);
-          return res
-            .status(500)
-            .render("error/error", {
-              error: "Internal server error",
-              username: req.session.username,
-            });
+          return res.status(500).render("error/error", {
+            error: "Internal server error",
+            username: req.session.username,
+          });
         }
         res.redirect("/admin/animes");
       }
@@ -159,20 +150,7 @@ router.post(
   }
 );
 
-// Route for deleting anime
-router.post("/admin/animes/delete/:id", isAdmin, (req, res) => {
-  const animeId = req.params.id;
-  db.query("DELETE FROM animes WHERE id = ?", [animeId], (err, result) => {
-    if (err) {
-      console.error("Error deleting anime:", err);
-      return res
-        .status(500)
-        .json({ success: false, error: "Internal server error" });
-    }
-    res.json({ success: true });
-  });
-});
-
+// API routes
 router.get("/api/animes", isAdmin, (req, res) => {
   db.query("SELECT id, name FROM animes ORDER BY name", (err, results) => {
     if (err) {
@@ -276,7 +254,7 @@ router.post("/register", (req, res) => {
         console.error("Error al registrar el usuario:", err.message);
         if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
           res.render("users/register", {
-            error: "Por favor, proporciona una contraseña.",
+            error: "Por favor, proporciona una contraseÃ±a.",
           });
         } else {
           res.redirect("/register");
@@ -298,7 +276,7 @@ router.post("/login", (req, res) => {
   const sql = `SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin FROM usuarios WHERE username = ? AND password = ?`;
   db.query(sql, [username, password], (err, results) => {
     if (err) {
-      console.error("Error al iniciar sesión:", err.message);
+      console.error("Error al iniciar sesiÃ³n:", err.message);
       res.redirect("/login");
       return;
     }
@@ -313,7 +291,7 @@ router.post("/login", (req, res) => {
       res.redirect("/anime");
     } else {
       res.send(
-        'Credenciales incorrectas. <a href="/login">Volver al inicio de sesión</a>'
+        'Credenciales incorrectas. <a href="/login">Volver al inicio de sesiÃ³n</a>'
       );
     }
   });
@@ -331,21 +309,17 @@ router.get("/profile", isLoggedIn, (req, res) => {
   db.query("SELECT * FROM usuarios WHERE id = ?", [userId], (err, results) => {
     if (err) {
       console.error("Error fetching user data:", err);
-      return res
-        .status(500)
-        .render("error/error", {
-          error: "Internal server error",
-          username: req.session.username,
-        });
+      return res.status(500).render("error/error", {
+        error: "Internal server error",
+        username: req.session.username,
+      });
     }
 
     if (results.length === 0) {
-      return res
-        .status(404)
-        .render("error/error", {
-          error: "User not found",
-          username: req.session.username,
-        });
+      return res.status(404).render("error/error", {
+        error: "User not found",
+        username: req.session.username,
+      });
     }
 
     const user = results[0];
@@ -380,9 +354,6 @@ router.post(
     const { newUsername, email, currentPassword, newPassword, bio } = req.body;
     const userId = req.session.userId;
 
-    //console.log("req.files:", req.files);
-    //console.log("req.body:", req.body);
-
     if (!newUsername || !email) {
       return res
         .status(400)
@@ -416,10 +387,10 @@ router.post(
 
       db.query(updateQuery, updateValues, (err, results) => {
         if (err) {
-          console.error("Error al actualizar la información del usuario:", err);
+          console.error("Error al actualizar la informaciÃ³n del usuario:", err);
           return res
             .status(500)
-            .json({ error: "Error al actualizar la información del usuario" });
+            .json({ error: "Error al actualizar la informaciÃ³n del usuario" });
         }
 
         req.session.username = newUsername;
@@ -437,7 +408,7 @@ router.post(
         [userId],
         (err, results) => {
           if (err) {
-            console.error("Error al obtener la contraseña actual:", err);
+            console.error("Error al obtener la contraseÃ±a actual:", err);
             return res
               .status(500)
               .json({ error: "Error interno del servidor" });
@@ -450,7 +421,7 @@ router.post(
           if (results[0].password !== currentPassword) {
             return res
               .status(400)
-              .json({ error: "Contraseña actual incorrecta" });
+              .json({ error: "ContraseÃ±a actual incorrecta" });
           }
 
           if (newPassword) {
@@ -591,7 +562,7 @@ router.post("/admin/update-user", isAdmin, (req, res) => {
     [username, email, password, userId],
     (err, result) => {
       if (err) {
-        console.error("Error al actualizar la información del usuario:", err);
+        console.error("Error al actualizar la informaciÃ³n del usuario:", err);
         return res.redirect("/admin/panel");
       }
 
@@ -684,6 +655,181 @@ router.get("/get-announcement", (req, res) => {
   } else {
     res.json({ message: null });
   }
+});
+
+// New route for /admin/episodes
+router.get("/admin/episodes", isAdmin, (req, res) => {
+  // First, fetch all animes
+  db.query("SELECT id, name FROM animes ORDER BY name", (animeErr, animes) => {
+    if (animeErr) {
+      console.error("Error fetching animes:", animeErr);
+      return res.status(500).render("error/error", {
+        error: "Internal server error",
+        username: req.session.username,
+      });
+    }
+
+    // Then, fetch all episodes with anime names
+    db.query(
+      "SELECT e.*, a.name as anime_name FROM episodes e JOIN animes a ON e.anime_id = a.id ORDER BY a.name, e.episode_number",
+      (episodeErr, episodes) => {
+        if (episodeErr) {
+          console.error("Error fetching episodes:", episodeErr);
+          return res.status(500).render("error/error", {
+            error: "Internal server error",
+            username: req.session.username,
+          });
+        }
+        res.render("admin/episodes", {
+          episodes: episodes || [],
+          animes: animes || [],
+          username: req.session.username,
+        });
+      }
+    );
+  });
+});
+
+// Route for editing episodes
+router.get("/admin/edit-episode", isAdmin, (req, res) => {
+  db.query("SELECT id, name FROM animes ORDER BY name", (err, animes) => {
+    if (err) {
+      console.error("Error fetching animes:", err);
+      return res.status(500).render("error/error", {
+        error: "Internal server error",
+        username: req.session.username,
+      });
+    }
+    res.render("admin/edit-episode", {
+      animes: animes || [],
+      username: req.session.username,
+    });
+  });
+});
+
+// API route to get episodes for a specific anime
+router.get("/api/animes/:id/episodes", isAdmin, (req, res) => {
+  const animeId = req.params.id;
+  db.query(
+    "SELECT id, title, episode_number FROM episodes WHERE anime_id = ? ORDER BY episode_number",
+    [animeId],
+    (err, episodes) => {
+      if (err) {
+        console.error("Error fetching episodes:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      res.json(episodes);
+    }
+  );
+});
+
+// API route to get episode details
+router.get("/api/episodes/:id", isAdmin, (req, res) => {
+  const episodeId = req.params.id;
+  db.query(
+    "SELECT * FROM episodes WHERE id = ?",
+    [episodeId],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching episode details:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Episode not found" });
+      }
+      res.json(results[0]);
+    }
+  );
+});
+
+// Route to handle episode update or creation
+router.post("/admin/edit-episode", isAdmin, express.json(), (req, res) => {
+  //console.log("Received data:", req.body); // Debug log
+  
+  const { episodeId, animeId, title, episodeNumber, videoUrl, description } = req.body;
+  
+  // Convert empty strings to null for optional fields
+  const sanitizedDescription = description || null;
+  
+  // Debug logs
+  console.log("Parsed values:", {
+    episodeId,
+    animeId,
+    title,
+    episodeNumber,
+    videoUrl,
+    description: sanitizedDescription
+  });
+
+  // Validate required fields
+  if (!animeId) {
+    return res.status(400).json({ success: false, message: "El anime es requerido" });
+  }
+  if (!title) {
+    return res.status(400).json({ success: false, message: "El tÃ­tulo es requerido" });
+  }
+  if (!episodeNumber) {
+    return res.status(400).json({ success: false, message: "El nÃºmero de episodio es requerido" });
+  }
+  if (!videoUrl) {
+    return res.status(400).json({ success: false, message: "La URL del video es requerida" });
+  }
+
+  // Ensure episodeNumber is a number
+  const parsedEpisodeNumber = parseInt(episodeNumber, 10);
+  if (isNaN(parsedEpisodeNumber)) {
+    return res.status(400).json({ success: false, message: "El nÃºmero de episodio debe ser un nÃºmero vÃ¡lido" });
+  }
+
+  if (episodeId) {
+    // Update existing episode
+    db.query(
+      "UPDATE episodes SET anime_id = ?, title = ?, episode_number = ?, video_url = ?, description = ? WHERE id = ?",
+      [animeId, title, parsedEpisodeNumber, videoUrl, sanitizedDescription, episodeId],
+      (err, result) => {
+        if (err) {
+          console.error("Error updating episode:", err);
+          return res.status(500).json({ 
+            success: false, 
+            message: "Error al actualizar el episodio", 
+            error: err.message 
+          });
+        }
+        res.json({ success: true, message: "Episodio actualizado correctamente" });
+      }
+    );
+  } else {
+    // Insert new episode
+    db.query(
+      "INSERT INTO episodes (anime_id, title, episode_number, video_url, description) VALUES (?, ?, ?, ?, ?)",
+      [animeId, title, parsedEpisodeNumber, videoUrl, sanitizedDescription],
+      (err, result) => {
+        if (err) {
+          console.error("Error creating new episode:", err);
+          return res.status(500).json({ 
+            success: false, 
+            message: "Error al crear el episodio", 
+            error: err.message 
+          });
+        }
+        res.json({ success: true, message: "Episodio creado correctamente" });
+      }
+    );
+  }
+});
+
+// Route to delete an episode
+router.post("/admin/delete-episode/:id", isAdmin, (req, res) => {
+  const episodeId = req.params.id;
+  db.query("DELETE FROM episodes WHERE id = ?", [episodeId], (err, result) => {
+    if (err) {
+      console.error("Error deleting episode:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Error deleting episode" });
+    }
+    res.json({ success: true, message: "Episode deleted successfully" });
+  });
 });
 
 module.exports = router;
