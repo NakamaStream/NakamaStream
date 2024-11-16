@@ -300,6 +300,23 @@ router.get("/api/recent-animes", (req, res) => {
   });
 });
 
+// Ruta para  obtener todos los animes
+router.get("/api/animes", (req, res) => {
+  const query = `
+      SELECT a.*, c.name as category_name FROM animes a
+      LEFT JOIN anime_categories c ON a.category_id = c.id
+      ORDER BY a.created_at DESC
+  `;
+  db.query(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error al recuperar animes recientes");
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
 // Route for anime upload page
 router.get("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
   db.query("SELECT id, name FROM anime_categories", (err, categories) => {
@@ -310,9 +327,6 @@ router.get("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
     res.render("anime/upload-anime", { categories });
   });
 });
-
-// Cargar la configuración del webhook desde el archivo YAML
-const webhookConfig = yaml.load(fs.readFileSync('src/config/webhook.yml', 'utf8'));
 
 // Ruta para procesar la carga de anime
 router.post("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
@@ -381,24 +395,12 @@ router.post("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
                             console.error(err);
                             res.status(500).send("Error al subir episodios restantes");
                           } else {
-                            // Enviar notificación a Discord
-                            sendDiscordNotification(name, imageUrl, description, episodeList, releaseDate, animeUrl)
-                              .then(() => res.redirect("/anime"))
-                              .catch(error => {
-                                console.error("Error al enviar notificación a Discord:", error);
-                                res.redirect("/anime");
-                              });
+                            res.redirect("/anime");
                           }
                         }
                       );
                     } else {
-                      // Enviar notificación a Discord
-                      sendDiscordNotification(name, imageUrl, description, episodeList, releaseDate, animeUrl)
-                        .then(() => res.redirect("/anime"))
-                        .catch(error => {
-                          console.error("Error al enviar notificación a Discord:", error);
-                          res.redirect("/anime");
-                        });
+                      res.redirect("/anime");
                     }
                   }
                 }
@@ -410,46 +412,6 @@ router.post("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
     }
   );
 });
-
-function sendDiscordNotification(name, imageUrl, description, episodeList, releaseDate, slug) {
-  const webhookUrl = webhookConfig.discord.webhookUrl; // Carga la URL desde la configuración
-  const roleId = webhookConfig.discord.roleId; // Carga el ID del rol desde la configuración
-
-  // Construir la URL para ver el anime usando el slug
-  const animeUrl = webhookConfig.discord.embed.viewAnimeField.url.replace('{slug}', slug);
-
-  // Construir el contenido del embed a partir de la configuración
-  const embed = {
-    title: webhookConfig.discord.embed.title.replace('{name}', name), // Reemplaza {name} con el nombre del anime
-    color: webhookConfig.discord.embed.color, // Color desde la configuración
-    description: webhookConfig.discord.embed.description.replace('{description}', description || "No disponible"),
-    fields: [
-      {
-        name: webhookConfig.discord.embed.episodeField.name,
-        value: episodeList.join(", ") || "No disponible",
-      },
-      {
-        name: webhookConfig.discord.embed.releaseField.name,
-        value: releaseDate || "No disponible",
-      },
-      {
-        name: webhookConfig.discord.embed.viewAnimeField.name, // Nombre del nuevo campo
-        value: animeUrl, // Enlace directo para ver el anime
-      },
-    ],
-    image: { // Imagen principal
-      url: imageUrl,
-    },
-  };
-
-  // Crear el mensaje que incluye el ping al rol
-  const messageContent = roleId ? `<@&${roleId}>` : ''; // Solo hacer ping si se proporciona un roleId
-
-  return axios.post(webhookUrl, {
-    content: messageContent, // Contenido del mensaje antes del embed
-    embeds: [embed],
-  });
-}
 
 router.get("/anime/:slug", isLoggedIn, (req, res) => {
   const slug = req.params.slug;
@@ -544,6 +506,30 @@ router.get("/anime/:slug", isLoggedIn, (req, res) => {
           }
         );
       }
+    }
+  );
+});
+
+// Ruta para mostrar el calendario de animes
+router.get("/calendario", (req, res) => {
+  db.query(
+    "SELECT id, name, upload_date AS start, imageUrl, description FROM animes", // Añadido 'image' y 'description'
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error al obtener los animes para el calendario");
+      }
+
+      // Convierte los resultados en el formato esperado por FullCalendar
+      const events = results.map((anime) => ({
+        id: anime.id,
+        title: anime.name,
+        start: anime.start, // Fecha de subida en formato YYYY-MM-DD
+        image: anime.imageUrl, // Imagen del anime
+        description: anime.description, // Descripción del anime
+      }));
+
+      res.render("start/animeCalendar", { events });
     }
   );
 });
@@ -1164,7 +1150,7 @@ router.get("/animes/api/saved-animes", isLoggedIn, (req, res) => {
 });
 
 // Route to get total animes uploaded
-router.get("/api/total-animes", isLoggedIn, (req, res) => {
+router.get("/api/total-animes", (req, res) => {
   db.query("SELECT COUNT(*) AS total FROM animes", (err, results) => {
     if (err) {
       console.error(err);
