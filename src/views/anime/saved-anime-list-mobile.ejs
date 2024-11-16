@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime List - NakamaStream</title>
-    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/public/css/extra/anime-list-mobile-animated.css">
@@ -56,6 +56,7 @@
                 <div class="hidden md:flex space-x-4">
                     <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
                     <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
+                    <a href="/calendario" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Calendario</a>
                     <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
 
                     <!-- User Menu -->
@@ -88,7 +89,7 @@
                 <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-newspaper mr-2"></i> Noticias
                 </a>
-                <a href="/soon" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                <a href="/calendario" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-calendar mr-2"></i> Calendario
                 </a>
                 <a href="/animes/api/search" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
@@ -152,7 +153,9 @@
                 </a>
             <% }); %>
         </div>
-    </div>                                                            
+    </div>      
+    
+    <%- include('../components/footer') %>
 
     <script src="/src/public/js/anime-list.js"></script>
     <script src="/src/public/js/anime/NavMobile-universal.js"></script>
