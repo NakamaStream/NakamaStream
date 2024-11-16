@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream - Calendario de Anime</title>
+    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales-all.min.js'></script>
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #ff6b6b;
+            --background-color: #F0F3F8;
+            --text-color: #2D3748;
+            --card-background: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .fc-theme-standard .fc-list, .fc-theme-standard .fc-list-day-cushion {
+            background-color: var(--card-background);
+        }
+
+        .fc .fc-button-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .fc .fc-button-primary:not(:disabled):active,
+        .fc .fc-button-primary:not(:disabled).fc-button-active,
+        .fc .fc-button-primary:hover {
+            background-color: #ff5252;
+            border-color: #ff5252;
+        }
+
+        .fc-daygrid-day.fc-day-today {
+            background-color: #fff0f0 !important;
+        }
+
+        .fc-event {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .fc-event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .fc .fc-toolbar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .fc .fc-toolbar-chunk {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        .page-title {
+            color: var(--secondary-color);
+        }
+
+        .calendar-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: var(--card-background);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #modalImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/" class="flex flex-col items-center">
+                            <span class="text-4xl font-bold text-primary">NakamaStream</span>
+                            <span class="text-primary text-xs mt-0.5" style="line-height: 1;">By NakamaGroup</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <a href="/" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                    <a href="/anime" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Animes</a>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Abrir menú principal</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="/anime" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Animes</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="page-title text-4xl sm:text-5xl font-extrabold text-center mb-8">Calendario de Lanzamientos de Anime</h1>
+        <div class="calendar-container bg-white rounded-lg shadow-xl p-4 md:p-6">
+            <div id='calendar'></div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="Anime Image" class="w-full h-auto object-cover mb-4">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+            <p id="modalDate" class="text-lg mb-2"></p>
+            <p id="modalDescription" class="text-gray-600"></p>
+        </div>
+    </div>
+
+    <%- include('../components/footer') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,listMonth'
+                },
+                events: <%- JSON.stringify(events) %>,
+                locale: 'es',
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    list: 'Lista'
+                },
+                eventClick: function(info) {
+                    showModal(info.event);
+                },
+                eventContent: function(arg) {
+                    return {
+                        html: '<div class="fc-event-main-frame"><div class="fc-event-title-container"><div class="fc-event-title fc-sticky">' + arg.event.title + '</div></div></div>'
+                    };
+                },
+                eventDidMount: function(info) {
+                    info.el.classList.add('rounded', 'overflow-hidden', 'shadow-sm');
+                },
+                windowResize: function(arg) {
+                    if (arg.view.type !== (window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth')) {
+                        calendar.changeView(window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth');
+                    }
+                }
+            });
+            calendar.render();
+        });
+
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            var mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Modal functionality
+        var modal = document.getElementById("eventModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function showModal(event) {
+            var modalImage = document.getElementById("modalImage");
+            var modalTitle = document.getElementById("modalTitle");
+            var modalDate = document.getElementById("modalDate");
+            var modalDescription = document.getElementById("modalDescription");
+
+            modalImage.src = event.extendedProps.image || 'path/to/default-image.jpg';
+            modalImage.alt = event.title;
+            modalTitle.textContent = event.title;
+            modalDate.textContent = "Fecha: " + event.start.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            modalDescription.textContent = event.extendedProps.description || "No hay descripción disponible.";
+
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
