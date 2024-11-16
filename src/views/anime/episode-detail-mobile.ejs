@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= anime.name %> - <%= episode.title %></title>
-    <link rel="shortcut icon" href="/src/public/favicons/favicon-16x16.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/public/css/anime-list.css">
@@ -83,6 +83,7 @@
                 <div class="hidden md:flex space-x-4">
                     <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
                     <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
+                    <a href="/calendario" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Calendario</a>
                     <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
 
                     <!-- User Menu -->
@@ -115,7 +116,7 @@
                 <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-newspaper mr-2"></i> Noticias
                 </a>
-                <a href="/soon" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                <a href="/calendario" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-calendar mr-2"></i> Calendario
                 </a>
 
@@ -190,6 +191,12 @@
 
             <section class="max-w-4xl mx-auto mb-8 bg-white rounded-lg shadow-md p-6 transition-colors duration-300">
                 <h3 class="text-xl font-semibold anime-title mb-4">Comentarios</h3>
+
+                <!-- TEMP -->
+                <p class="mt-4 text-sm text-gray-500">
+                    <strong>Nota:</strong> La función de añadir fotos por URL está disponible solo en el chat global del anime, no en los comentarios de este episodio.
+                </p>
+
                 <% if (typeof user !== 'undefined' && user) { %>
                 <form id="comment-form" class="mb-4">
                     <textarea id="comment-content" class="w-full p-2 border rounded" rows="4" placeholder="Escribe tu comentario..."></textarea>
