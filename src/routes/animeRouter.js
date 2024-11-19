@@ -486,6 +486,7 @@ router.get("/anime/:slug", isLoggedIn, (req, res) => {
 
                             res.render(template, {
                               anime: anime,
+                              release_date: anime.release_date,
                               episodes: episodeResults,
                               views: views,
                               isAdmin: user.is_admin,
