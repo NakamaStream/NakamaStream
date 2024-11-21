@@ -1,0 +1,60 @@
+<!-- Sección de Donadores -->
+<div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-4 text-center text-gray-800">Donadores</h2>
+    <p class="text-center text-gray-600 mb-12">Gracias por apoyar el proyecto de nakamaStream ❤️</p>
+  
+    <!-- Contenedor de donadores (rellenado dinámicamente) -->
+    <div id="donors-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        <!-- Los donadores se inyectarán aquí -->
+    </div>
+</div>
+
+<script>
+const donors = [
+    { 
+        name: "Josue_0880", 
+        avatarUrl: "https://i.postimg.cc/281yp7Qg/1731640385219-blob.png", 
+        profileUrl: "/profile/Josue_0880", 
+        amount: 5, // Monto donado
+        donationDate: "2024-11-20" // Fecha de donación
+    },
+    { 
+        name: "EdgaBot", 
+        avatarUrl: "https://i.postimg.cc/zBdh7XNh/1731372697902-blob.png", 
+        profileUrl: "/profile/EdgaBot", 
+        amount: 3, // Monto donado
+        donationDate: "2024-11-19" // Fecha de donación
+    },
+];
+
+const donorsContainer = document.getElementById("donors-container");
+
+donors.forEach(donor => {
+    const donorCard = document.createElement("a");
+    donorCard.href = donor.profileUrl; // Enlace al perfil del donador
+    donorCard.className = "flex flex-col items-center text-center bg-gray-100 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105";
+
+    // Formatear la fecha para que se vea más amigable
+    const formattedDate = new Date(donor.donationDate).toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
+    donorCard.innerHTML = `
+      <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
+        <img 
+          src="${donor.avatarUrl || '/images/default-avatar.png'}" 
+          alt="${donor.name}" 
+          class="w-full h-full object-cover"
+        >
+      </div>
+      <h3 class="text-lg font-semibold text-gray-800">${donor.name}</h3>
+      <p class="text-sm text-gray-600">¡Gracias por tu apoyo!</p>
+      <p class="text-sm text-gray-500">Donó: $${donor.amount} USD</p>
+      <p class="text-xs text-gray-400">Fecha de donación: ${formattedDate}</p>
+    `;
+
+    donorsContainer.appendChild(donorCard);
+});
+</script>
