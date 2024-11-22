@@ -237,7 +237,6 @@ router.post("/login", (req, res) => {
   });
 });
 
-
 // Cargar la configuración desde el archivo YAML
 const emailConfig = (() => {
   try {
@@ -391,7 +390,6 @@ router.post("/password/reset", (req, res) => {
   );
 });
 
-
 router.post("/profile/update-password", (req, res) => {
   if (!req.session.loggedin) {
     return res.status(401).json({ error: "No autorizado" });
@@ -485,11 +483,11 @@ router.get("/profile/:username", (req, res) => {
   }
 
   db.query(
-    `SELECT u.id, u.username, u.email, u.created_at, u.is_admin, u.banned, u.ban_expiration, 
+    `SELECT u.id, u.username, u.email, u.created_at, u.banned, u.ban_expiration, 
             u.profile_image, u.banner_image, IFNULL(u.bio, '') as bio,
             TIMESTAMPDIFF(SECOND, u.created_at, NOW()) AS time_created,
             (SELECT COUNT(*) FROM favorites WHERE user_id = u.id) as favorite_count,
-            (SELECT COUNT(*) FROM comments WHERE user_id = u.id) as comment_count
+            (SELECT COUNT(*) FROM comments WHERE user_id = u.id) as comment_count, u.is_admin
      FROM usuarios u WHERE u.username = ?`,
     [username],
     (err, results) => {
@@ -523,6 +521,9 @@ router.get("/profile/:username", (req, res) => {
           "DD/MM/YYYY HH:mm:ss"
         );
       }
+
+      // Verificar si el usuario es administrador
+      const isAdmin = user.is_admin === 1;
       
       // Obtener los animes favoritos del usuario
       db.query(
@@ -545,9 +546,9 @@ router.get("/profile/:username", (req, res) => {
             user: user,
             username: user.username,
             email: emailToShow, // Mostramos el email censurado si no es su perfil
+            isAdmin: user.is_admin === 1,
             createdAtFormatted,
             timeCreatedFormatted,
-            isAdmin: user.is_admin,
             banned: user.banned,
             banExpirationFormatted,
             profileImageUrl:
