@@ -105,10 +105,39 @@
                     </a>
                 </p>
             </div>
+
+            <!-- Modal -->
+            <div id="disclaimerModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto text-center">
+                    <h2 class="text-2xl font-bold text-custom mb-4">Aviso importante</h2>
+                    <p class="text-sm text-gray-600 mb-6">
+                        NakamaStream no se responsabiliza por el contenido protegido por derechos de autor. Ningún contenido de este tipo se encuentra en la plataforma.
+                    </p>
+                    <button id="acceptDisclaimer" 
+                            class="w-full py-2 px-4 bg-custom text-white rounded-md shadow-sm hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom">
+                        Aceptar y continuar
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+
+        const form = document.querySelector("form");
+        const modal = document.getElementById("disclaimerModal");
+        const acceptButton = document.getElementById("acceptDisclaimer");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            modal.classList.remove("hidden");
+        });
+
+        // Ocultar el modal y continuar con el envío
+        acceptButton.addEventListener("click", function () {
+            modal.classList.add("hidden");
+            form.submit();
+        })
         function togglePassword() {
             const passwordField = document.getElementById('password');
             const toggleIcon = document.getElementById('togglePasswordIcon');
@@ -131,6 +160,17 @@
                 document.getElementById("captcha-phrase").textContent = data.captchaPhrase;
             })
             .catch(error => console.error("Error al recargar el captcha:", error));
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Detiene el envío del formulario
+            document.getElementById("disclaimerModal").classList.remove("hidden");
+        });
+
+        document.getElementById("acceptDisclaimer").addEventListener("click", function() {
+            document.getElementById("disclaimerModal").classList.add("hidden");
+            // Envía el formulario una vez aceptado el aviso
+            document.getElementById("loginForm").submit();
         });
     </script>    
 </body>
