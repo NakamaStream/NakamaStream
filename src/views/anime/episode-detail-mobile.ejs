@@ -350,6 +350,15 @@
             });
         }
 
+        // Función para censurar la mitad del correo
+        function censurarCorreo(correo) {
+            const [usuario, dominio] = correo.split('@');
+            const mitad = Math.floor(usuario.length / 2); // Encuentra la mitad del usuario
+            const usuarioCensurado = usuario.substring(0, mitad) + '*****'; // Censura la mitad del usuario
+
+            return usuarioCensurado + '@' + dominio; // Devuelve el correo censurado
+        }
+
         // Make showUserModal globally accessible
         window.showUserModal = function(username) {
             fetch(`/api/user/${username}`)
@@ -357,7 +366,11 @@
                 .then(user => {
                     document.getElementById('modalUserImage').src = user.profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4';
                     document.getElementById('modalUsername').textContent = user.username;
-                    document.getElementById('modalUserEmail').textContent = user.email;
+
+                    // Censura el correo antes de asignarlo al elemento
+                    const censuredEmail = censurarCorreo(user.email);
+                    document.getElementById('modalUserEmail').textContent = censuredEmail;
+
                     document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
                     document.getElementById('userModal').classList.remove('hidden');
                 });
