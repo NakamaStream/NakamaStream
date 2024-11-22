@@ -675,7 +675,17 @@
                 .then(user => {
                     document.getElementById('modalUserImage').src = user.profile_image_url || '/default-profile-image.png';
                     document.getElementById('modalUsername').textContent = user.username;
-                    document.getElementById('modalUserEmail').textContent = user.email;
+                    // Función para censurar la mitad del correo
+                    function censurarCorreo(correo) {
+                    const [usuario, dominio] = correo.split('@');
+                    const mitad = Math.floor(usuario.length / 2); // Encuentra la mitad del usuario
+                    const usuarioCensurado = usuario.substring(0, mitad) + '*****'; // Censura la mitad del usuario
+                    return usuarioCensurado + '@' + dominio; // Devuelve el correo censurado
+                    }
+                    // Censura el correo antes de asignarlo al elemento
+                    const censuredEmail = censurarCorreo(user.email);
+                    // Asigna el correo censurado al elemento
+                    document.getElementById('modalUserEmail').textContent = censuredEmail;
                     document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
                     document.getElementById('userModal').classList.remove('hidden');
                 });
