@@ -136,7 +136,7 @@
                 <p id="animeDescription" class="text-lg mb-6 text-gray-700 leading-relaxed">
                     <%= anime.description %>
                 </p>
-
+                
                 <div class="flex justify-start items-center mb-6 animate-fade-in">
                     <div class="flex items-center space-x-3 px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
                         <span class="flex-shrink-0 w-3 h-3 rounded-full <%= anime.status === 'ongoing' ? 'bg-green-500 animate-pulse' : 'bg-blue-500' %>"></span>
@@ -628,7 +628,17 @@
                 .then(user => {
                     document.getElementById('modalUserImage').src = user.profile_image_url || '/default-profile-image.png';
                     document.getElementById('modalUsername').textContent = user.username;
-                    document.getElementById('modalUserEmail').textContent = user.email;
+                    // Función para censurar la mitad del correo
+                    function censurarCorreo(correo) {
+                    const [usuario, dominio] = correo.split('@');
+                    const mitad = Math.floor(usuario.length / 2); // Encuentra la mitad del usuario
+                    const usuarioCensurado = usuario.substring(0, mitad) + '*****'; // Censura la mitad del usuario
+                    return usuarioCensurado + '@' + dominio; // Devuelve el correo censurado
+                    }
+                    // Censura el correo antes de asignarlo al elemento
+                    const censuredEmail = censurarCorreo(user.email);
+                    // Asigna el correo censurado al elemento
+                    document.getElementById('modalUserEmail').textContent = censuredEmail;
                     document.getElementById('modalUserBio').textContent = user.bio || 'No bio available';
                     document.getElementById('userModal').classList.remove('hidden');
                 });
