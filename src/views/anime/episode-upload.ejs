@@ -3,51 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload New Episode - <%= anime.name %></title>
+    <title>Subir nuevo episodio - <%= anime.name %></title>
     <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-red': '#ff6b6b',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-white shadow-md">
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <nav class="bg-white shadow-md sticky top-0 z-10">
         <div class="container mx-auto px-6 py-3">
-            <div class="flex justify-between items-center">
-                <a href="/anime" class="text-xl font-bold text-gray-800">Anime List</a>
-                <a href="/logout" class="text-gray-600 hover:text-gray-800">Logout</a>
-            </div>
+            <div class="flex-shrink-0 flex items-center">
+                <a href="/" class="flex flex-col items-center">
+                  <span class="text-4xl font-bold custom-red">NakamaStream</span>
+                  <span class="custom-red text-xs mt-0.5" style="line-height: 1;">By NakamaGroup</span>
+                </a>
+              </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold mb-6">Upload New Episode for <%= anime.name %></h1>
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Subir nuevo episodio</h1>
+        <h2 class="text-2xl font-semibold mb-6 text-center text-custom-red"><%= anime.name %></h2>
         
-        <form action="/anime/<%= anime.slug %>/upload-episode" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
+        <form action="/anime/<%= anime.slug %>/upload-episode" method="POST" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+            <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-                    Episode Title
+                    Título del episodio
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" required>
+                <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-red focus:border-transparent transition duration-300" id="title" type="text" name="title" required>
             </div>
-            <div class="mb-4">
+            <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="videoUrl">
-                    Video URL
+                    URL del vídeo
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="videoUrl" type="url" name="videoUrl" required>
+                <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-red focus:border-transparent transition duration-300" id="videoUrl" type="url" name="videoUrl" required>
             </div>
             <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-                    Episode Description
+                    Descripción del episodio
                 </label>
-                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" rows="4"></textarea>
+                <textarea class="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-red focus:border-transparent transition duration-300" id="description" name="description" rows="4"></textarea>
             </div>
             <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Upload Episode
+                <button class="bg-custom-red hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full focus:outline-none focus:shadow-outline transition-colors duration-300 transform hover:scale-105" type="submit">
+                    Subir episodio
                 </button>
-                <a href="/anime/<%= anime.slug %>" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                    Cancel
+                <a href="/anime/<%= anime.slug %>" class="inline-block align-baseline font-bold text-sm text-custom-red hover:text-red-800 transition-colors duration-300">
+                    Cancelar
                 </a>
             </div>
         </form>
-    </div>
+    </main>
+
+    <%- include('../components/footer') %>
 </body>
 </html>
