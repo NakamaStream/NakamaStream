@@ -81,62 +81,107 @@ document.addEventListener("DOMContentLoaded", () => {
   .then((response) => response.json())
   .then((animes) => {
     const watchedAnimeList = document.getElementById("watchedAnimeList");
-    watchedAnimeList.innerHTML = ""; // Clear existing content
+    watchedAnimeList.innerHTML = ""; // Limpiar contenido existente
     if (animes.length === 0) {
       watchedAnimeList.innerHTML =
         '<li class="text-center">No has visto ningún anime aún.</li>';
     } else {
-      animes.forEach((watchedAnime, index) => {
-        const li = document.createElement("li");
-        li.className =
-          "flex items-center space-x-4 bg-gray-100 p-3 rounded-lg transition-all duration-300 hover:bg-gray-200";
-        li.innerHTML = `
-          <img src="${watchedAnime.imageUrl}" alt="${watchedAnime.name}" class="w-12 h-12 rounded-full object-cover">
-          <div class="flex-grow">
-              <a href="/anime/${watchedAnime.slug}/episode/${watchedAnime.episode_id}" class="hover:text-purple-600 transition-colors duration-300">
-                ${watchedAnime.name} - ${watchedAnime.episode_title}
-              </a>
-              <p class="text-sm text-gray-500">Visto el: ${new Date(watchedAnime.watched_at).toLocaleDateString()}</p>
-          </div>
-          <button class="delete-btn text-red-500 hover:text-red-700 transition-colors duration-300" data-anime-id="${watchedAnime.id}">Eliminar</button>
-        `;
-        watchedAnimeList.appendChild(li);
+      const animesPerPage = 6;
+      const totalPages = Math.ceil(animes.length / animesPerPage);
+      let currentPage = 1;
 
-        // Animate list items
-        anime({
-          targets: li,
-          opacity: [0, 1],
-          translateY: [20, 0],
-          delay: index * 100,
-          easing: "easeOutExpo",
-        });
+      function displayAnimes(page) {
+        const start = (page - 1) * animesPerPage;
+        const end = start + animesPerPage;
+        const pageAnimes = animes.slice(start, end);
 
-        // Agregar funcionalidad de eliminar al botón
-        const deleteBtn = li.querySelector(".delete-btn");
-        deleteBtn.addEventListener("click", () => {
-          const animeId = deleteBtn.getAttribute("data-anime-id");
-          if (confirm("¿Seguro que quieres eliminar este anime del historial?")) {
-            fetch(`/api/watched-animes/${animeId}`, {
-              method: "DELETE",
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.message) {
-                  alert(data.message);
-                  li.remove(); // Eliminar el elemento de la lista en el frontend
-                }
+        watchedAnimeList.innerHTML = ""; // Limpiar lista actual
+
+        pageAnimes.forEach((watchedAnime, index) => {
+          const li = document.createElement("li");
+          li.className =
+            "flex items-center space-x-4 bg-gray-100 p-3 rounded-lg transition-all duration-300 hover:bg-gray-200";
+          li.innerHTML = `
+            <img src="${watchedAnime.imageUrl}" alt="${watchedAnime.name}" class="w-12 h-12 rounded-full object-cover">
+            <div class="flex-grow">
+                <a href="/anime/${watchedAnime.slug}/episode/${watchedAnime.episode_id}" class="hover:text-purple-600 transition-colors duration-300">
+                  ${watchedAnime.name} - ${watchedAnime.episode_title}
+                </a>
+                <p class="text-sm text-gray-500">Visto el: ${new Date(watchedAnime.watched_at).toLocaleDateString()}</p>
+            </div>
+            <button class="delete-btn text-red-500 hover:text-red-700 transition-colors duration-300" data-anime-id="${watchedAnime.id}">Eliminar</button>
+          `;
+          watchedAnimeList.appendChild(li);
+
+          // Animar elementos de la lista
+          anime({
+            targets: li,
+            opacity: [0, 1],
+            translateY: [20, 0],
+            delay: index * 100,
+            easing: "easeOutExpo",
+          });
+
+          // Agregar funcionalidad de eliminar al botón
+          const deleteBtn = li.querySelector(".delete-btn");
+          deleteBtn.addEventListener("click", () => {
+            const animeId = deleteBtn.getAttribute("data-anime-id");
+            if (confirm("¿Seguro que quieres eliminar este anime del historial?")) {
+              fetch(`/api/watched-animes/${animeId}`, {
+                method: "DELETE",
               })
-              .catch((error) => {
-                console.error("Error al eliminar el anime:", error);
-                alert("Hubo un error al intentar eliminar el anime.");
-              });
-          }
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.message) {
+                    alert(data.message);
+                    li.remove(); // Eliminar el elemento de la lista en el frontend
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error al eliminar el anime:", error);
+                  alert("Hubo un error al intentar eliminar el anime.");
+                });
+            }
+          });
         });
-      });
+
+        // Crear paginación
+        const paginationContainer = document.createElement("div");
+        paginationContainer.className = "flex justify-center mt-4 space-x-2";
+        for (let i = 1; i <= totalPages; i++) {
+          const pageButton = document.createElement("button");
+          pageButton.textContent = i;
+          pageButton.className = `px-3 py-1 rounded ${
+            i === currentPage ? "active-page" : "inactive-page"
+          }`;
+          pageButton.addEventListener("click", () => {
+            currentPage = i;
+            displayAnimes(currentPage);
+          });
+          paginationContainer.appendChild(pageButton);
+        }
+        watchedAnimeList.appendChild(paginationContainer);
+      }
+
+      // Agregar estilos CSS para los botones de paginación
+      const style = document.createElement('style');
+      style.textContent = `
+        .active-page {
+          background-color: #ff6b6b;
+          color: white;
+        }
+        .inactive-page {
+          background-color: #e0e0e0;
+          color: #333;
+        }
+      `;
+      document.head.appendChild(style);
+
+      displayAnimes(currentPage);
     }
   })
   .catch((error) => {
-    console.error("Error fetching watched animes:", error);
+    console.error("Error al obtener animes vistos:", error);
     document.getElementById("watchedAnimeList").innerHTML =
       '<li class="text-center text-red-500">Error al cargar el historial de animes vistos.</li>';
   });
