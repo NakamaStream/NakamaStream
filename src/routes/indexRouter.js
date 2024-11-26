@@ -33,6 +33,10 @@ router.get('/donate', (req, res) => {
   res.render('start/donate');
 });
 
+router.get('/desktop', (req, res) => {
+  res.render('start/Desktop');
+});
+
 router.get('/jobs/frontend', (req, res) => {
   res.redirect('https://github.com/orgs/NakamaStream/discussions/10');
 });
