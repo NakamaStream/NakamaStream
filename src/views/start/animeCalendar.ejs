@@ -148,6 +148,16 @@
             border-radius: 4px;
             margin-bottom: 1rem;
         }
+
+        /* Nuevo estilo para evitar que los eventos ocupen dos fechas en una línea */
+        .fc-event-title {
+            white-space: normal !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
