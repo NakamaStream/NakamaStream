@@ -140,30 +140,30 @@
         <div class="relative" id="featured-anime-carousel">
             <div class="overflow-hidden">
                 <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
-                    <div class="flex-none w-full lg:w-[80%] mx-auto"> <!-- Aumenta el ancho -->
-                        <div class="relative h-60 md:h-72 lg:h-[36rem] rounded-lg overflow-hidden group"> <!-- Ajustes de altura -->
+                    <div class="flex-none w-full lg:w-[80%] mx-auto">
+                        <div class="relative h-60 md:h-72 lg:h-[36rem] rounded-lg overflow-hidden group">
                           <% if (featuredAnime && featuredAnime.featured_image_url) { %>
                             <img src="<%= featuredAnime.featured_image_url %>" alt="Imagen de <%= featuredAnime.name %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                           <% } else { %>
                             <p>No hay imagen destacada disponible.</p>
                           <% } %>
                             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
-                                <h3 class="text-white text-2xl font-bold mb-2"><%= featuredAnime.name %></h3>
-                                <h2 class="absolute top-0 left-0 p-4 text-white text-xl font-semibold">Anime del día</h2>
+                                <h2 class="absolute top-0 left-0 p-4 text-white text-lg sm:text-xl font-semibold bg-black/50 rounded-br-lg">Anime del día</h2>
+                                <h3 class="text-white text-xl sm:text-2xl font-bold mb-2 mt-8 sm:mt-0"><%= featuredAnime.name %></h3>
                                 <% if (featuredAnime.description) { %>
-                                  <p class="text-gray-300 mb-4 line-clamp-3">
+                                  <p class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">
                                     <%= featuredAnime.description.length > 120 ? featuredAnime.description.substring(0, 120) + '...' : featuredAnime.description %>
                                   </p>
                                 <% } else { %>
-                                  <p class="text-gray-300 mb-4 line-clamp-3">Descripción no disponible.</p>
+                                  <p class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">Descripción no disponible.</p>
                                 <% } %>
                                 <div class="flex items-center space-x-4">
-                                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm">Sub</span>
+                                    <span class="bg-orange-500 text-white px-2 py-1 rounded-full text-xs sm:text-sm">Sub</span>
                                     <button 
-                                      class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full transition duration-300 flex items-center group"
+                                      class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-1 sm:py-2 rounded-full transition duration-300 flex items-center group text-xs sm:text-sm"
                                       onclick="window.location.href='/anime/<%= featuredAnime.slug %>'">
                                       <i class="fas fa-play mr-2 group-hover:animate-pulse"></i> Ver ahora
-                                  </button>
+                                    </button>
                                 </div>
                             </div>
                         </div>
