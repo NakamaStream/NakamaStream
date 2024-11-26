@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream Desktop - Tu Anime Favorito en tu PC</title>
+    <meta name="description"
+        content="Descarga NakamaStream Desktop y disfruta de tus animes favoritos en alta calidad, sin anuncios y con funciones exclusivas para PC.">
+    <link rel="shortcut icon"
+        href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+        type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/node_modules/nakamaui/Ui/nakamaUi.mian.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js" crossorigin="anonymous"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    },
+                    animation: {
+                        'fade-in-down': 'fadeInDown 1s ease-out',
+                        'fade-in-up': 'fadeInUp 1s ease-out',
+                        'fade-in-left': 'fadeInLeft 1s ease-out',
+                        'fade-in-right': 'fadeInRight 1s ease-out',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        fadeInDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        fadeInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+                            alt="NakamaStream" class="h-10 w-auto animate-bounce-slow">
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/"
+                            class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Inicio</a>
+                        <a href="#caracteristicas"
+                            class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Características</a>
+                        <a href="#capturas"
+                            class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Capturas</a>
+                        <a href="#requisitos"
+                            class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Requisitos</a>
+                        <a href="#faq"
+                            class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">FAQ</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#descargar"
+                        class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200 transform hover:scale-105">Descargar Ahora</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero bg-gradient-to-r from-primary to-pink-500 text-white py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0 animate-fade-in-left">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6">NakamaStream Desktop</h1>
+                        <p class="text-xl mb-8">Tu portal al mundo del anime, ahora en tu escritorio. Disfruta de una experiencia de visualización sin igual con nuestra aplicación dedicada.</p>
+                        <a href="#descargar"
+                            class="bg-white text-primary py-3 px-8 rounded-full font-bold shadow-lg hover:bg-gray-100 transition-colors duration-200 text-center inline-block transform hover:scale-105">Descargar Gratis</a>
+                    </div>
+                    <div class="w-full md:w-1/2 animate-fade-in-right">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+                            alt="NakamaStream Desktop App" class="mx-auto w-full max-w-md rounded-lg shadow-2xl hover:animate-pulse">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="caracteristicas" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Características Exclusivas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up">
+                        <i class="fas fa-rocket text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Rendimiento Optimizado</h3>
+                        <p class="text-gray-600">Disfruta de una experiencia fluida y rápida, optimizada para tu PC.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <i class="fab fa-discord text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Discord RPC</h3>
+                        <p class="text-gray-600">Muestra a tus amigos lo que estás viendo con la integración de Discord Rich Presence.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up" style="animation-delay: 0.4s;">
+                        <i class="fas fa-desktop text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Multi-Plataforma</h3>
+                        <p class="text-gray-600">Disfruta de la aplicación en Windows, macOS y Linux con la misma experiencia fluida.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="capturas" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Capturas de Pantalla</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/WebHome.png?raw=true" alt="1" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-left cursor-pointer" onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/AnimeInfo.png?raw=true" alt="2" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-up cursor-pointer" style="animation-delay: 0.2s;" onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/Profile.png?raw=true" alt="3" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-right cursor-pointer" style="animation-delay: 0.4s;" onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/Discord%20Rpc.png?raw=true" alt="4" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-right cursor-pointer" style="animation-delay: 0.4s;" onclick="abrirModal(this.src)">
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para mostrar la imagen -->
+        <div id="imagenModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-4 rounded-lg max-w-4xl max-h-full overflow-auto">
+                <img id="imagenModalContenido" src="" alt="Imagen ampliada" class="max-w-full max-h-full">
+                <button onclick="cerrarModal()" class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors duration-200">Cerrar</button>
+            </div>
+        </div>
+
+        <script>
+            function abrirModal(src) {
+                document.getElementById('imagenModalContenido').src = src;
+                document.getElementById('imagenModal').classList.remove('hidden');
+            }
+
+            function cerrarModal() {
+                document.getElementById('imagenModal').classList.add('hidden');
+            }
+        </script>
+
+        <section id="descargar" class="py-20 bg-primary text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-8 animate-fade-in-down">Descarga NakamaStream Desktop</h2>
+                <p class="text-xl mb-8 animate-fade-in-up">Disponible para Windows, macOS y Linux</p>
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <a href="#" class="bg-white text-primary py-3 px-6 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-200 font-bold transform hover:scale-105 animate-fade-in-left" onclick="alert('Descargarás el archivo: Nakamastream-Setup-(Version).exe'); window.location.href='https://github.com/NakamaStream/NakamaStream-Desktop/releases';">
+                        <i class="fab fa-windows mr-2"></i>Windows
+                    </a>
+                    <a href="#" class="bg-white text-primary py-3 px-6 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-200 font-bold transform hover:scale-105 animate-fade-in-up" style="animation-delay: 0.2s;" onclick="alert('Descargarás el archivo: Nakamastream-(Version)-arm64.dmg'); window.location.href='https://github.com/NakamaStream/NakamaStream-Desktop/releases';">
+                        <i class="fab fa-apple mr-2"></i>macOS
+                    </a>
+                    <a href="#" class="bg-white text-primary py-3 px-6 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-200 font-bold transform hover:scale-105 animate-fade-in-right" style="animation-delay: 0.4s;" onclick="alert('Descargarás el archivo: Nakamastream-(Version).AppImage'); window.location.href='https://github.com/NakamaStream/NakamaStream-Desktop/releases';">
+                        <i class="fab fa-linux mr-2"></i>Linux
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="requisitos" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Requisitos del Sistema</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg animate-fade-in-left">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Windows</h3>
+                        <ul class="list-disc list-inside text-gray-600">
+                            <li>Sistema Operativo: Windows 7 o superior</li>
+                            <li>Arquitectura: x86 o x64</li>
+                            <li>Archivo: Nakamastream-Setup-1.0.0.exe</li>
+                            <li>Memoria RAM: 4 GB mínimo</li>
+                            <li>Espacio en disco: 500 MB</li>
+                            <li>Conexión a Internet: 5 Mbps mínimo</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">macOS</h3>
+                        <ul class="list-disc list-inside text-gray-600">
+                            <li>Sistema Operativo: macOS 10.12 o superior</li>
+                            <li>Arquitectura: arm64</li>
+                            <li>Archivo: Nakamastream-1.0.0-arm64.dmg</li>
+                            <li>Memoria RAM: 4 GB mínimo</li>
+                            <li>Espacio en disco: 500 MB</li>
+                            <li>Conexión a Internet: 5 Mbps mínimo</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg animate-fade-in-right" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Linux</h3>
+                        <ul class="list-disc list-inside text-gray-600">
+                            <li>Sistema Operativo: Distribuciones Linux compatibles</li>
+                            <li>Archivo: Nakamastream-1.0.0.AppImage (universal)</li>
+                            <li>Memoria RAM: 4 GB mínimo</li>
+                            <li>Espacio en disco: 500 MB</li>
+                            <li>Conexión a Internet: 5 Mbps mínimo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Preguntas Frecuentes</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="space-y-4">
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden animate-fade-in-left">
+                            <button class="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none" onclick="toggleFAQ(this)">
+                                <span class="font-semibold text-gray-800">¿Es gratuita la aplicación de escritorio?</span>
+                                <span class="transform transition-transform duration-200">▼</span>
+                            </button>
+                            <div class="hidden px-6 py-4 bg-gray-50">
+                                <p class="text-gray-600">Sí, NakamaStream Desktop es completamente gratuita. Sin embargo, algunas funciones premium pueden requerir una suscripción.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden animate-fade-in-right" style="animation-delay: 0.2s;">
+                            <button class="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none" onclick="toggleFAQ(this)">
+                                <span class="font-semibold text-gray-800">¿Puedo usar mi cuenta de NakamaStream en la aplicación de escritorio?</span>
+                                <span class="transform transition-transform duration-200">▼</span>
+                            </button>
+                            <div class="hidden px-6 py-4 bg-gray-50">
+                                <p class="text-gray-600">Sí, puedes iniciar sesión con tu cuenta existente de NakamaStream en la aplicación de escritorio y sincronizar tu biblioteca y progreso.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../components/footer') %>
+
+    <script>
+        function toggleFAQ(element) {
+            const content = element.nextElementSibling;
+            const arrow = element.querySelector('span:last-child');
+            content.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+
+</html>
