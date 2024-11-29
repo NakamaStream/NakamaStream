@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - NakamaStream</title>
-    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
+    <link rel="shortcut icon"
+        href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+        type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.css">
@@ -21,16 +24,19 @@
             background-color: #f0f2f5;
             transition: background-color 0.3s ease;
         }
+
         .anime-card {
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .anime-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
         }
+
         .btn-anime {
             background: linear-gradient(45deg, #ff6b6b, #feca57);
             border: none;
@@ -39,19 +45,31 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
+
         .btn-anime:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
+
         .profile-image {
             border: 4px solid #fff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
+
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
+
         .float-animation {
             animation: float 3s ease-in-out infinite;
         }
@@ -77,7 +95,7 @@
             transform: scale(0.95);
             opacity: 0;
             transition: all 0.2s ease-in-out;
-        }  
+        }
 
         .user-menu-link {
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -92,16 +110,21 @@
         }
     </style>
 </head>
+
 <body class="bg-gray-100">
     <nav class="bg-white shadow">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="relative flex items-center justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Botón de menú para móviles -->
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-controls="mobile-menu" aria-expanded="false">
+                    <button id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">Abrir menú</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
                     </button>
                 </div>
@@ -111,56 +134,84 @@
                     </div>
                     <div class="hidden sm:block sm:ml-6">
                         <div class="flex space-x-4">
-                            <a href="/" class="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" aria-current="page">Inicio</a>
-                            <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Noticias</a>
-                            <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Calendario</a>
+                            <a href="/"
+                                class="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                                aria-current="page">Inicio</a>
+                            <a href="/news"
+                                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Noticias</a>
+                            <a href="/calendario"
+                                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Calendario</a>
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center">
                     <a href="/animes/api/saved-animes" class="ml-3 hidden md:inline-flex">
-                        <button class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
+                        <button
+                            class="bg-white p-2 rounded-full text-gray-400 hover:text-primary hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
                             <span class="sr-only">Ver marcadores</span>
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
                         </button>
                     </a>
                     <div class="ml-3 relative">
-                        <button id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" aria-haspopup="true" aria-expanded="true">
+                        <button id="user-menu-button"
+                            class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                            aria-haspopup="true" aria-expanded="true">
                             <span class="sr-only">Abrir menú de usuario</span>
-                            <img src="<%= profileImageUrl || '/default-profile-image.png' %>" alt="User Avatar" class="h-8 w-8 rounded-full">
+                            <img src="<%= profileImageUrl || '/default-profile-image.png' %>" alt="User Avatar"
+                                class="h-8 w-8 rounded-full">
                         </button>
-    
+
                         <!-- Menú desplegable -->
-                        <div id="user-menu" class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden transition-all duration-200 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                        <div id="user-menu"
+                            class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden transition-all duration-200 transform opacity-0 scale-95"
+                            role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
                             <div class="py-1" role="none">
-                                <p class="block px-4 py-2 text-sm text-gray-700"><%= username %></p>
+                                <p class="block px-4 py-2 text-sm text-gray-700">
+                                    <%= username %>
+                                </p>
                                 <div class="border-b border-gray-200"></div>
-                                <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                <a href="/profile"
+                                    class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                    role="menuitem">
                                     <i class="fas fa-user mr-2"></i> Perfil
                                 </a>
-                                <a href="/animes/api/saved-animes" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                <a href="/animes/api/saved-animes"
+                                    class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                    role="menuitem">
                                     <i class="fa-solid fa-bookmark mr-2"></i> Guardados
                                 </a>
-                                <a href="/profile" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                <a href="/profile"
+                                    class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                    role="menuitem">
                                     <i class="fa-solid fa-star mr-2"></i> Favoritos
                                 </a>
                                 <% if (isAdmin) { %>
                                     <div class="border-t mt-2"></div>
-                                    <a href="/admin/panel" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <a href="/admin/panel"
+                                        class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem">
                                         <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
                                     </a>
-                                    <a href="/anime/upload" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <a href="/anime/upload"
+                                        class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem">
                                         <i class="fa-solid fa-upload mr-2"></i> Subir Anime
                                     </a>
-                                    <a href="/admin/animes/featured" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                    <a href="/admin/animes/featured"
+                                        class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem">
                                         <i class="fa-solid fa-upload mr-2"></i> Subir Anime Destacado
                                     </a>
-                                <% } %>
-                                <a href="/logout" class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700" role="menuitem">
-                                    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
-                                </a>
+                                    <% } %>
+                                        <a href="/logout"
+                                            class="user-menu-link flex items-center px-4 py-2 text-sm text-gray-700"
+                                            role="menuitem">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                                        </a>
                             </div>
                         </div>
                     </div>
@@ -168,50 +219,93 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Menú móvil -->
     <div class="sm:hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="/" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium" aria-current="page">
+            <a href="/" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium"
+                aria-current="page">
                 <i class="fas fa-home mr-2"></i> Inicio
             </a>
             <a href="/news" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">
                 <i class="fa-solid fa-newspaper mr-2"></i> Noticias
             </a>
-            <a href="/animes/api/saved-animes" class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">
+            <a href="/animes/api/saved-animes"
+                class="text-gray-900 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">
                 <i class="fas fa-bookmark mr-2"></i> Guardados
             </a>
         </div>
-    </div>    
+    </div>
 
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white shadow-xl rounded-3xl overflow-hidden">
             <div class="relative h-80">
-                <img src="<%= bannerImageUrl %>" alt="Banner de perfil" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                <label for="banner-modal" class="cursor-pointer">
+                    <img src="<%= bannerImageUrl %>" alt="Banner de perfil" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                </label>
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                    <img src="<%= profileImageUrl %>" alt="Foto de perfil de <%= username %>" class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+                    <label for="profile-modal" class="cursor-pointer">
+                        <img src="<%= profileImageUrl %>" alt="Foto de perfil de <%= username %>"
+                            class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+                    </label>
                 </div>
             </div>
+
+            <!-- Modal para la imagen de perfil usando Tailwind CSS -->
+            <input type="checkbox" id="profile-modal" class="hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" id="profile-modal-overlay">
+                <div class="relative max-w-3xl max-h-[80vh]">
+                    <img src="<%= profileImageUrl %>" alt="Foto de perfil ampliada" class="object-contain max-h-full">
+                    <label for="profile-modal" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 cursor-pointer">
+                        <i class="fas fa-times"></i>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Modal para el banner usando Tailwind CSS -->
+            <input type="checkbox" id="banner-modal" class="hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" id="banner-modal-overlay">
+                <div class="relative max-w-5xl max-h-[80vh]">
+                    <img src="<%= bannerImageUrl %>" alt="Banner ampliado" class="object-contain max-h-full">
+                    <label for="banner-modal" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 cursor-pointer">
+                        <i class="fas fa-times"></i>
+                    </label>
+                </div>
+            </div>
+
+            <style>
+                #profile-modal:checked ~ #profile-modal-overlay,
+                #banner-modal:checked ~ #banner-modal-overlay {
+                    display: flex;
+                }
+            </style>
             <div class="px-4 py-16 text-center">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2"><%= username %></h1>
-                <p class="text-gray-600 mb-4"><%= email %></p>
-                <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                    <%= username %>
+                </h1>
+                <p class="text-gray-600 mb-4">
+                    <%= email %>
+                </p>
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
                     <p class="text-sm text-gray-600">
-                        <span class="font-semibold">Miembro desde:</span> <%= createdAtFormatted %>
+                        <span class="font-semibold">Miembro desde:</span>
+                        <%= createdAtFormatted %>
                     </p>
                     <p class="hidden sm:block text-gray-400">•</p>
                     <p class="text-sm text-gray-600">
-                        <span class="font-semibold">Tiempo en la comunidad:</span> <%= timeCreatedFormatted %>
+                        <span class="font-semibold">Tiempo en la comunidad:</span>
+                        <%= timeCreatedFormatted %>
                     </p>
                 </div>
                 <% if (isAdmin) { %>
                     <span class="mt-4 inline-block admin-badge">Admin</span>
-                <% } else { %>
-                    <span class="mt-4 inline-block member-badge">Miembro</span>
-                <% } %>
+                    <% } else { %>
+                        <span class="mt-4 inline-block member-badge">Miembro</span>
+                        <% } %>
             </div>
-        </div>         
+        </div>
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="bg-white shadow-xl rounded-3xl p-6 anime-card">
@@ -234,57 +328,83 @@
             <h2 class="text-2xl font-bold mb-4 text-center">Actualizar Información Personal</h2>
             <form id="updateInfoForm">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">Nuevo nombre de usuario</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newUsername">Nuevo nombre de
+                        usuario</label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="newUsername" type="text" name="newUsername" placeholder="Nuevo nombre de usuario">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Correo electrónico</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Correo electrónico" value="<%= email %>" required>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="email" type="email" name="email" placeholder="Correo electrónico" value="<%= email %>"
+                        required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="bio">Biografía</label>
-                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bio" name="bio" placeholder="Tu biografía"><%= bio %></textarea>
+                    <textarea
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="bio" name="bio" placeholder="Tu biografía"><%= bio %></textarea>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Actualizar información</button>
+                    <button
+                        class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">Actualizar información</button>
                 </div>
             </form>
         </div>
-        
+
 
         <!-- Cambiar Contraseña -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
             <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Contraseña</h2>
             <form id="changePasswordForm">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">Contraseña actual</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currentPassword" type="password" name="currentPassword" placeholder="Contraseña actual" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">Contraseña
+                        actual</label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="currentPassword" type="password" name="currentPassword" placeholder="Contraseña actual"
+                        required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">Nueva contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newPassword" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="newPassword" type="password" name="newPassword" placeholder="Nueva contraseña" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmNewPassword">Confirmar nueva contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Confirmar nueva contraseña" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmNewPassword">Confirmar nueva
+                        contraseña</label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="confirmNewPassword" type="password" name="confirmNewPassword"
+                        placeholder="Confirmar nueva contraseña" required>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Cambiar contraseña</button>
+                    <button
+                        class="bg-primary hover:bg-gray-e55b5b text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">Cambiar contraseña</button>
                 </div>
             </form>
         </div>
-        
+
         <!-- Cambiar Imagen de Perfil -->
         <div class="mt-8 bg-white shadow-xl rounded-3xl p-6 anime-card">
             <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Imagen de Perfil</h2>
             <form id="changeProfileImageForm" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImageInput">Imagen de perfil</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImageInput">Imagen de
+                        perfil</label>
                     <input type="file" id="profileImageInput" name="profileImage" accept="image/*" class="hidden">
-                    <label for="profileImageInput" class="cursor-pointer bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-purple-500 hover:to-pink-600 transition duration-300">Seleccionar imagen de perfil</label>
+                    <label for="profileImageInput"
+                        class="cursor-pointer bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-purple-500 hover:to-pink-600 transition duration-300">Seleccionar
+                        imagen de perfil</label>
                 </div>
                 <img id="profileImage" class="hidden w-full mb-4 rounded-lg" />
-                <button id="cropProfileImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar Imagen de Perfil</button>
+                <button id="cropProfileImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar
+                    Imagen de Perfil</button>
             </form>
         </div>
 
@@ -293,54 +413,59 @@
             <h2 class="text-2xl font-bold mb-4 text-center">Cambiar Imagen de Banner</h2>
             <form id="changeBannerImageForm" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImageInput">Imagen de banner</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bannerImageInput">Imagen de
+                        banner</label>
                     <input type="file" id="bannerImageInput" name="bannerImage" accept="image/*" class="hidden">
-                    <label for="bannerImageInput" class="cursor-pointer bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-blue-500 hover:to-indigo-600 transition duration-300">Seleccionar imagen de banner</label>
+                    <label for="bannerImageInput"
+                        class="cursor-pointer bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-2 px-4 rounded-full inline-block hover:from-blue-500 hover:to-indigo-600 transition duration-300">Seleccionar
+                        imagen de banner</label>
                 </div>
                 <img id="bannerImage" class="hidden w-full mb-4 rounded-lg" />
-                <button id="cropBannerImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar Imagen de Banner</button>
+                <button id="cropBannerImage" type="button" class="btn-anime py-3 px-6 text-lg hidden text-sm">Recortar
+                    Imagen de Banner</button>
             </form>
         </div>
     </div>
 
     <script>
-    const userMenuButton = document.getElementById('user-menu-button');
-    const userMenu = document.getElementById('user-menu');
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
 
-    userMenuButton.addEventListener('click', () => {
-    userMenu.classList.toggle('hidden');
-    
-    if (userMenu.classList.contains('hidden')) {
-        userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
-        userMenu.classList.add('menu-leave');
-        setTimeout(() => {
-        userMenu.classList.add('hidden');
-        userMenu.classList.remove('menu-leave');
-        }, 200);
-    } else {
-        userMenu.classList.remove('menu-leave', 'hidden');
-        setTimeout(() => {
-        userMenu.classList.add('menu-enter-active');
-        }, 0);
-    }
-    });
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
 
-    // Cerrar el menú si se hace clic fuera de él
-    window.addEventListener('click', (event) => {
-    if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-        userMenu.classList.add('hidden');
-        userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
-    }
-    });
+            if (userMenu.classList.contains('hidden')) {
+                userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+                userMenu.classList.add('menu-leave');
+                setTimeout(() => {
+                    userMenu.classList.add('hidden');
+                    userMenu.classList.remove('menu-leave');
+                }, 200);
+            } else {
+                userMenu.classList.remove('menu-leave', 'hidden');
+                setTimeout(() => {
+                    userMenu.classList.add('menu-enter-active');
+                }, 0);
+            }
+        });
 
-    // Script para abrir/cerrar el menú en móvil
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+        // Cerrar el menú si se hace clic fuera de él
+        window.addEventListener('click', (event) => {
+            if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.add('hidden');
+                userMenu.classList.remove('menu-enter-active', 'menu-leave-active');
+            }
+        });
 
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        mobileMenu.classList.toggle('block');
-    });
+        // Script para abrir/cerrar el menú en móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('block');
+        });
     </script>
 </body>
+
 </html>
