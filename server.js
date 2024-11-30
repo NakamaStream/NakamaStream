@@ -21,7 +21,18 @@ const db = require("./src/services/db");
 const app = express();
 const server = http.createServer(app);
 
-// Multer configuration
+// Configuración de Multer mejorada
+const fileFilter = (req, file, cb) => {
+  // Lista de tipos MIME permitidos
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Tipo de archivo no permitido'), false);
+  }
+};
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = path.join(__dirname, "src/public/uploads/");
@@ -31,11 +42,32 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    // Sanitizar nombre de archivo
+    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + sanitizedName);
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB límite
+    files: 1 // máximo 1 archivo por subida
+  }
+});
+
+// Middleware de manejo de errores para Multer
+app.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'El archivo es demasiado grande' });
+    }
+    return res.status(400).json({ error: 'Error en la subida de archivo' });
+  }
+  next(error);
+});
 
 // Configuración de la sesión con cookies
 app.use(
