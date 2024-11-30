@@ -25,22 +25,50 @@ let announcement = {
 
 // Middleware to check if user is admin
 const isAdmin = (req, res, next) => {
-  if (req.session.isAdmin) {
-    next();
-  } else {
-    res
-      .status(403)
-      .render("error/accessDenied", { username: req.session.username });
+  if (!req.session.userId) {
+    return res.status(403).render("error/accessDenied", { username: req.session.username });
   }
+
+  db.query(
+    "SELECT is_admin FROM usuarios WHERE id = ?",
+    [req.session.userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al verificar permisos de administrador:", err);
+        return res.status(500).render("error/error");
+      }
+
+      if (results.length === 0 || !results[0].is_admin) {
+        return res.status(403).render("error/accessDenied", { username: req.session.username });
+      }
+
+      next();
+    }
+  );
 };
 
 // Middleware to check if user is logged in
 const isLoggedIn = (req, res, next) => {
-  if (req.session.loggedin) {
-    next();
-  } else {
-    res.redirect("/login");
+  if (!req.session.userId) {
+    return res.redirect("/login");
   }
+
+  db.query(
+    "SELECT id FROM usuarios WHERE id = ?",
+    [req.session.userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al verificar inicio de sesión:", err);
+        return res.status(500).render("error/error");
+      }
+
+      if (results.length === 0) {
+        return res.redirect("/login");
+      }
+
+      next();
+    }
+  );
 };
 
 // Routes for comment management
@@ -745,12 +773,12 @@ router.get("/api/episodes/:id", isAdmin, (req, res) => {
 // Route to handle episode update or creation
 router.post("/admin/edit-episode", isAdmin, express.json(), (req, res) => {
   //console.log("Received data:", req.body); // Debug log
-  
+
   const { episodeId, animeId, title, episodeNumber, videoUrl, description } = req.body;
-  
+
   // Convert empty strings to null for optional fields
   const sanitizedDescription = description || null;
-  
+
   // Debug logs
   console.log("Parsed values:", {
     episodeId,
@@ -789,10 +817,10 @@ router.post("/admin/edit-episode", isAdmin, express.json(), (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error updating episode:", err);
-          return res.status(500).json({ 
-            success: false, 
-            message: "Error al actualizar el episodio", 
-            error: err.message 
+          return res.status(500).json({
+            success: false,
+            message: "Error al actualizar el episodio",
+            error: err.message
           });
         }
         res.json({ success: true, message: "Episodio actualizado correctamente" });
@@ -806,10 +834,10 @@ router.post("/admin/edit-episode", isAdmin, express.json(), (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error creating new episode:", err);
-          return res.status(500).json({ 
-            success: false, 
-            message: "Error al crear el episodio", 
-            error: err.message 
+          return res.status(500).json({
+            success: false,
+            message: "Error al crear el episodio",
+            error: err.message
           });
         }
         res.json({ success: true, message: "Episodio creado correctamente" });
