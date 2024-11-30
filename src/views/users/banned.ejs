@@ -18,7 +18,6 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-10 rounded-lg shadow-2xl w-full max-w-md border-t-8" style="border-color: var(--primary-color);">
         <div class="flex items-center justify-center mb-6">
-            <!-- Icono de bloqueado de Font Awesome -->
             <i class="fas fa-lock fa-6x text-primary" style="color: var(--primary-color);"></i>
         </div>
         <h1 class="text-4xl font-extrabold text-center mb-4" style="color: var(--primary-color);">¡Has sido baneado!</h1>
@@ -26,6 +25,18 @@
         <% if (banExpirationFormatted) { %>
             <p class="text-center text-gray-600 text-sm">Tu ban expira el: <span class="font-semibold" style="color: var(--primary-color);"><%= banExpirationFormatted %></span></p>
         <% } %>
+        <p class="text-center text-gray-700 mt-4">Posibles razones del ban:</p>
+        <ul class="list-disc list-inside text-gray-600 mt-2">
+            <li>Actividad sospechosa en tu cuenta</li>
+            <li>Información considerada de multicuenta</li>
+        </ul>
+        <p class="text-center text-gray-600 mt-4">Para más información, por favor póngase en contacto con nosotros:</p>
+        <p class="text-center text-gray-600 mt-2">
+            <a href="mailto:nakamastreamhelp@gmail.com" class="text-blue-500 hover:underline">nakamastreamhelp@gmail.com</a>
+        </p>
+        <p class="text-center text-gray-600 mt-2">
+            <a href="https://discord.gg/Rdz4yQneMK" class="text-blue-500 hover:underline">Discord de NakamaStream</a>
+        </p>
         <div class="mt-8">
             <a href="/" class="bg-primary text-white font-semibold py-2 px-4 rounded-full shadow hover:bg-red-500 transition duration-300 ease-in-out" style="background-color: var(--primary-color);">Regresar al inicio</a>
         </div>
