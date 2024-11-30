@@ -49,13 +49,26 @@ const isLoggedIn = (req, res, next) => {
 
 // Middleware to check if user is admin
 const isAdmin = (req, res, next) => {
-  if (req.session.isAdmin) {
-    next();
-  } else {
-    res
-      .status(403)
-      .send("Acceso denegado. Se requieren privilegios de administrador.");
+  if (!req.session.userId) {
+    return res.status(403).render("error/accessDenied", { username: req.session.username });
   }
+
+  db.query(
+    "SELECT is_admin FROM usuarios WHERE id = ?",
+    [req.session.userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al verificar permisos de administrador:", err);
+        return res.status(500).render("error/error");
+      }
+
+      if (results.length === 0 || !results[0].is_admin) {
+        return res.status(403).render("error/accessDenied", { username: req.session.username });
+      }
+
+      next();
+    }
+  );
 };
 
 // Function to generate unique slug
