@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NakamaStream - En Desarrollo</title>
-    <meta name="description" content="Bienvenido a NakamaStream actualmente la plataforma no se encuentra terminada">
-    <meta property="og:title" content="NakamaStream">
-    <meta property="og:description" content="Bienvenido a NakamaStream actualmente la plataforma no se encuentra terminada">
+    <meta name="description" content="Bienvenido a NakamaStream, tu futura plataforma de streaming favorita">
+    <meta property="og:title" content="NakamaStream - Próximamente">
+    <meta property="og:description" content="Prepárate para una experiencia de streaming única con NakamaStream">
     <meta property="og:image" content="https://avatars.githubusercontent.com/u/168317328?s=200&v=4">
     <meta property="og:url" content="https://nakamastream.lat/">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="NakamaStream">
-    <meta name="twitter:description" content="Bienvenido a NakamaStream actualmente la plataforma no se encuentra terminada">
+    <meta name="twitter:title" content="NakamaStream - Próximamente">
+    <meta name="twitter:description" content="Prepárate para una experiencia de streaming única con NakamaStream">
     <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/168317328?s=200&v=4">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -21,57 +22,67 @@
                 extend: {
                     colors: {
                         'custom-red': '#ff6b6b',
-                        'custom-orange': '#ff8c00',
-                        'custom-purple': '#6a0dad',
                     },
                     animation: {
                         'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-white min-h-screen flex flex-col">
-    <main class="flex-grow flex flex-col items-center justify-center p-4 text-center">
-        <div class="max-w-2xl mx-auto">
-            <div class="mb-6">
-                <img src="https://github.com/NakamaStream/Resources/raw/main/NakamStream-logo-HD-removebg.png?raw=true" alt="NakamaStream Logo" class="w-48 h-48 mx-auto animate-bounce-slow" />
+
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex flex-col">
+    <main class="flex-grow flex flex-col items-center justify-center p-8 text-center">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8">
+            <div class="mb-8">
+                <img src="https://github.com/NakamaStream/Resources/raw/main/NakamStream-logo-HD-removebg.png?raw=true"
+                    alt="NakamaStream Logo" class="w-56 h-56 mx-auto animate-bounce-slow" />
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-custom-red mb-4">NakamaStream</h1>
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-4">¡Estamos trabajando en algo increíble!</h2>
-            <p class="text-xl md:text-2xl text-gray-600 mb-8">La plataforma de NakamaStream aún no está terminada, pero pronto podrás disfrutar de tu contenido favorito.</p>
-            <div class="flex justify-center space-x-4 mb-8">
-                <div class="w-16 h-16 loading-box bg-gray-200 rounded-lg animate-pulse"></div>
-                <div class="w-16 h-16 loading-box bg-gray-200 rounded-lg animate-pulse"></div>
-                <div class="w-16 h-16 loading-box bg-gray-200 rounded-lg animate-pulse"></div>
+            <h1 class="text-5xl md:text-6xl font-bold text-custom-red mb-6">NakamaStream</h1>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">¡Estamos creando algo extraordinario!</h2>
+            <p class="text-xl md:text-2xl text-gray-700 mb-10">Muy pronto, NakamaStream te ofrecerá una experiencia de streaming inigualable. Prepárate para disfrutar de tu contenido favorito como nunca antes.</p>
+            
+            <div class="flex justify-center space-x-6 mb-10">
+                <div class="w-20 h-20 loading-box bg-gray-400 rounded-lg animate-pulse-slow"></div>
+                <div class="w-20 h-20 loading-box bg-gray-500 rounded-lg animate-pulse-slow delay-150"></div>
+                <div class="w-20 h-20 loading-box bg-gray-600 rounded-lg animate-pulse-slow delay-300"></div>
             </div>
-            <div class="w-full max-w-md mx-auto progress-container bg-gray-100 rounded-lg p-4">
-                <p class="text-lg text-gray-700 mb-2">Progreso estimado:</p>
-                <div class="w-full bg-gray-200 rounded-full h-4">
-                    <div class="bg-custom-red h-4 rounded-full" style="width: 100%"></div>
+            
+            <div class="w-full max-w-md mx-auto progress-container bg-gray-100 rounded-lg p-6 shadow-inner">
+                <p class="text-xl text-gray-800 mb-4">Progreso estimado:</p>
+                <div class="w-full bg-gray-300 rounded-full h-6 overflow-hidden">
+                    <div class="bg-custom-red h-6 rounded-full transition-all duration-1000 ease-out" style="width: 100%"></div>
                 </div>
             </div>
-            <!-- Nueva sección para el enlace de Discord -->
-            <div class="mt-8">
-                <p class="text-lg text-gray-700 mb-2">Para más información, únete a nuestro Discord:</p>
-                <a href="https://discord.gg/nakamastream" class="flex items-center justify-center text-custom-purple hover:text-custom-red">
-                    <i class="fab fa-discord fa-2x mr-2"></i> 
-                    Unirse al Discord
-                </a>
-            </div>
-            <!-- Botón para ver el historial de releases -->
-            <div class="mt-4">
-                <p class="text-lg text-gray-700 mb-2">Ver el historial de releases:</p>
-                <a href="/releases" target="_blank" class="inline-flex items-center justify-center px-4 py-2 bg-custom-orange text-white font-bold rounded-lg hover:bg-custom-red transition duration-300">
-                    Ver Releases
-                </a>
+            
+            <div class="mt-10 space-y-6">
+                <div>
+                    <p class="text-xl text-gray-800 mb-3">Mantente informado, únete a nuestra comunidad:</p>
+                    <a href="https://discord.gg/nakamastream"
+                        class="inline-flex items-center justify-center px-6 py-3 bg-custom-red text-white text-lg font-semibold rounded-lg hover:bg-red-500 transition duration-300">
+                        <i class="fab fa-discord fa-lg mr-3"></i>
+                        Unirse al Discord
+                    </a>
+                </div>
+                
+                <div>
+                    <p class="text-xl text-gray-800 mb-3">Explora nuestro progreso:</p>
+                    <a href="/releases" target="_blank"
+                        class="inline-flex items-center justify-center px-6 py-3 bg-custom-red text-white text-lg font-semibold rounded-lg hover:bg-red-500 transition duration-300">
+                        <i class="fas fa-history fa-lg mr-3"></i>
+                        Ver Historial de Releases
+                    </a>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-100 text-center p-4 mt-8 flex justify-between items-center">
-        <p class="text-gray-600">&copy; 2024 NakamaStream. Todos los derechos reservados.</p>
+    <footer class="bg-gray-800 text-white text-center p-6 mt-12">
+        <p>&copy; 2024 NakamaStream. Todos los derechos reservados.</p>
+        <p class="mt-2 text-sm text-gray-400">Construyendo el futuro del streaming, un paso a la vez.</p>
     </footer>
 </body>
+
 </html>
