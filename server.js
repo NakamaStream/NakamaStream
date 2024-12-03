@@ -13,7 +13,6 @@ const indexRouter = require("./src/routes/indexRouter");
 const authRouter = require("./src/routes/authRouter");
 const adminRouter = require("./src/routes/adminRouter");
 const animeRouter = require("./src/routes/animeRouter");
-const healthCheckRouter = require("./src/routes/healthCheckRouter");
 const botapiRouter = require("./src/routes/botapiRouter");
 
 const db = require("./src/services/db");
@@ -208,7 +207,6 @@ app.use("/", indexRouter);
 app.use("/", animeRouter);
 app.use("/", authRouter);
 app.use("/", adminRouter);
-app.use("/", healthCheckRouter);
 app.use("/", botapiRouter);
 
 // Middleware para manejar rutas no encontradas
