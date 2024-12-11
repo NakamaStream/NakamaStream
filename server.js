@@ -72,8 +72,8 @@ app.use((error, req, res, next) => {
 app.use(
   cookieSession({
     name: "session",
-    keys: ["Jdk@gl311adf"], // Claves para encriptar la cookie
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
+    keys: ["CristoferRosca"], // <- put here your key to encript cookies
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   })
 );
 
