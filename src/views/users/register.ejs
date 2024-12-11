@@ -111,18 +111,18 @@
                             <progress id="strengthBar" class="progress h-2 w-full" max="100" value="0"></progress>
                             <p id="passwordStrength" class="text-sm mt-1"></p>
                         </div>
-                    </div>                    
+                    </div>
+                    
+                    <!-- Agregar el widget de hCaptcha -->
+                    <div class="flex justify-center">
+                        <div class="h-captcha" data-sitekey="<%= HCAPTCHA_SITE_KEY %>"></div>
+                    </div>
 
                     <div>
                         <label class="inline-flex items-center">
                             <input type="checkbox" name="terms" required class="form-checkbox h-5 w-5 text-custom">
                             <span class="ml-2 text-sm text-gray-700">Acepto los <a href="/tos" class="text-custom underline" target="_blank">términos y condiciones</a> y la <a href="/privacy" class="text-custom underline" target="_blank">política de privacidad</a>.</span>
                         </label>
-                    </div>
-
-                    <!-- Agregar el widget de hCaptcha -->
-                    <div class="flex justify-center">
-                        <div class="h-captcha" data-sitekey="<%= HCAPTCHA_SITE_KEY %>"></div>
                     </div>
 
                     <div>
