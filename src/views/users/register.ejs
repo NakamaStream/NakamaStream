@@ -34,6 +34,12 @@
             }
         }
     </script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 <body class="h-full flex items-center justify-center p-4 bg-gray-50">
     <div class="w-full max-w-md">
@@ -112,6 +118,11 @@
                             <input type="checkbox" name="terms" required class="form-checkbox h-5 w-5 text-custom">
                             <span class="ml-2 text-sm text-gray-700">Acepto los <a href="/tos" class="text-custom underline" target="_blank">términos y condiciones</a> y la <a href="/privacy" class="text-custom underline" target="_blank">política de privacidad</a>.</span>
                         </label>
+                    </div>
+
+                    <!-- Agregar el widget de hCaptcha -->
+                    <div class="flex justify-center">
+                        <div class="h-captcha" data-sitekey="<%= HCAPTCHA_SITE_KEY %>"></div>
                     </div>
 
                     <div>
