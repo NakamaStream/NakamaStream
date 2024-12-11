@@ -1,13 +1,11 @@
 // Verifica si la contraseña cumple con los criterios básicos de seguridad
 function enSecurePassword(contraseña) {
-    const longitudMinima = 6; // Nueva longitud mínima
-    const hasUpperCase = /[A-Z]/.test(contraseña);
+    const longitudMinima = 4; // Longitud mínima reducida
     const hasLowerCase = /[a-z]/.test(contraseña);
     const hasNumber = /[0-9]/.test(contraseña);
-  
+
     return (
         contraseña.length >= longitudMinima &&
-        hasUpperCase &&
         hasLowerCase &&
         hasNumber
     );
@@ -16,11 +14,10 @@ function enSecurePassword(contraseña) {
 // Calcula el nivel de seguridad de la contraseña
 function calculateSecurityPassword(contraseña) {
     let seguridad = 0;
-    if (contraseña.length >= 6) seguridad += 15; // Ajuste por longitud menor
-    if (/[A-Z]/.test(contraseña)) seguridad += 15;
-    if (/[a-z]/.test(contraseña)) seguridad += 15;
-    if (/[0-9]/.test(contraseña)) seguridad += 15;
-    if (contraseña.length >= 10) seguridad += 20; // Bonificación por longitud mayor
+    if (contraseña.length >= 4) seguridad += 25;
+    if (/[a-z]/.test(contraseña)) seguridad += 25;
+    if (/[0-9]/.test(contraseña)) seguridad += 25;
+    if (contraseña.length >= 6) seguridad += 25;
 
     return seguridad;
 }
@@ -37,11 +34,11 @@ function updateProgressBar() {
 
         // Cambiar el color de la barra de progreso según el nivel de seguridad
         barraProgreso.classList.remove("bg-red-500", "bg-yellow-500", "bg-green-500");
-        if (seguridad < 30) {
+        if (seguridad < 50) {
             barraProgreso.classList.add("bg-red-500");
             passwordStrengthText.textContent = "La contraseña es débil";
             passwordStrengthText.className = "text-red-500 text-sm font-semibold";
-        } else if (seguridad < 60) {
+        } else if (seguridad < 75) {
             barraProgreso.classList.add("bg-yellow-500");
             passwordStrengthText.textContent = "La contraseña es moderada";
             passwordStrengthText.className = "text-yellow-500 text-sm font-semibold";
@@ -58,7 +55,7 @@ function validateForm() {
     const contraseña = document.getElementById("password").value;
     if (!enSecurePassword(contraseña)) {
         alert(
-            "La contraseña debe tener al menos 6 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número."
+            "La contraseña debe tener al menos 4 caracteres, incluir al menos una letra minúscula y un número."
         );
         return false;
     }
@@ -66,23 +63,23 @@ function validateForm() {
 }
 
 function generatePassword() {
-    const length = 12; // Aumenta la longitud para mayor seguridad
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}[]|:;<>,.?/";
+    const length = 6; // Longitud reducida
+    const charset = "abcdefghijklmnopqrstuvwxyz0123456789";
     let password = "";
     const array = new Uint32Array(length);
-    window.crypto.getRandomValues(array); // Genera valores aleatorios de forma segura
+    window.crypto.getRandomValues(array);
 
     for (let i = 0; i < length; i++) {
-        password += charset.charAt(array[i] % charset.length); // Selecciona caracteres aleatorios
+        password += charset.charAt(array[i] % charset.length);
     }
 
     // Verifica que la contraseña contenga al menos un carácter de cada tipo
-    if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*()_+{}[\]|:;<>,.?/]/.test(password)) {
-        return generatePassword(); // Vuelve a generar si no cumple con los requisitos
+    if (!/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+        return generatePassword();
     }
 
     document.getElementById("password").value = password;
-    updateProgressBar(); // Actualiza la barra de progreso para la nueva contraseña
+    updateProgressBar();
 }
 
 // Función para inicializar los event listeners
