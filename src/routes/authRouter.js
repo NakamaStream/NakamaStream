@@ -9,9 +9,30 @@ const crypto = require("crypto");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const router = express.Router();
+const rateLimit = require("express-rate-limit");
 
 require("moment/locale/es")
 moment.locale('es');
+
+// Cargar configuración de hCaptcha
+const loadHcaptchaConfig = () => {
+  try {
+    const filePath = path.join(__dirname, "..", "config", "hcaptcha.yml");
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const config = yaml.load(fileContents);
+    const env = process.env.NODE_ENV || 'development';
+    return config[env];
+  } catch (e) {
+    console.error('Error al cargar la configuración de hCaptcha:', e);
+    // Valores por defecto para desarrollo
+    return {
+      site_key: "10000000-ffff-ffff-ffff-000000000001",
+      secret_key: "0x0000000000000000000000000000000000000000"
+    };
+  }
+};
+
+const hcaptchaConfig = loadHcaptchaConfig();
 
 // Configuración de multer para almacenar archivos
 const storage = multer.diskStorage({
@@ -29,112 +50,180 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Configuración del rate limit para la ruta de inicio de sesión
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 5, // Limita cada IP a 5 solicitudes por ventana de tiempo
+  skipSuccessfulRequests: true, // No cuenta los intentos exitosos
+  standardHeaders: true, // Devuelve info de rate limit en los headers
+  legacyHeaders: false, // Deshabilita los headers `X-RateLimit-*` 
+  message: {
+    status: 429,
+    message: 'Demasiados intentos fallidos'
+  },
+  handler: (req, res) => {
+    const remainingTime = Math.ceil(req.rateLimit.resetTime / 1000 / 60);
+    res.render("users/login", {
+      errorMessage: `Demasiados intentos de inicio de sesión desde esta IP. Por favor espera ${remainingTime} minutos antes de intentar nuevamente.`,
+      captchaPhrase: req.session.captchaPhrase || null,
+      remainingAttempts: req.rateLimit.remaining
+    });
+  }
+});
+
 // Ruta de registro (GET)
 router.get("/register", (req, res) => {
-  res.render("users/register", { error: null }); // Set error to null
+  res.render("users/register", { 
+    error: null,
+    HCAPTCHA_SITE_KEY: hcaptchaConfig.site_key
+  });
 });
 
 // Ruta de registro (POST)
-router.post("/register", (req, res) => {
-  const { username, email, password } = req.body;
-  const createdAt = new Date();
+router.post("/register", async (req, res) => {
+  const { username, email, password, 'h-captcha-response': hcaptchaResponse } = req.body;
+  
+  // Verificar hCaptcha
+  if (!hcaptchaResponse) {
+    return res.render("users/register", {
+      error: "Por favor, completa el captcha",
+      HCAPTCHA_SITE_KEY: hcaptchaConfig.site_key
+    });
+  }
 
-  // Obtener la IP real del cliente desde el encabezado de Cloudflare
-  const ipAddress =
-    req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  try {
+    const verifyUrl = 'https://hcaptcha.com/siteverify';
+    const response = await fetch(verifyUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `response=${hcaptchaResponse}&secret=${hcaptchaConfig.secret_key}`
+    });
 
-  // Verificar si ya existen 3 o más cuentas desde la misma IP
-  const checkIpSql = "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
-  db.query(checkIpSql, [ipAddress], (err, results) => {
-    if (err) {
-      console.error("Error al verificar la IP:", err);
+    const data = await response.json();
+    if (!data.success) {
       return res.render("users/register", {
-        error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
+        error: "Verificación del captcha fallida",
+        HCAPTCHA_SITE_KEY: hcaptchaConfig.site_key
       });
     }
 
-    if (results[0].count >= 3) {
+    // Continuar con el registro existente...
+    const createdAt = new Date();
+
+    // Validar el dominio del correo electrónico
+    const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+    const emailDomain = email.split('@')[1]?.toLowerCase();
+    
+    if (!allowedDomains.includes(emailDomain)) {
       return res.render("users/register", {
-        error: "Se ha excedido el límite de cuentas permitidas desde esta IP.",
+        error: "Solo se permiten correos de Gmail, Yahoo, Hotmail y Outlook."
       });
     }
 
-    // Verificar si el nombre de usuario o el correo electrónico ya están en uso
-    const checkUserSql = "SELECT * FROM usuarios WHERE username = ? OR email = ?";
-    db.query(checkUserSql, [username, email], (err, userResults) => {
+    // Obtener la IP real del cliente desde el encabezado de Cloudflare
+    const ipAddress =
+      req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    // Verificar si ya existen 3 o más cuentas desde la misma IP
+    const checkIpSql = "SELECT COUNT(*) AS count FROM usuarios WHERE ip_address = ?";
+    db.query(checkIpSql, [ipAddress], (err, results) => {
       if (err) {
-        console.error("Error al verificar el usuario:", err);
+        console.error("Error al verificar la IP:", err);
         return res.render("users/register", {
           error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
         });
       }
 
-      // Manejar errores de nombre de usuario y correo electrónico
-      if (userResults.length > 0) {
-        if (userResults.some(user => user.username === username)) {
-          return res.render("users/register", {
-            error: "El nombre de usuario ya está en uso."
-          });
-        }
-        if (userResults.some(user => user.email === email)) {
-          return res.render("users/register", {
-            error: "El correo electrónico ya está registrado."
-          });
-        }
+      if (results[0].count >= 3) {
+        return res.render("users/register", {
+          error: "Se ha excedido el límite de cuentas permitidas desde esta IP.",
+        });
       }
 
-      // Encriptar la contraseña
-      bcrypt.hash(password, 10, (err, hashedPassword) => {
+      // Verificar si el nombre de usuario o el correo electrónico ya están en uso
+      const checkUserSql = "SELECT * FROM usuarios WHERE username = ? OR email = ?";
+      db.query(checkUserSql, [username, email], (err, userResults) => {
         if (err) {
-          console.error("Error al encriptar la contraseña:", err);
+          console.error("Error al verificar el usuario:", err);
           return res.render("users/register", {
             error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
           });
         }
 
-        const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
-        db.query(
-          sql,
-          [username, email, hashedPassword, createdAt, false, ipAddress],
-          (err, result) => {
-            if (err) {
-              console.error("Error al registrar el usuario:", err.message);
-              if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
-                return res.render("users/register", {
-                  error: "Por favor, proporciona una contraseña."
-                });
-              } else {
-                return res.render("users/register", {
-                  error: "Error al registrar el usuario. Por favor, inténtalo de nuevo."
-                });
-              }
-            }
-            console.log("Usuario registrado correctamente");
-            res.redirect("/login");
+        // Manejar errores de nombre de usuario y correo electrónico
+        if (userResults.length > 0) {
+          if (userResults.some(user => user.username === username)) {
+            return res.render("users/register", {
+              error: "El nombre de usuario ya está en uso."
+            });
           }
-        );
+          if (userResults.some(user => user.email === email)) {
+            return res.render("users/register", {
+              error: "El correo electrónico ya está registrado."
+            });
+          }
+        }
+
+        // Encriptar la contraseña
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+          if (err) {
+            console.error("Error al encriptar la contraseña:", err);
+            return res.render("users/register", {
+              error: "Error al procesar la solicitud. Por favor, inténtalo de nuevo."
+            });
+          }
+
+          const sql = `INSERT INTO usuarios (username, email, password, created_at, is_admin, ip_address) VALUES (?, ?, ?, ?, ?, ?)`;
+          db.query(
+            sql,
+            [username, email, hashedPassword, createdAt, false, ipAddress],
+            (err, result) => {
+              if (err) {
+                console.error("Error al registrar el usuario:", err.message);
+                if (err.code === "ER_NO_DEFAULT_FOR_FIELD") {
+                  return res.render("users/register", {
+                    error: "Por favor, proporciona una contraseña."
+                  });
+                } else {
+                  return res.render("users/register", {
+                    error: "Error al registrar el usuario. Por favor, inténtalo de nuevo."
+                  });
+                }
+              }
+              console.log("Usuario registrado correctamente");
+              res.redirect("/login");
+            }
+          );
+        });
       });
     });
-  });
+  } catch (error) {
+    console.error("Error al verificar hCaptcha:", error);
+    return res.render("users/register", {
+      error: "Error al verificar el captcha",
+      HCAPTCHA_SITE_KEY: hcaptchaConfig.site_key
+    });
+  }
 });
 
 
 router.get("/api/auth/new-captcha", (req, res) => {
   try {
-      const captchaPath = path.join(__dirname, "..", "config", "captcha.yml");
-      const captchaData = yaml.load(fs.readFileSync(captchaPath, "utf8"));
-      const words = captchaData.words;
-      const randomIndex = Math.floor(Math.random() * words.length);
-      const captchaPhrase = words[randomIndex];
-      req.session.captchaPhrase = captchaPhrase;
+    const captchaPath = path.join(__dirname, "..", "config", "captcha.yml");
+    const captchaData = yaml.load(fs.readFileSync(captchaPath, "utf8"));
+    const words = captchaData.words;
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const captchaPhrase = words[randomIndex];
+    req.session.captchaPhrase = captchaPhrase;
 
-      res.json({ captchaPhrase });
+    res.json({ captchaPhrase });
   } catch (e) {
-      console.log(e);
-      res.status(500).json({ error: "Error al generar el captcha" });
+    console.log(e);
+    res.status(500).json({ error: "Error al generar el captcha" });
   }
 });
-
 
 // Ruta de inicio de sesión (GET)
 router.get("/login", (req, res) => {
@@ -157,8 +246,8 @@ router.get("/login", (req, res) => {
   }
 });
 
-// Ruta de inicio de sesión (POST)
-router.post("/login", (req, res) => {
+// Ruta de inicio de sesión (POST) con rate limit
+router.post("/login", loginLimiter, (req, res) => {
   const { username, password, captchaInput } = req.body;
   const sql =
     "SELECT *, TIMESTAMPDIFF(SECOND, created_at, NOW()) AS time_created, is_admin, banned, ban_expiration FROM usuarios WHERE username = ?";
@@ -275,7 +364,7 @@ router.post("/password/forgot", (req, res) => {
     }
 
     const userId = results[0].id;
-    
+
     // Generar un token aleatorio
     const token = crypto.randomBytes(32).toString('hex');
     const expiration = Date.now() + 3600000; // El token expira en 1 hora
@@ -505,8 +594,8 @@ router.get("/profile/:username", (req, res) => {
         "DD/MM/YYYY HH:mm:ss"
       );
       const timeCreatedFormatted = moment
-      .utc(user.time_created * 1000)
-      .fromNow(); // Esto mostrará el tiempo en formato "hace X minutos"
+        .utc(user.time_created * 1000)
+        .fromNow(); // Esto mostrará el tiempo en formato "hace X minutos"
 
       // Obtener el hash MD5 del correo electrónico para Gravatar
       const emailHash = crypto
@@ -524,7 +613,7 @@ router.get("/profile/:username", (req, res) => {
 
       // Verificar si el usuario es administrador
       const isAdmin = user.is_admin === 1;
-      
+
       // Obtener los animes favoritos del usuario
       db.query(
         `SELECT a.id, a.name, a.imageUrl, a.slug
