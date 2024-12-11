@@ -1,0 +1,7 @@
+development:
+  site_key: "TU_SITE_KEY"
+  secret_key: "TU_SECRET_KEY"
+
+production:
+  site_key: "TU_SITE_KEY"
+  secret_key: "TU_SECRET_KEY"
