@@ -3,10 +3,10 @@ NakamaStream
 </h1>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black"/></a>
   <a href="#"><img src="https://img.shields.io/badge/EJS-B4CA65.svg?style=for-the-badge&logo=EJS&logoColor=black"/></a>
-  <a href="#"><img src="https://img.shields.io/badge/CSS3-1572B6.svg?style=for-the-badge&logo=CSS3&logoColor=white"/></a>
   <a href="#"><img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4.svg?style=for-the-badge&logo=Tailwind-CSS&logoColor=white"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/CSS3-1572B6.svg?style=for-the-badge&logo=CSS3&logoColor=white"/></a>
 </p>
 
 <p align="center">
@@ -28,6 +28,12 @@ NakamaStream
   <a href="https://github.com/NakamaStream/NakamaStream">
     <img src="https://img.shields.io/github/stars/NakamaStream/NakamaStream?style=social" alt="stars"/>
   </a>
+  <a href="https://discord.gg/Rdz4yQneMK">
+    <img src="https://img.shields.io/discord/1238726016621608960?logo=discord&logoColor=white" alt="Discord"/>
+  </a>
+  <a href="https://ko-fi.com/nakamastream">
+    <img src="https://img.shields.io/badge/Ko--fi-F16061?style=flat&logo=ko-fi&logoColor=white" alt="Ko-fi"/>
+  </a>
 </p>
 
 ## ¿Qué es NakamaStream?
@@ -43,7 +49,7 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 | Plataforma       | Disponibilidad |
 |------------------|----------------|
 | **Web**          | ✅             |
-| **Android**      | ⏳             |
+| **Android**      | ✅             |
 | **iOS**          | ❌             |
 | **Windows**      | ✅             |
 | **macOS**        | ✅             |
