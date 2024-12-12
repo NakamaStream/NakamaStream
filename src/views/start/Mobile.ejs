@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NakamaStream Mobile - Tu Anime Favorito en tu Android</title>
+    <meta name="description"
+        content="Descarga NakamaStream Mobile y disfruta de tus animes favoritos en alta calidad, sin anuncios y con mejor Rendimiento para Android.">
+    <link rel="shortcut icon"
+        href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+        type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b6b',
+                    },
+                    animation: {
+                        'fade-in-down': 'fadeInDown 1s ease-out',
+                        'fade-in-up': 'fadeInUp 1s ease-out',
+                        'fade-in-left': 'fadeInLeft 1s ease-out',
+                        'fade-in-right': 'fadeInRight 1s ease-out',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        fadeInDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        fadeInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(10px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+                            alt="NakamaStream" class="h-10 w-auto animate-bounce-slow">
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/"
+                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Inicio</a>
+                    <a href="#caracteristicas"
+                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Características</a>
+                    <a href="#capturas"
+                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Capturas</a>
+                    <a href="#requisitos"
+                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:animate-pulse">Requisitos</a>
+                    <a href="#descargar"
+                        class="bg-primary text-white py-2 px-4 rounded-md shadow hover:bg-opacity-90 transition-colors duration-200 transform hover:scale-105">Descargar
+                        Ahora</a>
+                </div>
+
+                <div class="md:hidden">
+                    <button id="menuButton" class="text-gray-700 hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 bg-white">
+                    <a href="/"
+                        class="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Inicio</a>
+                    <a href="#caracteristicas"
+                        class="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Características</a>
+                    <a href="#capturas"
+                        class="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Capturas</a>
+                    <a href="#requisitos"
+                        class="block text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Requisitos</a>
+                    <a href="#descargar"
+                        class="block bg-primary text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 mt-4">Descargar
+                        Ahora</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero bg-gradient-to-r from-primary to-pink-500 text-white py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0 animate-fade-in-left">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6">NakamaStream Mobile</h1>
+                        <p class="text-xl mb-8">Tu portal al mundo del anime, ahora en tu dispositivo Android. Disfruta de una experiencia de visualización optimizada para móviles.</p>
+                        <a href="#descargar" class="bg-white text-primary py-3 px-8 rounded-full font-bold shadow-lg hover:bg-gray-100 transition-colors duration-200 text-center inline-block transform hover:scale-105">Descargar para Android</a>
+                    </div>
+                    <div class="w-full md:w-1/2 animate-fade-in-right">
+                        <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+                            alt="NakamaStream Desktop App"
+                            class="mx-auto w-full max-w-md rounded-lg shadow-2xl hover:animate-pulse">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="caracteristicas" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Características
+                    Exclusivas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div
+                        class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up">
+                        <i class="fas fa-rocket text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Rendimiento Optimizado</h3>
+                        <p class="text-gray-600">Disfruta de una experiencia fluida y rápida, optimizada para dispositivos Android.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up"
+                        style="animation-delay: 0.2s;">
+                        <i class="fas fa-paint-brush text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Mejor Interfaz</h3>
+                        <p class="text-gray-600">Interfaz intuitiva y moderna diseñada específicamente para dispositivos móviles.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 animate-fade-in-up"
+                        style="animation-delay: 0.4s;">
+                        <i class="fas fa-bolt text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Acceso Rápido</h3>
+                        <p class="text-gray-600">Accede a tus animes favoritos de forma instantánea desde cualquier lugar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="capturas" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Capturas de Pantalla
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/movile/home1.png?raw=true" alt="1"
+                        class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-left cursor-pointer"
+                        onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/movile/load2.png?raw=true" alt="2"
+                        class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-up cursor-pointer"
+                        style="animation-delay: 0.2s;" onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/movile/episodes3.png?raw=true" alt="3"
+                        class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-right cursor-pointer"
+                        style="animation-delay: 0.4s;" onclick="abrirModal(this.src)">
+                    <img src="https://github.com/NakamaStream/Resources/blob/main/img/movile/profile5.png?raw=true"
+                        alt="4"
+                        class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-right cursor-pointer"
+                        style="animation-delay: 0.4s;" onclick="abrirModal(this.src)">
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para mostrar la imagen -->
+        <div id="imagenModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-4 rounded-lg max-w-4xl max-h-full overflow-auto">
+                <img id="imagenModalContenido" src="" alt="Imagen ampliada" class="max-w-full max-h-full">
+                <button onclick="cerrarModal()"
+                    class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors duration-200">Cerrar</button>
+            </div>
+        </div>
+
+        <script>
+            function abrirModal(src) {
+                document.getElementById('imagenModalContenido').src = src;
+                document.getElementById('imagenModal').classList.remove('hidden');
+            }
+
+            function cerrarModal() {
+                document.getElementById('imagenModal').classList.add('hidden');
+            }
+        </script>
+
+        <section id="descargar" class="py-20 bg-primary text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-8 animate-fade-in-down">Descarga NakamaStream Mobile</h2>
+                <p class="text-xl mb-8 animate-fade-in-up">Disponible únicamente para Android</p>
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <a href="https://github.com/NakamaStream/NakamaStream-Android/releases" class="bg-white text-primary py-3 px-6 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-200 font-bold transform hover:scale-105 animate-fade-in-up" onclick="alert('Descargarás el archivo: NakamastreamAndroid.apk'); window.location.href='https://github.com/NakamaStream/NakamaStream-Android/releases';">
+                        <i class="fab fa-android mr-2"></i>Descargar APK
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="requisitos" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl text-primary font-bold text-center mb-12 animate-fade-in-down">Requisitos del
+                    Sistema</h2>
+                <div class="flex justify-center">
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg animate-fade-in-up max-w-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Android</h3>
+                        <ul class="list-disc list-inside text-gray-600">
+                            <li>Sistema Operativo: Android 10 o superior</li>
+                            <li>Memoria RAM: 2 GB mínimo</li>
+                            <li>Espacio en disco: 71.5 MB</li>
+                            <li>Conexión a Internet: 10 Mbps mínimo</li>
+                            <li>Archivo: NakamaStreamAndroid.apk</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../components/footer') %>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Cerrar menú al hacer scroll
+        window.addEventListener('scroll', () => {
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
