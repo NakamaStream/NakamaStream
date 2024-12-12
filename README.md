@@ -16,7 +16,7 @@ NakamaStream
 </p>
 
 <p align="center">
-  <a href="nakamastream.domcloud.dev" target="_blank">
+  <a href="nakamastream.lat" target="_blank">
     <img src="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" alt="Logo" width="200"/>
   </a>
 </p>
