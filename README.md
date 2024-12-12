@@ -235,7 +235,7 @@ Apreciamos tu colaboración para mejorar NakamaStream.
 
 <img src="https://contrib.rocks/image?repo=NakamaStream/NakamaStream">
 
-## Star History 📈
+## Historia de las estrellas 📈
 
 [![Stargazers over time](https://starchart.cc/NakamaStream/NakamaStream.svg?variant=adaptive)](https://starchart.cc/NakamaStream/NakamaStream)
 
