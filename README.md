@@ -52,29 +52,35 @@ Queremos enfatizar que, aunque proporcionamos acceso gratuito, no apoyamos ni pr
 <details>
 <summary>Características [Ver Más]</summary>
 
-### Generales
+## Autenticación y Seguridad
+- Sistema de Login y Register.
+- Sistema de verificación de IP por cuenta con un límite de 5 cuentas.
+- Sistema de hCaptcha y también uno propio para el login.
+- Sistema de ban.
 
-- **Animes Subtitulados al Español**: Disfruta de una amplia selección de animes con subtítulos en español.
-- **Sistemas de Creación de Cuentas y Iniciar Sesión**: Crea una cuenta y accede a tu perfil fácilmente.
-- **Sistema de Perfiles Personalizados**: Personaliza tu perfil con información y preferencias.
-- **Interfaz Amigable**: Navega por la plataforma con una interfaz intuitiva y fácil de usar.
-- **Página Rápida**: Disfruta de una navegación ágil y eficiente.
-- **Soporte para Dispositivos Android**: Accede a la plataforma desde tu dispositivo Android.
-- **Sistema de Reportar Problemas**: Informa sobre problemas con animes o episodios.
+## Gestión de Cuentas
+- Sistema de borrar cuentas.
+- Sistema de perfiles.
+- Sistema de personalizar perfil.
 
-### Funcionalidades
+## Administración
+- Sistema de admin.
+- Sistema de borrar comentarios (Admins).
 
-- **Sistema de Chat Integrado**: Interactúa con otros usuarios en tiempo real mediante un chat integrado.
-- **Sistema de Guardar Animes**: Guarda tus animes favoritos para verlos más tarde.
-- **Sistema de Añadir Animes a Favoritos**: Marca tus animes preferidos y accede a ellos rápidamente.
-- **Sistema de Calificar Anime**: Evalúa los animes que ves y comparte tus opiniones.
+## Gestión de Contenido (Animes)
+- Sistema de subir animes.
+- Sistema de borrar animes.
+- Sistema de editar animes.
+- Sistema de editar episodios.
+- Sistema de borrar episodios.
 
-### Administración
+## Interacción de Usuarios
+- Sistema de guardar animes.
+- Sistema de calificar animes.
+- Sistema de comentarios de animes globales y capítulos.
 
-- **Panel de Administración**: Administra la plataforma y gestiona usuarios, contenidos, y más.
-- **Sistema de Subir Nuevos Animes**: Añade nuevos animes a la plataforma fácilmente.
-- **Sistema de Subir Nuevos Capítulos**: Agrega nuevos capítulos a los animes existentes.
-- **Sistema de Ban**: Gestiona y aplica bans a usuarios que no cumplan con las normas de la comunidad.
+## Clasificación
+- Sistema de categorías.
 
 </details>
 
