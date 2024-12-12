@@ -72,8 +72,8 @@ app.use((error, req, res, next) => {
 app.use(
   cookieSession({
     name: "session",
-    keys: ["CristoferRosca"], // <- put here your key to encript cookies
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    keys: ["TU_CLAVE_SECRETA"], // Claves para encriptar la cookie
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
   })
 );
 
@@ -92,7 +92,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Redirect logged-in users from /login and /register to anime page
+// Redirigir a los usuarios registrados desde /login y /register a la página de anime
 app.use((req, res, next) => {
   if (req.session.loggedin && (req.path === "/login" || req.path === "/register")) {
     return res.redirect("/anime");
@@ -100,7 +100,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Redirect logged-in users from home to anime page
+// Redirigir a los usuarios registrados de la página de inicio a la página de anime
 app.use((req, res, next) => {
   if (req.session.loggedin && req.path === "/") {
     return res.redirect("/anime");
@@ -108,7 +108,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// View engine setup
+// Ver configuración del motor
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src", "views"));
 
@@ -116,7 +116,7 @@ app.set("views", path.join(__dirname, "src", "views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Static file serving
+// Servicio de archivos estáticos
 app.use(
   "/src/public/css",
   express.static("src/public/css", { "Content-Type": "text/css" })
@@ -129,7 +129,7 @@ app.use("/uploads", express.static(path.join(__dirname, "src/public/uploads")));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use("/favicons", express.static(path.join(__dirname, "src/public/favicons")));
 
-// Ban check middleware
+// Verificación de ban
 app.use((req, res, next) => {
   if (
     req.session.userId &&
@@ -214,7 +214,7 @@ app.use((req, res, next) => {
   res.status(404).render('error/404');
 });
 
-// Start server
+// Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto http://localhost:${PORT}/`);
