@@ -51,8 +51,30 @@
                             class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Github</a>
                         <a href="/donate"
                             class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Donaciones</a>
-                        <a href="/desktop"
-                            class="bg-primary text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-opacity-90">Descargar App</a>
+                        <button onclick="openDownloadModal()" 
+                            class="bg-primary text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-opacity-90">Descargar App</button>
+
+                        <!-- Modal de descarga -->
+                        <div id="downloadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                            <div class="bg-white p-6 rounded-lg shadow-xl">
+                                <h3 class="text-lg font-bold mb-4">Selecciona tu plataforma</h3>
+                                <div class="flex gap-4">
+                                    <a href="/desktop" class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90">Desktop</a>
+                                    <a href="/mobile" class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90">Mobile</a>
+                                </div>
+                                <button onclick="closeDownloadModal()" class="mt-4 text-gray-600 hover:text-gray-800">Cerrar</button>
+                            </div>
+                        </div>
+
+                        <script>
+                            function openDownloadModal() {
+                                document.getElementById('downloadModal').classList.remove('hidden');
+                            }
+                            
+                            function closeDownloadModal() {
+                                document.getElementById('downloadModal').classList.add('hidden');
+                            }
+                        </script>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -82,12 +104,34 @@
                     class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Github</a>
                 <a href="/donate"
                     class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Donaciones</a>
-                <a href="/desktop"
-                    class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90">Descargar App</a>
+                <button onclick="openDownloadModal()"
+                    class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90 w-full text-left">Descargar App</button>
                 <a href="/login" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar
                     sesión</a>
             </div>
         </div>
+
+        <!-- Modal de descarga móvil -->
+        <div id="downloadModalMobile" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <h3 class="text-lg font-bold mb-4">Selecciona tu plataforma</h3>
+                <div class="flex flex-col gap-4">
+                    <a href="/desktop" class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 text-center">Desktop</a>
+                    <a href="/mobile" class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 text-center">Mobile</a>
+                </div>
+                <button onclick="closeDownloadModalMobile()" class="mt-4 text-gray-600 hover:text-gray-800">Cerrar</button>
+            </div>
+        </div>
+
+        <script>
+            function openDownloadModal() {
+                document.getElementById('downloadModalMobile').classList.remove('hidden');
+            }
+            
+            function closeDownloadModalMobile() {
+                document.getElementById('downloadModalMobile').classList.add('hidden');
+            }
+        </script>
     </nav>
 
     <main>
@@ -270,7 +314,7 @@
 
                 loadRecentAnimes();
             });
-        </script>
+    </script>
 </body>
 
 </html>
