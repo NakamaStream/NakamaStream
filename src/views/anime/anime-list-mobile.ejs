@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="es" class="bg-gray-100">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime List - NakamaStream</title>
-    <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
+    <link rel="shortcut icon"
+        href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true"
+        type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="/src/public/css/extra/anime-list-mobile-animated.css">
 </head>
+
 <body class="font-roboto text-gray-800">
 
     <style>
         :root {
             --primary-color: #ff6b6b;
         }
+
         body {
             font-family: 'Poppins', sans-serif;
         }
+
         .bg-primary {
             background-color: var(--primary-color);
         }
+
         .text-primary {
             color: var(--primary-color);
         }
+
         .border-primary {
             border-color: var(--primary-color);
         }
+
         .hover\:bg-primary:hover {
             background-color: var(--primary-color);
         }
+
         .hover\:text-primary:hover {
             color: var(--primary-color);
         }
@@ -42,7 +52,8 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <a href="/" class="flex flex-col items-center group">
-                    <span class="text-2xl md:text-3xl font-bold text-primary group-hover:text-orange-500 transition duration-300">
+                    <span
+                        class="text-2xl md:text-3xl font-bold text-primary group-hover:text-orange-500 transition duration-300">
                         NakamaStream
                     </span>
                     <span class="text-primary text-xs mt-0.5 group-hover:text-gray-600 transition duration-300">
@@ -50,85 +61,125 @@
                     </span>
                 </a>
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-600 focus:outline-none hover:text-primary transition duration-300">
+                <button id="mobile-menu-toggle"
+                    class="md:hidden p-2 text-gray-600 focus:outline-none hover:text-primary transition duration-300">
                     <i id="mobile-menu-icon" class="fas fa-bars transition-transform duration-500"></i>
                 </button>
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-4">
-                    <a href="/" class="border-b-2 border-orange-500 text-gray-900 text-sm font-medium transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
-                    <a href="/news" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Noticias</a>
-                    <a href="/calendario" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Calendario</a>
-                    <a href="/animes/api/saved-animes" class="border-b-2 border-transparent text-gray-500 hover:border-orange-500 hover:text-orange-500 text-sm font-medium transition duration-300 hover:scale-110">Guardados</a>
+                <div class="hidden md:flex justify-center space-x-6">
+                    <a href="/"
+                        class="border-b-2 border-orange-500 text-gray-900 text-lg font-semibold transition duration-300 hover:scale-110 hover:text-orange-500">Inicio</a>
+                    <a href="/news"
+                        class="border-b-2 border-transparent text-gray-600 hover:border-orange-500 hover:text-orange-500 text-lg font-semibold transition duration-300 hover:scale-110">Noticias</a>
+                    <a href="/calendario"
+                        class="border-b-2 border-transparent text-gray-600 hover:border-orange-500 hover:text-orange-500 text-lg font-semibold transition duration-300 hover:scale-110">Calendario</a>
+                    <a href="/animes/api/saved-animes"
+                        class="border-b-2 border-transparent text-gray-600 hover:border-orange-500 hover:text-orange-500 text-lg font-semibold transition duration-300 hover:scale-110">Guardados</a>
 
                     <!-- User Menu -->
-                    <div class="relative group">
-                        <button id="user-menu-toggle" class="flex items-center text-gray-600 focus:outline-none hover:text-primary transition duration-300">
-                            <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition-transform duration-300">
-                            <span class="text-sm font-medium group-hover:text-orange-500 transition duration-300"><%= username %></span>
-                            <i id="user-menu-arrow" class="fas fa-chevron-down ml-1 transition-transform duration-500 group-hover:rotate-180"></i>
+                    <div class="relative group z-50">
+                        <button id="user-menu-toggle"
+                            class="flex items-center text-gray-700 focus:outline-none hover:text-primary transition duration-300">
+                            <img src="<%= profile_image_url || '/default-profile-image.png' %>" alt="User Avatar"
+                                class="w-10 h-10 rounded-full mr-2 hover:scale-110 transition-transform duration-300">
+                            <span class="text-lg font-semibold group-hover:text-orange-500 transition duration-300">
+                                <%= username %>
+                            </span>
+                            <i id="user-menu-arrow"
+                                class="fas fa-chevron-down ml-1 transition-transform duration-500 group-hover:rotate-180"></i>
                         </button>
-                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top-right group-hover:scale-100 group-hover:opacity-100 opacity-0">
-                            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Perfil</a>
-                            <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Guardados</a>
-                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Favoritos</a>
+                        <div id="user-menu"
+                            class="hidden absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-md transition-all duration-500 transform origin-top-right z-50">
+                            <a href="/perfil"
+                                class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Perfil</a>
+                            <a href="/animes/api/saved-animes"
+                                class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Guardados</a>
+                            <a href="/profile"
+                                class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Favoritos</a>
                             <% if (isAdmin) { %> <!-- Verificación de admin -->
                                 <div class="border-t mt-2"></div> <!-- Separador opcional -->
-                                <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Admin Panel</a>
-                                <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime</a>
-                                <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:pl-5 transition-all duration-300">Subir Anime Destacado</a>
+                                <a href="/admin/panel"
+                                    class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Admin
+                                    Panel</a>
+                                <a href="/anime/upload"
+                                    class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Subir
+                                    Anime</a>
+                                <a href="/admin/animes/featured"
+                                    class="block px-4 py-3 text-gray-700 hover:bg-orange-100 transition-all duration-300">Subir
+                                    Anime Destacado</a>
                             <% } %>
-                            <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 hover:pl-5 transition-all duration-300">Cerrar Sesión</a>
+                            <a href="/logout"
+                                class="block px-4 py-3 text-red-600 hover:bg-red-200 transition-all duration-300">Cerrar
+                                Sesión</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-all duration-500 transform scale-95 origin-top">
-                <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+            <div id="mobile-menu"
+                class="hidden md:hidden bg-white shadow-lg transition-all duration-500 transform scale-95 origin-top">
+                <a href="/"
+                    class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fas fa-home mr-2"></i> Inicio
                 </a>
-                <a href="/news" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                <a href="/news"
+                    class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-newspaper mr-2"></i> Noticias
                 </a>
-                <a href="/calendario" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                <a href="/calendario"
+                    class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-calendar mr-2"></i> Calendario
                 </a>
-                <a href="/animes/api/search" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                <a href="/animes/api/search"
+                    class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                     <i class="fa-solid fa-magnifying-glass mr-2"></i> Buscador
                 </a>
 
                 <!-- User Menu in Mobile -->
                 <div class="relative">
-                    <button id="user-menu-toggle-mobile" class="flex items-center w-full text-left px-4 py-2 text-gray-600 focus:outline-none hover:text-orange-500 transition duration-300">
-                        <img src="<%= profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>" alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition duration-300">
-                        <span class="text-sm font-medium"><%= username %></span>
-                        <i id="user-menu-arrow-mobile" class="fas fa-chevron-down ml-1 transition-transform duration-500 hover:rotate-180"></i>
+                    <button id="user-menu-toggle-mobile"
+                        class="flex items-center w-full text-left px-4 py-2 text-gray-600 focus:outline-none hover:text-orange-500 transition duration-300">
+                        <img src="<%= profile_image_url || 'https://avatars.githubusercontent.com/u/168317328?s=200&v=4' %>"
+                            alt="User Avatar" class="w-8 h-8 rounded-full mr-2 hover:scale-110 transition duration-300">
+                        <span class="text-sm font-medium">
+                            <%= username %>
+                        </span>
+                        <i id="user-menu-arrow-mobile"
+                            class="fas fa-chevron-down ml-1 transition-transform duration-500 hover:rotate-180"></i>
                     </button>
-                    <div id="user-menu-mobile" class="hidden bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top">
-                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                    <div id="user-menu-mobile"
+                        class="hidden bg-white shadow-lg rounded-md transition-all duration-500 transform scale-95 origin-top">
+                        <a href="/profile"
+                            class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                             <i class="fas fa-user mr-2"></i> Perfil
                         </a>
-                        <a href="/animes/api/saved-animes" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                        <a href="/animes/api/saved-animes"
+                            class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                             <i class="fa-solid fa-bookmark mr-2"></i> Guardados
                         </a>
-                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                        <a href="/profile"
+                            class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
                             <i class="fa-solid fa-star mr-2"></i> Favoritos
                         </a>
                         <% if (isAdmin) { %> <!-- Verificación de admin -->
-                        <div class="border-t mt-2"></div> <!-- Separador opcional -->
-                        <a href="/admin/panel" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
-                            <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
-                        </a>
-                        <a href="/anime/upload" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
-                            <i class="fa-solid fa-upload mr-2"></i> Subir Anime
-                        </a>
-                        <a href="/admin/animes/featured" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
-                            <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
-                        </a>
-                        <% } %>
-                        <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-200 transition duration-300 hover:pl-5">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-                        </a>
+                            <div class="border-t mt-2"></div> <!-- Separador opcional -->
+                            <a href="/admin/panel"
+                                class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-lock mr-2"></i> Panel de Admin
+                            </a>
+                            <a href="/anime/upload"
+                                class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-upload mr-2"></i> Subir Anime
+                            </a>
+                            <a href="/admin/animes/featured"
+                                class="block px-4 py-2 text-gray-700 hover:bg-orange-100 transition duration-300 hover:pl-5">
+                                <i class="fa-solid fa-star mr-2"></i> Subir Anime Destacado
+                            </a>
+                            <% } %>
+                                <a href="/logout"
+                                    class="block px-4 py-2 text-red-600 hover:bg-red-200 transition duration-300 hover:pl-5">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                                </a>
                     </div>
                 </div>
             </div>
@@ -142,30 +193,45 @@
                 <div id="carousel-inner" class="flex transition-transform duration-500 ease-in-out">
                     <div class="flex-none w-full lg:w-[80%] mx-auto">
                         <div class="relative h-60 md:h-72 lg:h-[36rem] rounded-lg overflow-hidden group">
-                          <% if (featuredAnime && featuredAnime.featured_image_url) { %>
-                            <img src="<%= featuredAnime.featured_image_url %>" alt="Imagen de <%= featuredAnime.name %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                          <% } else { %>
-                            <p>No hay imagen destacada disponible.</p>
-                          <% } %>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
-                                <h2 class="absolute top-0 left-0 p-4 text-white text-lg sm:text-xl font-semibold bg-black/50 rounded-br-lg">Anime del día</h2>
-                                <h3 class="text-white text-xl sm:text-2xl font-bold mb-2 mt-8 sm:mt-0"><%= featuredAnime.name %></h3>
-                                <% if (featuredAnime.description) { %>
-                                  <p class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">
-                                    <%= featuredAnime.description.length > 120 ? featuredAnime.description.substring(0, 120) + '...' : featuredAnime.description %>
-                                  </p>
+                            <% if (featuredAnime && featuredAnime.featured_image_url) { %>
+                                <img src="<%= featuredAnime.featured_image_url %>"
+                                    alt="Imagen de <%= featuredAnime.name %>"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 <% } else { %>
-                                  <p class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">Descripción no disponible.</p>
-                                <% } %>
-                                <div class="flex items-center space-x-4">
-                                    <span class="bg-orange-500 text-white px-2 py-1 rounded-full text-xs sm:text-sm">Sub</span>
-                                    <button 
-                                      class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-1 sm:py-2 rounded-full transition duration-300 flex items-center group text-xs sm:text-sm"
-                                      onclick="window.location.href='/anime/<%= featuredAnime.slug %>'">
-                                      <i class="fas fa-play mr-2 group-hover:animate-pulse"></i> Ver ahora
-                                    </button>
-                                </div>
-                            </div>
+                                    <p>No hay imagen destacada disponible.</p>
+                                    <% } %>
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
+                                            <h2
+                                                class="absolute top-0 left-0 p-4 text-white text-lg sm:text-xl font-semibold bg-black/50 rounded-br-lg">
+                                                Anime del día</h2>
+                                            <h3 class="text-white text-xl sm:text-2xl font-bold mb-2 mt-8 sm:mt-0">
+                                                <%= featuredAnime.name %>
+                                            </h3>
+                                            <% if (featuredAnime.description) { %>
+                                                <p
+                                                    class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">
+                                                    <%= featuredAnime.description.length> 120 ?
+                                                        featuredAnime.description.substring(0, 120) + '...' :
+                                                        featuredAnime.description %>
+                                                </p>
+                                                <% } else { %>
+                                                    <p
+                                                        class="text-gray-300 mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">
+                                                        Descripción no disponible.</p>
+                                                    <% } %>
+                                                        <div class="flex items-center space-x-4">
+                                                            <span
+                                                                class="bg-orange-500 text-white px-2 py-1 rounded-full text-xs sm:text-sm">Sub</span>
+                                                            <button
+                                                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-6 py-1 sm:py-2 rounded-full transition duration-300 flex items-center group text-xs sm:text-sm"
+                                                                onclick="window.location.href='/anime/<%= featuredAnime.slug %>'">
+                                                                <i
+                                                                    class="fas fa-play mr-2 group-hover:animate-pulse"></i>
+                                                                Ver ahora
+                                                            </button>
+                                                        </div>
+                                        </div>
                         </div>
                     </div>
                     <!-- Aquí puedes añadir más divs para otros elementos del carrusel -->
@@ -181,16 +247,20 @@
             <a href="https://discord.com/invite/Rdz4yQneMK" target="_blank" class="text-gray-500 hover:text-blue-600">
                 <i class="fab fa-discord text-2xl"></i>
             </a>
-            <a href="https://bsky.app/profile/nakamastream.lat" target="_blank" class="text-gray-500 hover:text-blue-400">
+            <a href="https://bsky.app/profile/nakamastream.lat" target="_blank"
+                class="text-gray-500 hover:text-blue-400">
                 <i class="fab fa-bluesky text-2xl"></i>
             </a>
-            <a href="https://www.instagram.com/nakamastreamoficial/" target="_blank" class="text-gray-500 hover:text-pink-500">
+            <a href="https://www.instagram.com/nakamastreamoficial/" target="_blank"
+                class="text-gray-500 hover:text-pink-500">
                 <i class="fab fa-instagram text-2xl"></i>
             </a>
-            <a href="https://www.tiktok.com/@nakamastreamoficial?lang" target="_blank" class="text-gray-500 hover:text-pink-500">
+            <a href="https://www.tiktok.com/@nakamastreamoficial?lang" target="_blank"
+                class="text-gray-500 hover:text-pink-500">
                 <i class="fab fa-tiktok text-2xl"></i>
             </a>
-            <a href="https://www.youtube.com/@NakamaStreamOficial" target="_blank" class="text-gray-500 hover:text-red-600">
+            <a href="https://www.youtube.com/@NakamaStreamOficial" target="_blank"
+                class="text-gray-500 hover:text-red-600">
                 <i class="fab fa-youtube text-2xl"></i>
             </a>
         </div>
@@ -200,128 +270,160 @@
     <div class="container mx-auto px-4 py-4">
         <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes En emisión</h2>
         <div class="flex gap-4 overflow-x-auto">
-            <% animes.filter(anime => anime.status === 'ongoing').slice(0, 10).forEach(anime => { %>
-                <a href="/anime/<%= anime.slug %>" class="flex-none w-56 relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
+            <% animes.filter(anime=> anime.status === 'ongoing').slice(0, 10).forEach(anime => { %>
+                <a href="/anime/<%= anime.slug %>"
+                    class="flex-none w-56 relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover"
+                        loading="lazy">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
                         <div class="text-white text-center drop-shadow-lg">
-                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
-                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                            <h2 class="text-sm font-semibold mb-1 truncate">
+                                <%= anime.name %>
+                            </h2>
+                            <p
+                                class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
                                 <%= anime.description %>
                             </p>
-                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
-                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
+                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP.
+                                <%= anime.episodeCount %></span>
+                            <span
+                                class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
                                 <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
-                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                                <%= anime.status==='ongoing' ? 'En emisión' : 'Finalizado' %>
                             </span>
                         </div>
                     </div>
                 </a>
-            <% }); %>
+                <% }); %>
         </div>
     </div>
-    
+
     <div class="container mx-auto px-4 py-4">
         <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes Recientes</h2>
         <div class="relative" data-carousel-container>
             <div class="carousel-container overflow-x-auto flex gap-4" data-carousel>
                 <div id="recent-anime-carousel" class="flex transition-transform duration-300 ease-in-out">
-                    <% animes.slice(0, 10).forEach((anime, index) => { %>
+                    <% animes.slice(0, 10).forEach((anime, index)=> { %>
                         <div class="flex-none w-56 px-2" data-anime-card> <!-- w-56 para hacer coincidir el tamaño -->
-                            <a href="/anime/<%= anime.slug %>" class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                            <a href="/anime/<%= anime.slug %>"
+                                class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
                                 <div class="aspect-w-2 aspect-h-3 bg-gray-200">
-                                    <img 
-                                        src="<%= index < 6 ? anime.imageUrl : '' %>" 
-                                        data-src="<%= anime.imageUrl %>" 
-                                        alt="<%= anime.name %>" 
+                                    <img src="<%= index < 6 ? anime.imageUrl : '' %>" data-src="<%= anime.imageUrl %>"
+                                        alt="<%= anime.name %>"
                                         class="w-full h-full object-cover rounded-t-lg <%= index >= 5 ? 'lazy-load' : '' %>"
-                                        loading="<%= index < 6 ? 'eager' : 'lazy' %>"
-                                    >
+                                        loading="<%= index < 6 ? 'eager' : 'lazy' %>">
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
                                     <div class="text-white">
-                                        <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2> <!-- Ajuste del tamaño de texto -->
+                                        <h2 class="text-sm font-semibold mb-1 truncate">
+                                            <%= anime.name %>
+                                        </h2> <!-- Ajuste del tamaño de texto -->
                                         <div class="description-container">
-                                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                            <p
+                                                class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
                                                 <%= anime.description %>
                                             </p>
                                         </div>
                                         <div class="flex flex-wrap gap-2 mt-2">
-                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP. <%= anime.episodeCount %></span>
-                                            <span class="text-xs <%= anime.status === 'ongoing' ? 'bg-blue-500' : 'bg-green-500' %> text-white px-2 py-1 rounded-full">
-                                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">EP.
+                                                <%= anime.episodeCount %></span>
+                                            <span
+                                                class="text-xs <%= anime.status === 'ongoing' ? 'bg-blue-500' : 'bg-green-500' %> text-white px-2 py-1 rounded-full">
+                                                <%= anime.status==='ongoing' ? 'En emisión' : 'Finalizado' %>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                    <% }); %>
+                        <% }); %>
                 </div>
             </div>
 
             <!-- Animes por Categoría -->
             <div class="container mx-auto px-4 py-4">
                 <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes por Categoría</h2>
-                
-                <% Object.keys(groupedAnimes).forEach(category => { %>
+
+                <% Object.keys(groupedAnimes).forEach(category=> { %>
                     <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-3"><%= category %></h3>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                            <%= category %>
+                        </h3>
                         <div class="flex gap-4 overflow-x-auto">
-                            <% groupedAnimes[category].slice(0, 10).forEach(anime => { %>
-                                <a href="/anime/<%= anime.slug %>" class="flex-none w-56 relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>" class="w-full h-full object-cover" loading="lazy">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
+                            <% groupedAnimes[category].slice(0, 10).forEach(anime=> { %>
+                                <a href="/anime/<%= anime.slug %>"
+                                    class="flex-none w-56 relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                                    <img src="<%= anime.imageUrl %>" alt="<%= anime.name %>"
+                                        class="w-full h-full object-cover" loading="lazy">
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2">
                                         <div class="text-white text-center drop-shadow-lg">
-                                            <h2 class="text-sm font-semibold mb-1 truncate"><%= anime.name %></h2>
-                                            <p class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                            <h2 class="text-sm font-semibold mb-1 truncate">
+                                                <%= anime.name %>
+                                            </h2>
+                                            <p
+                                                class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
                                                 <%= anime.description %>
                                             </p>
-                                            <span class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP. <%= anime.episodeCount %></span>
-                                            <span class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
+                                            <span
+                                                class="text-xs bg-orange-500 text-white px-2 py-1 rounded-full mt-2 inline-block">EP.
+                                                <%= anime.episodeCount %></span>
+                                            <span
+                                                class="text-xs px-3 py-1 rounded-full text-white transform transition-all duration-500 ease-in-out 
                                                 <%= anime.status === 'ongoing' ? 'bg-blue-500 scale-105 opacity-100' : 'bg-green-500 scale-95 opacity-90' %>">
-                                                <%= anime.status === 'ongoing' ? 'En emisión' : 'Finalizado' %>
+                                                <%= anime.status==='ongoing' ? 'En emisión' : 'Finalizado' %>
                                             </span>
                                         </div>
                                     </div>
                                 </a>
-                            <% }); %>
+                                <% }); %>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </div>
-    
+
             <!-- Botones de navegación -->
-            <button id="prevBtnRecent" class="hidden sm:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Diapositiva anterior">
+            <button id="prevBtnRecent"
+                class="hidden sm:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10"
+                aria-label="Diapositiva anterior">
                 <i class="fas fa-chevron-left text-2xl"></i>
             </button>
-            <button id="nextBtnRecent" class="hidden sm:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10" aria-label="Siguiente diapositiva">
+            <button id="nextBtnRecent"
+                class="hidden sm:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 hover:text-gray-900 rounded-full w-12 h-12 items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 z-10"
+                aria-label="Siguiente diapositiva">
                 <i class="fas fa-chevron-right text-2xl"></i>
             </button>
         </div>
     </div>
-    
+
     <%- include('../components/donors') %>
-                                 
-    <!-- Announcement Modal -->
-    <div id="announcement-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
-        <div class="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
-            <h2 class="text-xl font-bold mb-2 text-gray-800">Anuncio</h2>
-            <div id="announcement-message" class="mb-4 text-gray-700"></div>
-            <button id="close-announcement" class="w-full bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 font-semibold">Cerrar</button>
+
+        <!-- Announcement Modal -->
+        <div id="announcement-modal"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+            <div class="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
+                <h2 class="text-xl font-bold mb-2 text-gray-800">Anuncio</h2>
+                <div id="announcement-message" class="mb-4 text-gray-700"></div>
+                <button id="close-announcement"
+                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 font-semibold">Cerrar</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Botón para volver arriba -->
-    <button id="back-to-top" class="fixed bottom-20 right-5 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-orange-600 transition duration-300 hidden" aria-label="Volver arriba">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+        <!-- Botón para volver arriba -->
+        <button id="back-to-top"
+            class="fixed bottom-20 right-5 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-orange-600 transition duration-300 hidden"
+            aria-label="Volver arriba">
+            <i class="fas fa-chevron-up"></i>
+        </button>
 
-    <%- include('../components/mobile/bottom-navigation') %>
+        <%- include('../components/mobile/bottom-navigation') %>
 
-    <script src="/src/public/js/anime/anime-list.js"></script>
-    <script src="/src/public/js/global/lazy-load.js"></script>
-    <script src="/src/public/js/anime/NavMobile-universal.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+            <script src="/src/public/js/anime/anime-list.js"></script>
+            <script src="/src/public/js/global/lazy-load.js"></script>
+            <script src="/src/public/js/anime/NavMobile-universal.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
+
 </html>
