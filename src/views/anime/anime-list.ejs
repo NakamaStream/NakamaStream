@@ -33,6 +33,28 @@
                 <a href="/calendario" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Calendario
                 </a>
+                <button id="downloadBtn" class="bg-gray-ff6b6b text-white inline-flex items-center px-4 py-2 rounded-md shadow-md hover:bg-gray-e55b5b transition duration-300 text-sm font-medium">
+                  ¡Descarga nuestra App!
+                </button>
+              </div>
+
+              <!-- Modal de descargas -->
+              <div id="downloadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 hidden z-50">
+                <div class="bg-white rounded-lg p-8 w-11/12 md:w-1/3 shadow-lg">
+                  <h2 class="text-2xl font-semibold mb-4 text-center">Opciones de Descarga</h2>
+                  <p class="mb-4 text-center">Elige tu opción preferida:</p>
+                  <div class="flex flex-col space-y-3">
+                    <a href="/desktop" class="flex items-center justify-center bg-blue-600 text-white py-3 rounded-lg transition duration-300 hover:bg-blue-700">
+                      <i class="fas fa-desktop mr-2"></i> Descargar para Escritorio
+                    </a>
+                    <a href="/mobile" class="flex items-center justify-center bg-green-600 text-white py-3 rounded-lg transition duration-300 hover:bg-green-700">
+                      <i class="fas fa-mobile-alt mr-2"></i> Descargar para Móvil
+                    </a>
+                  </div>
+                  <button id="closeModal" class="mt-6 bg-gray-ff6b6b text-white py-3 rounded-lg w-full transition duration-300 hover:bg-gray-e55b5b">
+                    <i class="fas fa-times mr-2"></i> Cerrar
+                  </button>
+                </div>
               </div>
             </div>
             <div class="flex items-center">
