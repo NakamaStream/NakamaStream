@@ -113,3 +113,18 @@ document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('back-to-top').onclick = function() {
     window.scrollTo({top: 0, behavior: 'smooth'});
 };
+
+
+// Modal de descargas de las apps
+
+const downloadBtn = document.getElementById('downloadBtn');
+const downloadModal = document.getElementById('downloadModal');
+const closeModal = document.getElementById('closeModal');
+
+downloadBtn.addEventListener('click', () => {
+    downloadModal.classList.remove('hidden');
+});
+
+closeModal.addEventListener('click', () => {
+    downloadModal.classList.add('hidden');
+});
