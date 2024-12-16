@@ -1,7 +1,28 @@
+# Configuración de claves para integrar hCaptcha en los entornos de desarrollo y producción.
+# hCaptcha es un servicio que ayuda a proteger tus aplicaciones contra bots.
+# Asegúrate de reemplazar los valores con las claves proporcionadas por hCaptcha.
+
 development:
+  # Claves para el entorno de desarrollo (local o pruebas).
+  # Reemplaza "TU_SITE_KEY" con tu clave pública de hCaptcha para desarrollo.
   site_key: "TU_SITE_KEY"
+  
+  # Reemplaza "TU_SECRET_KEY" con tu clave secreta de hCaptcha para desarrollo.
+  # La clave secreta es confidencial. No la compartas ni la publiques.
   secret_key: "TU_SECRET_KEY"
 
 production:
+  # Claves para el entorno de producción (en vivo).
+  # Reemplaza "TU_SITE_KEY" con tu clave pública de hCaptcha para producción.
   site_key: "TU_SITE_KEY"
+  
+  # Reemplaza "TU_SECRET_KEY" con tu clave secreta de hCaptcha para producción.
+  # La clave secreta es confidencial. Asegúrate de mantenerla segura.
   secret_key: "TU_SECRET_KEY"
+
+# Notas importantes:
+# - "site_key" (clave pública) se usa en el frontend para inicializar el widget de hCaptcha.
+# - "secret_key" (clave privada) se usa en el backend para verificar los tokens enviados por el cliente.
+# - El entorno "development" es ideal para pruebas locales y no debería compartirse.
+# - Asegúrate de mantener las claves de "production" fuera del alcance público.
+# - No incluyas este archivo en repositorios públicos.
