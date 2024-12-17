@@ -1,5 +1,5 @@
 const cache = {}; // Caché en memoria
-const CACHE_DURATION = 10 * 60 * 1000; // Duración de la caché (10 minutos)
+const CACHE_DURATION = 2 * 24 * 60 * 60 * 1000; // Duración de la caché (2 días)
 
 // Middleware de caché
 function cacheAnimes(key) {
