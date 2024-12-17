@@ -8,7 +8,7 @@ const path = require("path");
 const yaml = require('js-yaml');
 const fs = require("fs");
 const axios = require('axios');
-
+const cacheAnimes = require('../services/cache.animes');
 router.use(useragent.express());
 
 // Multer configuration
@@ -99,7 +99,7 @@ function generateUniqueSlug(categorySlug, name, callback) {
   checkSlug();
 }
 
-router.get("/anime", isLoggedIn, (req, res) => {
+router.get("/anime", isLoggedIn, cacheAnimes("animeListCache"), (req, res) => {
   const query = `
     SELECT a.*, c.name as category_name, COUNT(e.id) as episodeCount, a.featured_image_url
     FROM animes a
@@ -140,17 +140,18 @@ router.get("/anime", isLoggedIn, (req, res) => {
       };
 
       // Fetch user information
-      db.query("SELECT username, profile_image_url FROM usuarios WHERE id = ?", [req.session.userId], (userErr, userResults) => {
-        if (userErr) {
-          console.error(userErr);
-          return res.status(500).send("Error al recuperar información del usuario");
-        }
+      db.query(
+        "SELECT username, profile_image_url FROM usuarios WHERE id = ?",
+        [req.session.userId],
+        (userErr, userResults) => {
+          if (userErr) {
+            console.error(userErr);
+            return res.status(500).send("Error al recuperar información del usuario");
+          }
 
-        const user = userResults[0] || {};
+          const user = userResults[0] || {};
 
-        // Check if the user is on a mobile or tablet device
-        if (req.useragent.isMobile || req.useragent.isTablet) {
-          res.render("anime/anime-list-mobile", {
+          const renderData = {
             groupedAnimes: groupedAnimes,
             featuredAnime: featuredAnime,
             animes: rows,
@@ -158,25 +159,21 @@ router.get("/anime", isLoggedIn, (req, res) => {
             isAdmin: req.session.isAdmin,
             username: user.username,
             profile_image_url: user.profile_image_url,
-          });
-        } else {
-          res.render("anime/anime-list", {
-            groupedAnimes: groupedAnimes,
-            featuredAnime: featuredAnime,
-            animes: rows,
-            user: req.session.user,
-            isAdmin: req.session.isAdmin,
-            username: user.username,
-            profile_image_url: user.profile_image_url,
-          });
+          };
+
+          // Verificar si el usuario está en un dispositivo móvil o tablet
+          if (req.useragent.isMobile || req.useragent.isTablet) {
+            res.render("anime/anime-list-mobile", renderData); // Renderiza para móviles
+          } else {
+            res.render("anime/anime-list", renderData); // Renderiza para escritorio
+          }
         }
-      });
+      );
     });
   });
 });
 
-
-router.get("/animes/api/search", isLoggedIn, (req, res) => {
+router.get("/animes/api/search", isLoggedIn, cacheAnimes("animeSearchCache"), (req, res) => {
   const query = `
     SELECT a.*, c.name as category_name, COUNT(e.id) as episodeCount
     FROM animes a
@@ -205,7 +202,18 @@ router.get("/animes/api/search", isLoggedIn, (req, res) => {
 
         const user = userResults[0] || {};
 
-        // Check if the user is on a mobile or tablet device
+        // Devolver respuesta en formato JSON para la API
+        if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+          return res.json({
+            animes: rows,
+            isAdmin: req.session.isAdmin,
+            user: req.session.user,
+            username: user.username,
+            profile_image_url: user.profile_image_url,
+          });
+        }
+
+        // Si no es una petición API (es una vista HTML), se renderiza
         if (req.useragent.isMobile || req.useragent.isTablet) {
           res.render("anime/anime-search-mobile", {
             animes: rows,
@@ -227,6 +235,7 @@ router.get("/animes/api/search", isLoggedIn, (req, res) => {
     );
   });
 });
+
 
 router.get("/admin/animes/featured", isLoggedIn, isAdmin, (req, res) => {
   const query = `
@@ -435,7 +444,7 @@ router.post("/anime/upload", isLoggedIn, isAdmin, (req, res) => {
   );
 });
 
-router.get("/anime/:slug", isLoggedIn, (req, res) => {
+router.get("/anime/:slug", isLoggedIn, cacheAnimes("animeSlugCache"), (req, res) => {
   const slug = req.params.slug;
   const userId = req.session.userId;
 
@@ -506,6 +515,23 @@ router.get("/anime/:slug", isLoggedIn, (req, res) => {
                               ? "anime/anime-detail-mobile"
                               : "anime/anime-detail";
 
+                            // Verificar si es una solicitud de tipo API (JSON)
+                            if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+                              return res.json({
+                                anime: anime,
+                                release_date: anime.release_date,
+                                episodes: episodeResults,
+                                views: views,
+                                isAdmin: user.is_admin,
+                                user: {
+                                  username: user.username,
+                                  profile_image_url: user.profile_image_url,
+                                  isAdmin: user.is_admin,
+                                }
+                              });
+                            }
+
+                            // Si no es una solicitud API, renderizar la vista
                             res.render(template, {
                               anime: anime,
                               release_date: anime.release_date,
@@ -720,8 +746,7 @@ router.get("/anime/category/:categorySlug", isLoggedIn, (req, res) => {
   });
 });
 
-// Route to get episode details
-router.get("/anime/:slug/episode/:episodeNumber", isLoggedIn, (req, res) => {
+router.get("/anime/:slug/episode/:episodeNumber", isLoggedIn, cacheAnimes("episodeDetailCache"), (req, res) => {
   const { slug, episodeNumber } = req.params;
   const userId = req.session.userId;
 
@@ -784,6 +809,26 @@ router.get("/anime/:slug/episode/:episodeNumber", isLoggedIn, (req, res) => {
                     );
                   }
 
+                  // Verificar si la solicitud es de tipo API (JSON)
+                  if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+                    return res.json({
+                      anime: {
+                        id: episode.anime_id,
+                        name: episode.name,
+                        slug: episode.slug,
+                        category_name: episode.category_name,
+                      },
+                      episode: episode,
+                      nextEpisodes: nextEpisodesResults,
+                      user: {
+                        username: user.username,
+                        profile_image_url: user.profile_image_url,
+                        isAdmin: user.is_admin,
+                      }
+                    });
+                  }
+
+                  // Si no es una solicitud de API, renderizar la vista
                   if (req.useragent.isMobile || req.useragent.isTablet) {
                     res.render("anime/episode-detail-mobile", {
                       anime: {
