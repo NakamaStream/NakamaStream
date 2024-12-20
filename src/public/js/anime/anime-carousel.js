@@ -130,6 +130,7 @@ class SmoothDragScroll {
     }
 
     onMouseDown = (e) => {
+        if (e.button !== 2) return; // Solo activar con el botón derecho
         this.mouseDown = true;
         this.element.classList.add('dragging');
         this.startX = e.pageX - this.element.offsetLeft;
@@ -145,6 +146,7 @@ class SmoothDragScroll {
     }
 
     onMouseUp = () => {
+        if (!this.mouseDown) return;
         this.mouseDown = false;
         this.element.classList.remove('dragging');
         this.beginMomentumTracking();
@@ -225,4 +227,9 @@ class SmoothDragScroll {
 document.addEventListener('DOMContentLoaded', () => {
     const carousels = document.querySelectorAll('[data-drag-scroll]');
     carousels.forEach(carousel => new SmoothDragScroll(carousel));
+});
+
+// Prevenir el menú contextual en los carruseles
+document.querySelectorAll('[data-drag-scroll]').forEach(element => {
+    element.addEventListener('contextmenu', (e) => e.preventDefault());
 });
