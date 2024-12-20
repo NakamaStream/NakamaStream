@@ -114,12 +114,14 @@ router.get("/anime", isLoggedIn, cacheAnimes("animeListCache"), (req, res) => {
 
   // Consulta para obtener los animes con mejor calificación
   const topRatedQuery = `
-  SELECT a.id, a.slug, a.name, a.imageUrl, AVG(r.rating) AS average_rating
-  FROM animes a
-  LEFT JOIN ratings r ON a.id = r.anime_id
-  GROUP BY a.id
-  ORDER BY average_rating DESC
-  LIMIT 10;
+    SELECT a.id, a.slug, a.name, a.imageUrl, 
+          AVG(r.rating) AS average_rating, 
+          COUNT(r.id) AS vote_count
+    FROM animes a
+    LEFT JOIN ratings r ON a.id = r.anime_id
+    GROUP BY a.id
+    ORDER BY average_rating DESC, vote_count DESC
+    LIMIT 10;
   `;
 
   db.query(query, (err, rows) => {
