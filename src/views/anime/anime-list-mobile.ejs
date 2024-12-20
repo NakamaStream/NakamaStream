@@ -342,6 +342,50 @@
                 </div>
             </div>
 
+            <!-- Animes Mejor Calificados -->
+            <div class="container mx-auto px-4 py-4">
+                <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes Mejor Calificados</h2>
+                <div class="relative" data-carousel-container>
+                    <div class="carousel-container overflow-x-auto flex gap-4" data-carousel>
+                        <div id="top-rated-anime-carousel" class="flex transition-transform duration-300 ease-in-out">
+                            <% topRatedAnimes.slice(0, 10).forEach((anime, index)=> { %>
+                                <div class="flex-none w-56 px-2" data-anime-card> <!-- w-56 para hacer coincidir el tamaño -->
+                                    <a href="/anime/<%= anime.slug %>"
+                                        class="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                                        <div class="aspect-w-2 aspect-h-3 bg-gray-200">
+                                            <img src="<%= index < 6 ? anime.imageUrl : '' %>" data-src="<%= anime.imageUrl %>"
+                                                alt="<%= anime.name %>"
+                                                class="w-full h-full object-cover rounded-t-lg <%= index >= 5 ? 'lazy-load' : '' %>"
+                                                loading="<%= index < 6 ? 'eager' : 'lazy' %>">
+                                        </div>
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                                            <div class="text-white">
+                                                <h2 class="text-sm font-semibold mb-1 truncate">
+                                                    <%= anime.name %>
+                                                </h2>
+                                                <div class="description-container">
+                                                    <p
+                                                        class="description-text text-xs h-16 overflow-y-auto line-clamp-3 pr-1 bg-black/60 p-2 rounded-md">
+                                                        <%= anime.description %>
+                                                    </p>
+                                                </div>
+                                                <div class="flex flex-wrap gap-2 mt-2">
+                                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                                <span class="font-semibold">
+                                                    <%= anime.average_rating.toFixed(1) %>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Animes por Categoría -->
             <div class="container mx-auto px-4 py-4">
                 <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Animes por Categoría</h2>
