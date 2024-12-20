@@ -112,6 +112,16 @@ router.get("/anime", isLoggedIn, cacheAnimes("animeListCache"), (req, res) => {
   // Consulta para obtener el anime destacado
   const featuredQuery = `SELECT * FROM animes WHERE is_featured = 1 LIMIT 1`;
 
+  // Consulta para obtener los animes con mejor calificación
+  const topRatedQuery = `
+  SELECT a.id, a.slug, a.name, a.imageUrl, AVG(r.rating) AS average_rating
+  FROM animes a
+  LEFT JOIN ratings r ON a.id = r.anime_id
+  GROUP BY a.id
+  ORDER BY average_rating DESC
+  LIMIT 10;
+  `;
+
   db.query(query, (err, rows) => {
     if (err) {
       console.error(err);
@@ -139,36 +149,45 @@ router.get("/anime", isLoggedIn, cacheAnimes("animeListCache"), (req, res) => {
         featured_image_url: null,
       };
 
-      // Fetch user information
-      db.query(
-        "SELECT username, profile_image_url FROM usuarios WHERE id = ?",
-        [req.session.userId],
-        (userErr, userResults) => {
-          if (userErr) {
-            console.error(userErr);
-            return res.status(500).send("Error al recuperar información del usuario");
-          }
-
-          const user = userResults[0] || {};
-
-          const renderData = {
-            groupedAnimes: groupedAnimes,
-            featuredAnime: featuredAnime,
-            animes: rows,
-            user: req.session.user,
-            isAdmin: req.session.isAdmin,
-            username: user.username,
-            profile_image_url: user.profile_image_url,
-          };
-
-          // Verificar si el usuario está en un dispositivo móvil o tablet
-          if (req.useragent.isMobile || req.useragent.isTablet) {
-            res.render("anime/anime-list-mobile", renderData); // Renderiza para móviles
-          } else {
-            res.render("anime/anime-list", renderData); // Renderiza para escritorio
-          }
+      // Obtener los animes mejor calificados
+      db.query(topRatedQuery, (topRatedErr, topRatedResults) => {
+        if (topRatedErr) {
+          console.error(topRatedErr);
+          return res.status(500).send("Error al recuperar animes mejor calificados");
         }
-      );
+
+        // Fetch user information
+        db.query(
+          "SELECT username, profile_image_url FROM usuarios WHERE id = ?",
+          [req.session.userId],
+          (userErr, userResults) => {
+            if (userErr) {
+              console.error(userErr);
+              return res.status(500).send("Error al recuperar información del usuario");
+            }
+
+            const user = userResults[0] || {};
+
+            const renderData = {
+              groupedAnimes: groupedAnimes,
+              featuredAnime: featuredAnime,
+              animes: rows,
+              topRatedAnimes: topRatedResults, // Animes mejor calificados
+              user: req.session.user,
+              isAdmin: req.session.isAdmin,
+              username: user.username,
+              profile_image_url: user.profile_image_url,
+            };
+
+            // Verificar si el usuario está en un dispositivo móvil o tablet
+            if (req.useragent.isMobile || req.useragent.isTablet) {
+              res.render("anime/anime-list-mobile", renderData); // Renderiza para móviles
+            } else {
+              res.render("anime/anime-list", renderData); // Renderiza para escritorio
+            }
+          }
+        );
+      });
     });
   });
 });
