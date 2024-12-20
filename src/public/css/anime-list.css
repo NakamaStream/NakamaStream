@@ -11,16 +11,6 @@ body {
     scroll-behavior: smooth;
 }
 
-.waifu-noresul {
-    animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    mask-image: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 1) 90%,
-        rgba(255, 255, 255, 0) 100%
-    );
-}
-
 .nav-link {
     @apply text-white hover:text-gray-400;
 }
@@ -268,4 +258,54 @@ body {
     color: white;
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al hacer hover */
+}
+
+/* Top anime Scroll de botones*/
+
+#anime-scroll {
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+
+/* Scroll de los contenedores de las categorias */
+
+.carousel-container {
+    overflow: hidden;
+}
+
+.carousel {
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    will-change: transform;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel.dragging {
+    scroll-behavior: auto;
+    cursor: grabbing;
+}
+
+.carousel.dragging a {
+    pointer-events: none;
+}
+
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.carousel:active {
+    cursor: grabbing;
+}
+
+.carousel>* {
+    transform: translateZ(0);
 }
