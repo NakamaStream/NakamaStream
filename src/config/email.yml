@@ -13,5 +13,41 @@ nodemailer:
 
 
 resetPasswordBaseURL: "http://localhost:3000"
-resetPasswordSubject: "Restablecimiento de contraseña"
-resetPasswordMessage: "Hola, por favor usa el siguiente enlace para restablecer tu contraseña: {link}. Este enlace expira en 1 hora."
+
+# Array de mensajes para recuperación de contraseña
+resetPasswordTemplates:
+  - subject: "Recupera tu cuenta de NakamaStream"
+    message: |
+      ¡Hola! Recibimos tu solicitud para restablecer tu contraseña.
+      
+      Haz clic en este enlace para continuar: {link}
+      
+      Si no solicitaste este cambio, puedes ignorar este mensaje.
+      El enlace expirará en 1 hora por seguridad.
+
+  - subject: "Restablecimiento de contraseña - NakamaStream"
+    message: |
+      Has solicitado restablecer tu contraseña en NakamaStream.
+      
+      Para crear una nueva contraseña, visita: {link}
+      
+      Este enlace expirará en 1 hora por seguridad.
+      Si no realizaste esta solicitud, por favor ignora este mensaje.
+
+  - subject: "Cambio de contraseña solicitado"
+    message: |
+      Recibimos una solicitud para cambiar tu contraseña.
+      
+      Si fuiste tú, usa este enlace: {link}
+      
+      Por favor, ignora este correo si no solicitaste el cambio.
+      Recuerda que este enlace es válido solo por 1 hora.
+
+  - subject: "Solicitud de nueva contraseña en NakamaStream"
+    message: |
+      Alguien solicitó un enlace para cambiar tu contraseña en NakamaStream.
+      
+      Puedes hacerlo a través de este enlace: {link}
+      
+      Si no fuiste tú quien lo solicitó, no te preocupes, tu cuenta sigue segura.
+      Este enlace caducará en 1 hora.
