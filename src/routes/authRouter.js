@@ -347,6 +347,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Función para obtener un mensaje aleatorio del config
+const getRandomTemplate = (emailConfig, resetLink) => {
+  const templates = emailConfig.resetPasswordTemplates;
+  const template = templates[Math.floor(Math.random() * templates.length)];
+  return {
+    subject: template.subject,
+    text: template.message.replace('{link}', resetLink)
+  };
+};
 
 // Ruta para solicitar el restablecimiento de contraseña
 router.post("/password/forgot", (req, res) => {
@@ -381,12 +390,13 @@ router.post("/password/forgot", (req, res) => {
 
         // Construir el enlace de restablecimiento de contraseña
         const resetLink = `${emailConfig.resetPasswordBaseURL}/reset-password?token=${token}&id=${userId}`;
-        const message = emailConfig.resetPasswordMessage.replace('{link}', resetLink);
+        const template = getRandomTemplate(emailConfig, resetLink);
+        
         const mailOptions = {
           from: emailConfig.nodemailer.user,
           to: email,
-          subject: emailConfig.resetPasswordSubject,
-          text: message,
+          subject: template.subject,
+          text: template.text,
         };
 
         transporter.sendMail(mailOptions, (err, info) => {
