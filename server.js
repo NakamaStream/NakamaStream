@@ -17,6 +17,7 @@ const botapiRouter = require("./src/routes/botapiRouter");
 
 const db = require("./src/services/db");
 
+// Configuracion del servidor express
 const app = express();
 const server = http.createServer(app);
 
