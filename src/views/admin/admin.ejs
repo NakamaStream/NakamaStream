@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="bg-[#121212]">
+<html lang="es" class="bg-pink-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +28,23 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        /* Personalización del scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
         }
     </style>
 </head>
@@ -151,7 +168,7 @@
                                             <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-gray-200">
+                                    <tbody class="divide-y divide-gray-200" id="usersTableBody">
                                         <% users.forEach(user => { %>
                                             <tr class="hover:bg-white/50 transition-colors">
                                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -174,49 +191,61 @@
                                                         <button onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')" class="text-pink-600 hover:text-pink-900" title="Editar">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')" class="inline">
+                                                        <form action="/admin/delete-user" method="POST" class="inline" onsubmit="return confirmDelete('<%= user.username %>')">
                                                             <input type="hidden" name="userId" value="<%= user.id %>">
                                                             <button type="submit" class="text-red-600 hover:text-red-900" title="Eliminar">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
-                                                        <div class="flex items-center space-x-2">
-                                                            <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
-                                                                <input type="hidden" name="userId" value="<%= user.id %>">
-                                                                <select name="banType" class="text-sm border-gray-300 rounded-md">
-                                                                    <option value="temporary">Temp</option>
-                                                                    <option value="permanent">Perm</option>
-                                                                </select>
-                                                                <input type="number" name="banDuration" placeholder="Días" required class="w-16 text-sm border-gray-300 rounded-md">
-                                                                <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Banear">
-                                                                    <i class="fas fa-ban"></i>
-                                                                </button>
-                                                            </form>
-                                                            <form action="/admin/unban-user" method="POST" class="inline">
-                                                                <input type="hidden" name="userId" value="<%= user.id %>">
-                                                                <button type="submit" class="text-green-600 hover:text-green-900" title="Desbanear">
-                                                                    <i class="fas fa-user-check"></i>
-                                                                </button>
-                                                            </form>
-                                                            <form action="/admin/promote-user" method="POST" class="inline">
-                                                                <input type="hidden" name="userId" value="<%= user.id %>">
-                                                                <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promover">
-                                                                    <i class="fas fa-user-plus"></i>
-                                                                </button>
-                                                            </form>
-                                                            <form action="/admin/demote-user" method="POST" class="inline">
-                                                                <input type="hidden" name="userId" value="<%= user.id %>">
-                                                                <button type="submit" class="text-orange-600 hover:text-orange-900" title="Degradar">
-                                                                    <i class="fas fa-user-minus"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
+                                                        <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <select name="banType" class="text-sm border-gray-300 rounded-md">
+                                                                <option value="temporary">Temp</option>
+                                                                <option value="permanent">Perm</option>
+                                                            </select>
+                                                            <input type="number" name="banDuration" placeholder="Días" required class="w-16 text-sm border-gray-300 rounded-md">
+                                                            <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Banear">
+                                                                <i class="fas fa-ban"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="/admin/unban-user" method="POST" class="inline">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-green-600 hover:text-green-900" title="Desbanear">
+                                                                <i class="fas fa-user-check"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="/admin/promote-user" method="POST" class="inline">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promover">
+                                                                <i class="fas fa-user-plus"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="/admin/demote-user" method="POST" class="inline">
+                                                            <input type="hidden" name="userId" value="<%= user.id %>">
+                                                            <button type="submit" class="text-orange-600 hover:text-orange-900" title="Degradar">
+                                                                <i class="fas fa-user-minus"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
                                         <% }) %>
                                     </tbody>
                                 </table>
+                                <!-- Controles de paginación -->
+                                <div class="flex justify-between items-center mt-4 bg-[#1e1e1e] p-4 rounded-lg">
+                                    <div class="text-sm text-gray-500">
+                                        Mostrando <span id="startIndex">1</span> - <span id="endIndex">10</span> de <span id="totalItems"><%= users.length %></span> usuarios
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button id="prevPage" class="px-3 py-1 bg-[#ff6b6b] text-white rounded-lg hover:bg-[#ff8585] disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button id="nextPage" class="px-3 py-1 bg-[#ff6b6b] text-white rounded-lg hover:bg-[#ff8585] disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         <% } else { %>
                             <p class="text-gray-600">No se encontraron usuarios.</p>
@@ -299,6 +328,119 @@
             return confirm(`¿Estás seguro de que quieres eliminar a '${username}'? Esta acción no se puede deshacer.`);
         }
 
+        // Configuración de la paginación
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        const users = <%- JSON.stringify(users) %>;
+        const totalPages = Math.ceil(users.length / itemsPerPage);
+
+        // Función para actualizar la tabla con los usuarios de la página actual
+        function updateTable() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, users.length);
+            const usersToShow = users.slice(startIndex, endIndex);
+            
+            const tableBody = document.getElementById('usersTableBody');
+            tableBody.innerHTML = '';
+            
+            usersToShow.forEach(user => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-white/50 transition-colors';
+                
+                // Determinar el estado del usuario
+                let roleSpan = '';
+                if (user.banned) {
+                    roleSpan = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Baneado</span>';
+                } else if (user.is_admin) {
+                    roleSpan = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Administrador</span>';
+                } else {
+                    roleSpan = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Usuario</span>';
+                }
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <img src="${user.profile_image_url || '/default-profile-image.png'}" alt="Perfil de ${user.username}" class="h-10 w-10 rounded-full object-cover">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.username}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.email}</td>
+                    
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${roleSpan}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="showUpdateModal('${user.id}', '${user.username}', '${user.email}')" class="text-pink-600 hover:text-pink-900" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form action="/admin/delete-user/${user.id}" method="POST" class="inline" onsubmit="return confirmDelete('${user.username}')">
+                                <button type="submit" class="text-red-600 hover:text-red-900" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <select name="banType" class="text-sm border-gray-300 rounded-md text-gray-700">
+                                    <option value="temporary">Temp</option>
+                                    <option value="permanent">Perm</option>
+                                </select>
+                                <input type="number" name="banDuration" placeholder="Días" class="w-16 text-sm border-gray-300 rounded-md text-gray-700" ${user.banned ? 'disabled' : ''}>
+                                <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Banear" ${user.banned ? 'disabled' : ''}>
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/unban-user" method="POST" class="inline">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <button type="submit" class="text-green-600 hover:text-green-900" title="Desbanear" ${!user.banned ? 'disabled' : ''}>
+                                    <i class="fas fa-user-check"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/promote-user" method="POST" class="inline">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promover a Admin" ${user.is_admin ? 'disabled' : ''}>
+                                    <i class="fas fa-user-plus"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/demote-user" method="POST" class="inline">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <button type="submit" class="text-orange-600 hover:text-orange-900" title="Quitar Admin" ${!user.is_admin ? 'disabled' : ''}>
+                                    <i class="fas fa-user-minus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Actualizar información de paginación
+            document.getElementById('startIndex').textContent = startIndex + 1;
+            document.getElementById('endIndex').textContent = endIndex;
+            document.getElementById('totalItems').textContent = users.length;
+
+            // Actualizar estado de los botones
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        // Event listeners para los botones de paginación
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable();
+            }
+        });
+
+        // Inicializar la tabla
+        updateTable();
+
         function showAddAdminModal() {
             document.getElementById('addAdminModal').classList.remove('hidden');
         }
@@ -313,37 +455,6 @@
             document.getElementById('updateEmail').value = email;
             document.getElementById('updatePassword').value = '';
             document.getElementById('updateModal').classList.remove('hidden');
-        }
-
-        document.getElementById('announcement-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const message = document.getElementById('message').value;
-            const duration = parseInt(document.getElementById('duration').value, 10);
-
-            if (duration <= 0) {
-                alert('La duración debe ser un número positivo.');
-                return;
-            }
-
-            fetch('/set-announcement', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message, duration }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Anuncio enviado con éxito.');
-                    resetForm();
-                }
-            })
-            .catch(error => console.error('Error al enviar el anuncio:', error));
-        });
-
-        function resetForm() {
-            document.getElementById('announcement-form').reset();
         }
 
         // Cerrar modales al hacer clic fuera de ellos
