@@ -16,14 +16,22 @@
     <meta name="twitter:description" content="Descubre los últimos lanzamientos de anime en NakamaStream.">
     <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/168317328?s=200&v=4">
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-[#121212] text-gray-200">
 
-    <div class="container mx-auto p-6">
-        <h1 class="text-4xl font-bold text-center mb-8 text-[#ff6b6b]">Últimos Releases de NakamaStream Sorce</h1>
-        <div id="releases-container" class="space-y-6">
+    <div class="container mx-auto p-3 sm:p-6">
+        <div class="flex items-center justify-between mb-4 sm:mb-8">
+            <a href="/" class="inline-flex items-center px-4 py-2 bg-[#1e1e1e] text-[#ff6b6b] border border-[#ff6b6b] rounded hover:bg-[#ff6b6b] hover:text-white transition-colors text-sm sm:text-base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al Inicio
+            </a>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-bold text-center mb-4 sm:mb-8 text-[#ff6b6b]">Últimos Releases de NakamaStream Sorce</h1>
+        <div id="releases-container" class="space-y-4 sm:space-y-6">
             <!-- Aquí se insertará la información de los releases -->
         </div>
-        <div id="pagination" class="flex justify-center mt-6 space-x-4">
+        <div id="pagination" class="flex flex-wrap gap-2 justify-center mt-4 sm:mt-6">
             <!-- Aquí se insertarán los botones de paginación -->
         </div>
     </div>
@@ -61,13 +69,13 @@
 
             currentReleases.forEach(release => {
                 const releaseDiv = document.createElement('div');
-                releaseDiv.className = 'bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow';
+                releaseDiv.className = 'bg-[#1e1e1e] border border-gray-700 p-3 sm:p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow';
 
                 const releaseHtml = `
-                    <h2 class="text-2xl font-semibold text-[#ff6b6b]">${release.name}</h2>
-                    <p class="text-sm text-gray-600">Fecha de publicación: ${new Date(release.published_at).toLocaleDateString()}</p>
-                    <div class="prose max-w-none whitespace-pre-wrap">${marked.parse(release.body)}</div>
-                    <a href="${release.html_url}" target="_blank" class="mt-4 inline-block text-[#ff6b6b] hover:text-[#e55555] font-semibold">Ver en GitHub</a>
+                    <h2 class="text-xl sm:text-2xl font-semibold text-[#ff6b6b]">${release.name}</h2>
+                    <p class="text-xs sm:text-sm text-gray-400">Fecha de publicación: ${new Date(release.published_at).toLocaleDateString()}</p>
+                    <div class="prose prose-sm sm:prose max-w-none whitespace-pre-wrap prose-invert">${marked.parse(release.body)}</div>
+                    <a href="${release.html_url}" target="_blank" class="mt-3 sm:mt-4 inline-block text-[#ff6b6b] hover:text-[#e55555] font-semibold text-sm sm:text-base">Ver en GitHub</a>
                 `;
                 
                 releaseDiv.innerHTML = releaseHtml;
@@ -77,13 +85,18 @@
 
         function createPagination() {
             const paginationDiv = document.getElementById('pagination');
+            paginationDiv.className = 'flex flex-wrap gap-2 justify-center mt-4 sm:mt-6';
             paginationDiv.innerHTML = '';
 
             const totalPages = Math.ceil(releases.length / releasesPerPage);
 
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
-                button.className = `px-4 py-2 border rounded ${i === currentPage ? 'bg-[#ff6b6b] text-white' : 'bg-white text-[#ff6b6b] hover:bg-[#ff6b6b] hover:text-white'}`;
+                button.className = `px-3 sm:px-4 py-1 sm:py-2 text-sm sm:text-base border border-[#ff6b6b] rounded ${
+                    i === currentPage 
+                        ? 'bg-[#ff6b6b] text-white' 
+                        : 'bg-[#1e1e1e] text-[#ff6b6b] hover:bg-[#ff6b6b] hover:text-white'
+                }`;
                 button.textContent = i;
                 button.onclick = () => {
                     currentPage = i;
