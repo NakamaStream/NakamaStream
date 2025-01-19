@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-100">
+<html lang="es" class="bg-[#121212]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NakamaStream - Admin Panel</title>
+    <title>NakamaStream - Panel de Administración</title>
     <link rel="shortcut icon" href="https://github.com/NakamaStream/Resources/blob/main/NakamStream-logo-HD-removebg.png?raw=true" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        .glass-effect {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        .hover-scale { 
+            transition: transform 0.2s; 
+        }
+        .hover-scale:hover { 
+            transform: scale(1.02); 
         }
         .fade-in {
             animation: fadeIn 0.5s ease-out forwards;
@@ -21,118 +31,186 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-gray-100">
-    <div class="flex h-screen bg-gray-200">
-        <!-- Sidebar -->
-        <div class="bg-indigo-800 text-white w-64 py-6 flex-shrink-0">
-            <div class="flex items-center justify-center mb-8">
-                <img src="/uploads/NakamStream-logo-HD-removebg.png" alt="NakamaStream Logo" class="h-12 w-auto">
+<body class="min-h-screen bg-[#121212] text-white">
+    <div class="flex h-screen">
+        <!-- Barra lateral -->
+        <div class="w-64 bg-[#1e1e1e] text-white shadow-xl">
+            <div class="p-6">
+                <img src="/uploads/NakamStream-logo-HD-removebg.png" alt="Logo de NakamaStream" class="h-12 mx-auto mb-8 hover-scale">
+                <nav class="space-y-2">
+                    <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-[#ff6b6b] transition-all">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-3 font-medium">Panel Principal</span>
+                    </a>
+                    <a href="/admin/animes" class="flex items-center px-4 py-3 rounded-lg hover:bg-[#ff6b6b] transition-all">
+                        <i class="fas fa-film w-6"></i>
+                        <span class="ml-3 font-medium">Panel de Anime</span>
+                    </a>
+                    <a href="/admin/comments" class="flex items-center px-4 py-3 rounded-lg hover:bg-[#ff6b6b] transition-all">
+                        <i class="fas fa-comments w-6"></i>
+                        <span class="ml-3 font-medium">Comentarios</span>
+                    </a>
+                    <a href="/anime" class="flex items-center px-4 py-3 rounded-lg hover:bg-[#ff6b6b] transition-all">
+                        <i class="fas fa-list w-6"></i>
+                        <span class="ml-3 font-medium">Lista de Anime</span>
+                    </a>
+                    <a href="/admin/report-panel" class="flex items-center px-4 py-3 rounded-lg hover:bg-[#ff6b6b] transition-all">
+                        <i class="fas fa-flag w-6"></i>
+                        <span class="ml-3 font-medium">Panel de Reportes</span>
+                    </a>
+                </nav>
             </div>
-            <nav>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
-                    <i class="fas fa-home mr-2"></i>Dashboard
-                </a>
-                <a href="/admin/animes" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
-                    <i class="fas fa-film mr-2"></i>Anime Panel
-                </a>
-                <a href="/admin/comments" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
-                    <i class="fas fa-comments mr-2"></i>Comments
-                </a>
-                <a href="/anime" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-700 hover:text-white">
-                    <i class="fas fa-list mr-2"></i>Anime List
-                </a>
-            </nav>
         </div>
 
-        <!-- Main Content -->
+        <!-- Contenido Principal -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top bar -->
-            <header class="bg-white shadow-md">
-                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <h1 class="text-2xl font-semibold text-gray-900">Admin Dashboard</h1>
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center space-x-3">
+            <!-- Barra superior -->
+            <header class="glass-effect shadow-lg">
+                <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-[#ff6b6b]">Panel de Administración</h1>
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center space-x-4">
                             <% if (req.session.user && req.session.user.profile_image_url) { %>
-                                <img src="<%= req.session.user.profile_image_url %>" alt="Admin profile" class="h-10 w-10 rounded-full object-cover">
+                                <img src="<%= req.session.user.profile_image_url %>" alt="Perfil de administrador" class="h-10 w-10 rounded-full object-cover ring-2 ring-pink-500">
                             <% } else { %>
-                                <img src="/default-profile-image.png" alt="Default profile" class="h-10 w-10 rounded-full object-cover">
+                                <img src="/default-profile-image.png" alt="Perfil predeterminado" class="h-10 w-10 rounded-full object-cover ring-2 ring-pink-500">
                             <% } %>
-                            <span class="font-medium text-gray-800">Welcome, <%= req.session.user ? req.session.user.username : 'Admin' %></span>
+                            <span class="font-medium text-[#ff6b6b]">Bienvenido, <%= req.session.user ? req.session.user.username : 'Admin' %></span>
                         </div>
                         <form action="/logout" method="POST">
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            <button type="submit" class="bg-[#ff6b6b] hover:bg-[#ff8585] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
                             </button>
                         </form>
                     </div>
                 </div>
             </header>
 
-            <!-- Main content area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-                <div class="container mx-auto px-6 py-8">
-                    <!-- User Management Section -->
-                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">User Management</h2>
+            <!-- Área de contenido principal -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    <!-- Cuadrícula de Estadísticas -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-[#1e1e1e] rounded-xl p-6 hover-scale">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600">Total de Usuarios</p>
+                                    <h3 class="text-2xl font-bold text-[#ff6b6b]"><%= users ? users.length : 0 %></h3>
+                                </div>
+                                <div class="bg-[#ff6b6b] bg-opacity-20 p-3 rounded-lg">
+                                    <i class="fas fa-users text-[#ff6b6b] text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-[#1e1e1e] rounded-xl p-6 hover-scale">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600">Usuarios Activos</p>
+                                    <h3 class="text-2xl font-bold text-[#ff6b6b]">
+                                        <%= users ? users.filter(user => !user.banned).length : 0 %>
+                                    </h3>
+                                </div>
+                                <div class="bg-green-100 p-3 rounded-lg">
+                                    <i class="fas fa-user-check text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-[#1e1e1e] rounded-xl p-6 hover-scale">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600">Usuarios Baneados</p>
+                                    <h3 class="text-2xl font-bold text-[#ff6b6b]">
+                                        <%= users ? users.filter(user => user.banned).length : 0 %>
+                                    </h3>
+                                </div>
+                                <div class="bg-red-100 p-3 rounded-lg">
+                                    <i class="fas fa-user-slash text-red-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Gestión de Usuarios -->
+                    <div class="glass-effect rounded-xl p-6 shadow-lg fade-in">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-[#ff6b6b]">Gestión de Usuarios</h2>
+                            <button onclick="showAddAdminModal()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all">
+                                <i class="fas fa-user-plus mr-2"></i>Agregar Administrador
+                            </button>
+                        </div>
                         <% if (users && users.length > 0) { %>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
+                                    <thead>
                                         <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Perfil</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Usuario</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Correo</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
+                                    <tbody class="divide-y divide-gray-200">
                                         <% users.forEach(user => { %>
-                                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                            <tr class="hover:bg-white/50 transition-colors">
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <img src="<%= user.profile_image_url || '/default-profile-image.png' %>" alt="<%= user.username %>'s profile" class="h-10 w-10 rounded-full object-cover">
+                                                    <img src="<%= user.profile_image_url || '/default-profile-image.png' %>" alt="Perfil de <%= user.username %>" class="h-10 w-10 rounded-full object-cover">
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= user.id %></td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= user.username %></td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= user.email %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#ff6b6b]"><%= user.username %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-white"><%= user.email %></td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <% if (user.banned) { %>
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Banned</span>
+                                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Baneado</span>
                                                     <% } else if (user.is_admin) { %>
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admin</span>
+                                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Administrador</span>
                                                     <% } else { %>
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">User</span>
+                                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Usuario</span>
                                                     <% } %>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                     <div class="flex space-x-2">
-                                                        <button onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')" class="text-indigo-600 hover:text-indigo-900" title="Edit"><i class="fas fa-edit"></i></button>
-                                                        <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')">
+                                                        <button onclick="showUpdateModal('<%= user.id %>', '<%= user.username %>', '<%= user.email %>')" class="text-pink-600 hover:text-pink-900" title="Editar">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <form id="deleteForm_<%= user.id %>" action="/admin/delete-user" method="POST" onsubmit="return confirmDelete('<%= user.username %>')" class="inline">
                                                             <input type="hidden" name="userId" value="<%= user.id %>">
-                                                            <button type="submit" class="text-red-600 hover:text-red-900" title="Delete"><i class="fas fa-trash"></i></button>
+                                                            <button type="submit" class="text-red-600 hover:text-red-900" title="Eliminar">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
                                                         </form>
-                                                        <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
-                                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                                            <select name="banType" class="text-sm border-gray-300 rounded-md">
-                                                                <option value="temporary">Temp</option>
-                                                                <option value="permanent">Perm</option>
-                                                            </select>
-                                                            <input type="number" name="banDuration" placeholder="Days" required class="w-16 text-sm border-gray-300 rounded-md">
-                                                            <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Ban"><i class="fas fa-ban"></i></button>
-                                                        </form>
-                                                        <form action="/admin/unban-user" method="POST">
-                                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                                            <button type="submit" class="text-green-600 hover:text-green-900" title="Unban"><i class="fas fa-user-check"></i></button>
-                                                        </form>
-                                                        <form action="/admin/promote-user" method="POST">
-                                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                                            <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promote"><i class="fas fa-user-plus"></i></button>
-                                                        </form>
-                                                        <form action="/admin/demote-user" method="POST">
-                                                            <input type="hidden" name="userId" value="<%= user.id %>">
-                                                            <button type="submit" class="text-orange-600 hover:text-orange-900" title="Demote"><i class="fas fa-user-minus"></i></button>
-                                                        </form>
+                                                        <div class="flex items-center space-x-2">
+                                                            <form action="/admin/ban-user" method="POST" class="flex items-center space-x-2">
+                                                                <input type="hidden" name="userId" value="<%= user.id %>">
+                                                                <select name="banType" class="text-sm border-gray-300 rounded-md">
+                                                                    <option value="temporary">Temp</option>
+                                                                    <option value="permanent">Perm</option>
+                                                                </select>
+                                                                <input type="number" name="banDuration" placeholder="Días" required class="w-16 text-sm border-gray-300 rounded-md">
+                                                                <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Banear">
+                                                                    <i class="fas fa-ban"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="/admin/unban-user" method="POST" class="inline">
+                                                                <input type="hidden" name="userId" value="<%= user.id %>">
+                                                                <button type="submit" class="text-green-600 hover:text-green-900" title="Desbanear">
+                                                                    <i class="fas fa-user-check"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="/admin/promote-user" method="POST" class="inline">
+                                                                <input type="hidden" name="userId" value="<%= user.id %>">
+                                                                <button type="submit" class="text-blue-600 hover:text-blue-900" title="Promover">
+                                                                    <i class="fas fa-user-plus"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="/admin/demote-user" method="POST" class="inline">
+                                                                <input type="hidden" name="userId" value="<%= user.id %>">
+                                                                <button type="submit" class="text-orange-600 hover:text-orange-900" title="Degradar">
+                                                                    <i class="fas fa-user-minus"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -141,143 +219,84 @@
                                 </table>
                             </div>
                         <% } else { %>
-                            <p class="text-gray-600">No users found.</p>
+                            <p class="text-gray-600">No se encontraron usuarios.</p>
                         <% } %>
-                    </div>
-
-                    <!-- Add Admin Section -->
-                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Add Admin User</h2>
-                        <button onclick="showAddAdminModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                            <i class="fas fa-user-plus mr-2"></i>Add Admin
-                        </button>
-                    </div>
-
-                    <!-- Announcement Section -->
-                    <div class="bg-white shadow-lg rounded-lg p-6 mb-8 fade-in">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Send Announcement</h2>
-                        <form id="announcement-form" class="space-y-4">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="message">
-                                    Announcement Message:
-                                </label>
-                                <textarea id="message" name="message" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Type your message here..." required></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="duration">
-                                    Duration (minutes):
-                                </label>
-                                <input type="number" id="duration" name="duration" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter duration in minutes" min="1" required>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                                    Send
-                                </button>
-                                <button type="button" onclick="resetForm()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Add Admin Modal -->
-    <div id="addAdminModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center hidden z-50">
-        <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
-            <h3 class="text-2xl font-bold mb-4">Add Admin User</h3>
-            <form action="/admin/add-admin" method="POST">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" name="username" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" required>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" required>
-                </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="submit">
-                        Add Admin
-                    </button>
-                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="button" onclick="hideModal('addAdminModal')">
-                        Cancel
-                    </button>
-                </div>
-            </form>
+    <!-- Modal para Agregar Administrador -->
+    <div id="addAdminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-[#1e1e1e] rounded-xl shadow-xl p-6 w-full max-w-md">
+                <h3 class="text-xl font-bold text-[#ff6b6b] mb-4">Agregar Usuario Administrador</h3>
+                <form action="/admin/add-admin" method="POST">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="username">Nombre de Usuario</label>
+                            <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" required>
+                        </div>
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="email">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" required>
+                        </div>
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="password">Contraseña</label>
+                            <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" required>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="hideModal('addAdminModal')" class="px-4 py-2 text-white hover:text-gray-700 font-medium">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-[#ff6b6b] hover:bg-[#ff8585] text-white font-medium px-4 py-2 rounded-lg">
+                            Agregar Administrador
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Update User Modal -->
-    <div id="updateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center hidden z-50">
-        <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
-            <h3 class="text-2xl font-bold mb-4">Update User</h3>
-            <form action="/admin/update-user" method="POST">
-                <input type="hidden" id="updateUserId" name="userId">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updateUsername">Username</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="updateUsername" type="text" name="username" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updateEmail">Email</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="updateEmail" type="email" name="email" required>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="updatePassword">Password</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="updatePassword" type="password" name="password" placeholder="Leave blank to keep current password">
-                </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="submit">
-                        Update
-                    </button>
-                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="button" onclick="hideModal('updateModal')">
-                        Cancel
-                    </button>
-                </div>
-            </form>
+    <!-- Modal para Actualizar Usuario -->
+    <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-[#1e1e1e] rounded-xl shadow-xl p-6 w-full max-w-md">
+                <h3 class="text-xl font-bold text-[#ff6b6b] mb-4">Actualizar Usuario</h3>
+                <form action="/admin/update-user" method="POST">
+                    <input type="hidden" id="updateUserId" name="userId">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="updateUsername">Nombre de Usuario</label>
+                            <input type="text" id="updateUsername" name="username" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" required>
+                        </div>
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="updateEmail">Correo Electrónico</label>
+                            <input type="email" id="updateEmail" name="email" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" required>
+                        </div>
+                        <div>
+                            <label class="block text-white text-sm font-bold mb-2" for="updatePassword">Contraseña</label>
+                            <input type="password" id="updatePassword" name="password" class="w-full px-3 py-2 bg-[#2a2a2a] border border-[#3a3a3a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]" placeholder="Dejar en blanco para mantener la contraseña actual">
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="hideModal('updateModal')" class="px-4 py-2 text-white hover:text-gray-700 font-medium">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-[#ff6b6b] hover:bg-[#ff8585] text-white font-medium px-4 py-2 rounded-lg">
+                            Actualizar Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
         function confirmDelete(username) {
-            return confirm("Are you sure you want to delete '" + username + "'? This action cannot be undone.");
-        }
-
-        document.getElementById('announcement-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const message = document.getElementById('message').value;
-            const duration = parseInt(document.getElementById('duration').value, 10);
-
-            if (duration <= 0) {
-                alert('Duration must be a positive number.');
-                return;
-            }
-
-            fetch('/set-announcement', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message, duration }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Announcement sent successfully.');
-                    resetForm();
-                }
-            })
-            .catch(error => console.error('Error sending announcement:', error));
-        });
-
-        function resetForm() {
-            document.getElementById('announcement-form').reset();
+            return confirm(`¿Estás seguro de que quieres eliminar a '${username}'? Esta acción no se puede deshacer.`);
         }
 
         function showAddAdminModal() {
@@ -294,6 +313,47 @@
             document.getElementById('updateEmail').value = email;
             document.getElementById('updatePassword').value = '';
             document.getElementById('updateModal').classList.remove('hidden');
+        }
+
+        document.getElementById('announcement-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+            const duration = parseInt(document.getElementById('duration').value, 10);
+
+            if (duration <= 0) {
+                alert('La duración debe ser un número positivo.');
+                return;
+            }
+
+            fetch('/set-announcement', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message, duration }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Anuncio enviado con éxito.');
+                    resetForm();
+                }
+            })
+            .catch(error => console.error('Error al enviar el anuncio:', error));
+        });
+
+        function resetForm() {
+            document.getElementById('announcement-form').reset();
+        }
+
+        // Cerrar modales al hacer clic fuera de ellos
+        window.onclick = function(event) {
+            const modals = [document.getElementById('addAdminModal'), document.getElementById('updateModal')];
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
         }
     </script>
 </body>
