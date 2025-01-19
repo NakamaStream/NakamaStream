@@ -34,5 +34,9 @@ app.get('/api/releases', async (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+    console.log('\n=======================================================');
+    console.log('🚀 ¡Servidor de mantenimiento iniciado con éxito! 🚀');
+    console.log(`🌐 URL: http://localhost:${PORT}`);
+    console.log('📂 GitHub Source: https://github.com/NakamaStream/NakamaStream/tree/main/maintenance');
+    console.log('=======================================================\n');
 });
