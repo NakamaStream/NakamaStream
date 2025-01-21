@@ -20,12 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let timeout;
 
-    // Verificar si la librería `marked` está cargada
-    if (typeof marked === 'undefined') {
-        console.error('Librería `marked` no está cargada.');
-        return;
-    }
-
     fetch('/get-announcement')
         .then(response => response.json())
         .then(data => {
