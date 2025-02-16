@@ -55,13 +55,38 @@ const createTableQueries = {
     upload_date TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
-  anime_categories: `CREATE TABLE IF NOT EXISTS anime_categories (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name TEXT NOT NULL,
-    slug TEXT NOT NULL,
-    anime_id INT DEFAULT NULL,
-    FOREIGN KEY (anime_id) REFERENCES animes(id) ON DELETE SET NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+  anime_categories: `
+    CREATE TABLE IF NOT EXISTS anime_categories (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      name TEXT NOT NULL,
+      slug TEXT NOT NULL,
+      anime_id INT DEFAULT NULL,
+      FOREIGN KEY (anime_id) REFERENCES animes(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    
+    INSERT IGNORE INTO anime_categories (name, slug, anime_id) VALUES 
+      ('Acción', 'accion', NULL),
+      ('Aventura', 'aventura', NULL),
+      ('Comedia', 'comedia', NULL),
+      ('Drama', 'drama', NULL),
+      ('Fantasía', 'fantasia', NULL),
+      ('Ciencia ficción', 'ciencia-ficcion', NULL),
+      ('Slice of life', 'slice-of-life', NULL),
+      ('Romance', 'romance', NULL),
+      ('Misterio', 'misterio', NULL),
+      ('Supernatural', 'supernatural', NULL),
+      ('Horror', 'horror', NULL),
+      ('Psicológico', 'psicologico', NULL),
+      ('Deportes', 'deportes', NULL),
+      ('Música', 'musica', NULL),
+      ('Mecha', 'mecha', NULL),
+      ('Histórico', 'historico', NULL),
+      ('Shounen', 'shounen', NULL),
+      ('Shoujo', 'shoujo', NULL),
+      ('Seinen', 'seinen', NULL),
+      ('Josei', 'josei', NULL),
+      ('Latino', 'latino', NULL),
+      ('Castellano', 'castellano', NULL);`,
 
   categories: `CREATE TABLE IF NOT EXISTS categories (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
