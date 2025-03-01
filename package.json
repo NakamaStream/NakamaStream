@@ -10,7 +10,7 @@
     "cheerio": "^1.0.0",
     "console.table": "^0.10.0",
     "cookie-session": "^2.1.0",
-    "cropperjs": "^1.6.2",
+    "cropperjs": "^2.0.0",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-rate-limit": "^7.4.1",
