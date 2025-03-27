@@ -6,7 +6,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
+    "body-parser": "^2.0.0",
     "cheerio": "^1.0.0",
     "console.table": "^0.10.0",
     "cookie-session": "^2.1.0",
